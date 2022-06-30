@@ -19,9 +19,7 @@ class LoadDataFromFacebook with ChangeNotifier {
     stories = [];
     hpccPosts = [];
     int limit = 100;
-    var accessToken =
-        'EAAHAavFovc4BALZCGb5F1jX30XCd9A9ZBQZB74SaEibQ5efmNfsACDax98fjSbYEdUUKEV3USkmOWQoRojZANCHHpvn4kxNT92Qz8Kmtzl3vw0tp7e3K5SHTjpk4SDDP8BvtwUvg27MTwE2C4CGHqWL8fABwhJQIm26GFHkacZAMuW7V9kVgt';
-
+    var accessToken = 'EAAHAavFovc4BAEwHSYktHlMv1GeB8ZCEZB3YxDoNgclNT1bQtQzmPnETNHFyQaEa5zRoA8mw6EIsITlh9QpKbZCfu0B150c792aCElkx7kwG3enGl0hgHdAjAViZA7npXW3wlQa4ouiniRZBPcKhFU2sIuNhHHsPoG6tDkPr2EVEESwcfQos7';
     var urlPart = '';
     var url = '';
     urlPart = 'https://graph.facebook.com/v13.0/';
