@@ -27,7 +27,7 @@ class _BodyPart1State extends State<BodyPart1> {
     _controller.addListener(() {
       setState(() {
         currentIndex =
-            _controller.offset ~/ (MediaQuery.of(context).size.width * 0.65);
+            _controller.offset ~/ (MediaQuery.of(context).size.width * 0.69);
       });
     });
   }
@@ -40,15 +40,14 @@ class _BodyPart1State extends State<BodyPart1> {
 
   @override
   Widget build(BuildContext context) {
-    return featuredPosts.isEmpty ? const SizedBox.shrink() :  
-    Container(
+    return Container(
       // color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0).copyWith(top: 10),
-            child: Text('कार्यक्रम',
+            child: Text('सार्वजनिक हित जानकारी',
                 style: GoogleFonts.openSans(
                   color: Colors.black.withOpacity(0.7),
                   fontSize: 16,

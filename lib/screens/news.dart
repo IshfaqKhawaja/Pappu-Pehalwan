@@ -31,12 +31,6 @@ class NEWS extends StatelessWidget {
           'url' :'https://www.livetimes.tv/hi/news/article/7751a367-498d-4a18-a22a-0098ce0392d0',
 
         },
-        //  {
-        //   'image':  'assets/images/news5.jpeg',
-        //   'title' : 'मैनपुरी: निहारते रह जाएंगे महाराजा तेज सिंह के किले की खूबसूरती, शीतला देवी का भव्य मंदिर भी बनेगा',
-        //   'url' :'https://paletv.com/मैनपुरी-निहारते-रह-जाएंग/',
-
-        // },
     ];
 
    
@@ -55,22 +49,6 @@ class NEWS extends StatelessWidget {
                     color: Colors.blue,
                   ),
                 ),
-                // Spacer(),
-                // Row(
-                //     children: List.generate(
-                //   fbPosts.length,
-                //   (index) => Container(
-                //     padding: const EdgeInsets.only(right: 2),
-                //     child: CircleAvatar(
-                //       radius: currentIndex == index ? 4 : 2,
-                //       backgroundColor:
-                //           currentIndex == index ? Colors.black : Colors.grey,
-                //     ),
-                //   ),
-                // )),
-                // const SizedBox(
-                //   width: 10,
-                // ),
               ],
             ),
           SingleChildScrollView(

@@ -141,17 +141,18 @@ class _DisplayQuestionState extends State<DisplayQuestion> {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
-                        // boxShadow: [
-                        //   BoxShadow(
-                        //       color: Colors.black.withOpacity(0.5),
-                        //       blurRadius: 5,
-                        //       offset: const Offset(0, 3))
-                        // ],
+                        border: widget.isFirstQuestion ? Border.all(color: Colors.black,width: 1.5):null,
                         borderRadius: widget.isFirstQuestion
                             ? BorderRadius.circular(10)
                             : const BorderRadius.only(
                                 topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10))),
+                                topRight: Radius.circular(10)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.6)
+                        )
+                      ]
+                    ),
                     child:  Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,

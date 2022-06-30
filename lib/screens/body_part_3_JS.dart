@@ -22,14 +22,14 @@ class _BodyPart3JSState extends State<BodyPart3JS> {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return   hpccPosts.isEmpty
+              ? const SizedBox.shrink()
+              :  Container(
       // height: 230,
       // color: Colors.white,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
-      child: hpccPosts.isEmpty
-              ? const SizedBox.shrink()
-              :  Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('हिमाचल  प्रदेश  कांग्रेस  समिति', style: GoogleFonts.openSans(
@@ -39,7 +39,7 @@ class _BodyPart3JSState extends State<BodyPart3JS> {
           ),),
 
          const  SizedBox(height: 20,),
-          SingleChildScrollView(
+         SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                     children: List.generate(hpccPosts.length, (index) {
@@ -56,8 +56,10 @@ class _BodyPart3JSState extends State<BodyPart3JS> {
                       }
                       return OpenContainer(
                           transitionType: ContainerTransitionType.fade,
-                           openColor: Theme.of(context).backgroundColor,
-                          closedColor: Theme.of(context).backgroundColor,
+                           openColor: Theme.of(context).scaffoldBackgroundColor,
+                          closedColor: Theme.of(context).scaffoldBackgroundColor,
+                          
+
                           // transitionDuration: const Duration(milliseconds: 1000),
                           closedBuilder: (_, __) => BodyPart3JSItem(
                                 key: ValueKey(hpccPosts[index]['id']),

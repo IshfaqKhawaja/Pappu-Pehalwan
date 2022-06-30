@@ -8,8 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'record_audio.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:flutter_audio_recorder2/flutter_audio_recorder2.dart';
 import '../../screens/show_files.dart';
 
 class NewMessageUser extends StatefulWidget {
@@ -59,66 +57,13 @@ class _NewMessageUserState extends State<NewMessageUser> {
   File? image;
   final _textController = TextEditingController();
   List<File>? files = [];
-
-  // void send(List<File> files, BuildContext ctx) async {
-  //   // print(files);
-  //   if (files.length > 0) {
-  //     try {
-  //       for (var file in files) {
-  //         var type = file.path.endsWith('.jpg') ||
-  //                 file.path.endsWith('.jpeg') ||
-  //                 file.path.endsWith('.png')
-  //             ? 'image'
-  //             : 'video';
-  //         widget.isFileSendingTrue(true, file, type);
-  //         print(file);
-  //         final ref = FirebaseStorage.instance.ref().child('chat-images').child(
-  //             '${FirebaseAuth.instance.currentUser!.uid}${Timestamp.now()}');
-  //         await ref.putFile(file);
-  //         final url = await ref.getDownloadURL();
-  //         widget.isFileSendingTrue(false, '', '');
-  //         await FirebaseFirestore.instance
-  //             .collection('chats')
-  //             .doc('${widget.userid}')
-  //             .collection('messages')
-  //             .add({
-  //           'text': '',
-  //           'createdAt': Timestamp.now(),
-  //           'date': DateTime.now().toIso8601String(),
-  //           'userId': FirebaseAuth.instance.currentUser!.uid,
-  //           'read': 0,
-  //           'type': file.path.endsWith('.jpg') ||
-  //                   file.path.endsWith('.jpeg') ||
-  //                   file.path.endsWith('.png')
-  //               ? 'image'
-  //               : 'video',
-  //           'attachment': url,
-  //         });
-  //         await FirebaseFirestore.instance
-  //             .collection('chats')
-  //             .doc('${widget.userid}')
-  //             .set({
-  //           'createdAt': Timestamp.now(),
-  //           'unread': 1,
-  //           'recentText': file.path.endsWith('.jpg') ||
-  //                   file.path.endsWith('.jpeg') ||
-  //                   file.path.endsWith('.png')
-  //               ? 'image'
-  //               : 'video',
-  //           'username': widget.username,
-  //           'profile_url': widget.profileUrl,
-  //         });
-  //       }
-  //     } on PlatformException catch (err) {
-  //       widget.isFileSendingTrue(false, '', '');
-  //       ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-  //         content: Text('$err'),
-  //       ));
-  //     } catch (err) {
-  //       print(err);
-  //     }
-  //   }
-  // }
+  GlobalKey<RecordAudioState> audioKey = GlobalKey<RecordAudioState>();
+  bool isRecording = false;
+  void changeIsRecording(value) {
+    setState(() {
+      isRecording = value;
+    });
+  }
   void send(List<File> files, BuildContext ctx) async {
     // print(files);
     if (files.isNotEmpty) {
@@ -182,7 +127,6 @@ class _NewMessageUserState extends State<NewMessageUser> {
             });
             widget.changeMessageSent(widget.docId);
           }
-          // widget.scrollToEnd();
 
           await FirebaseFirestore.instance
               .collection('suggestions')
@@ -198,48 +142,9 @@ class _NewMessageUserState extends State<NewMessageUser> {
             'username': widget.username,
             'profile_url': widget.profileUrl,
           });
-          // ScaffoldMessenger.of(widget.scaffoldKey.currentContext!)
-          //     .showSnackBar(SnackBar(
-          //   content: Text(widget.appBarTitle == 'सुझाव'
-          //       ? ' धन्यवाद, आपका सुझाव हमारे पास पहुंच गया है l हम जल्द ही आपसे संपर्क करेंगे |'
-          //       : 'धन्यवाद, आपकी समस्या हमारे पास पहुंच गई है l हम जल्द ही आपसे संपर्क करेंगे |'),
-          // ));
           if (!widget.isFromUserChats) {
             widget.changeShowInputMessageField(false);
             widget.changeShowReplyAgain(true);
-            // bool closeChat = false;
-            // // widget.changeShowInputMessageField(false);
-            // await showDialog(
-            //     barrierDismissible: false,
-            //     context: context,
-            //     builder: (ctx) {
-            //       return AlertDialog(
-            //         content: const Text('Do you want to reply again?'),
-            //         actions: [
-            //           TextButton(
-            //             onPressed: () {
-            //               widget.changeShowInputMessageField(true);
-            //               closeChat = false;
-            //               Navigator.of(ctx).pop();
-            //             },
-            //             child: const Text('Yes'),
-            //           ),
-            //           TextButton(
-            //             onPressed: () {
-            //               widget.changeShowInputMessageField(false);
-            //               closeChat = true;
-            //               Navigator.of(ctx).pop();
-            //             },
-            //             child: const Text('No'),
-            //           ),
-            //         ],
-            //       );
-            //     }).then((value) {
-            //   if (closeChat) {
-            //     Navigator.of(context).pop();
-            //   }
-            //   print(closeChat);
-            // });
           }
         }
       } on PlatformException catch (err) {
@@ -294,86 +199,10 @@ class _NewMessageUserState extends State<NewMessageUser> {
       });
     }
   }
-
-  // void _sendMessage() async {
-  //   if (_enteredText.isNotEmpty) {
-  //     try {
-  //       _textController.text = '';
-
-  //       await FirebaseFirestore.instance
-  //           .collection('chats') //'chats
-  //           .doc('${widget.userid}')
-  //           .collection('messages') //messages
-  //           .add({
-  //         'text': _enteredText,
-  //         'createdAt': Timestamp.now(),
-  //         'date': DateTime.now().toIso8601String(),
-  //         'userId': FirebaseAuth.instance.currentUser!.uid,
-  //         'read': 0,
-  //         'type': 'text',
-  //       });
-  //       await FirebaseFirestore.instance
-  //           .collection('chats')
-  //           .doc('${widget.userid}')
-  //           .set({
-  //         'createdAt': Timestamp.now(),
-  //         'unread': 1,
-  //         'recentText': _enteredText,
-  //         'username': widget.username,
-  //         'profile_url': widget.profileUrl,
-  //       });
-
-  //       setState(() {
-  //         _enteredText = '';
-  //       });
-  //     } on PlatformException catch (err) {
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //         content: Text('$err'),
-  //       ));
-  //     } catch (err) {
-  //       print(err);
-  //     }
-  //   }
-  // }
   void _sendMessage() async {
     if (_enteredText.isNotEmpty) {
       try {
         _textController.text = '';
-        // if (!widget.isFromUserChats) {
-        //   bool closeChat = false;
-        //   // widget.changeShowInputMessageField(false);
-        //   await showDialog(
-        //       barrierDismissible: false,
-        //       context: context,
-        //       builder: (ctx) {
-        //         return AlertDialog(
-        //           content: const Text('Do you want to reply again?'),
-        //           actions: [
-        //             TextButton(
-        //               onPressed: () {
-        //                 widget.changeShowInputMessageField(true);
-        //                 closeChat = false;
-        //                 Navigator.of(ctx).pop();
-        //               },
-        //               child: const Text('Yes'),
-        //             ),
-        //             TextButton(
-        //               onPressed: () {
-        //                 widget.changeShowInputMessageField(false);
-        //                 closeChat = true;
-        //                 Navigator.of(ctx).pop();
-        //               },
-        //               child: const Text('No'),
-        //             ),
-        //           ],
-        //         );
-        //       }).then((value) {
-        //     // print(closeChat);
-        //     if (closeChat) {
-        //       Navigator.of(context).pop();
-        //     }
-        //   });
-        // }
         List details = widget.details;
         details.add({
           'title': _enteredText,
@@ -414,7 +243,6 @@ class _NewMessageUserState extends State<NewMessageUser> {
           });
           widget.changeMessageSent(widget.docId);
         }
-        // widget.scrollToEnd();
 
         await FirebaseFirestore.instance
             .collection('suggestions')
@@ -436,12 +264,6 @@ class _NewMessageUserState extends State<NewMessageUser> {
           widget.changeShowInputMessageField(false);
           widget.changeShowReplyAgain(true);
         }
-        // ScaffoldMessenger.of(widget.scaffoldKey.currentContext!)
-        //     .showSnackBar(SnackBar(
-        //   content: Text(widget.appBarTitle == 'सुझाव'
-        //       ? ' धन्यवाद, आपका सुझाव हमारे पास पहुंच गया है l हम जल्द ही आपसे संपर्क करेंगे |'
-        //       : 'धन्यवाद, आपकी समस्या हमारे पास पहुंच गई है l हम जल्द ही आपसे संपर्क करेंगे |'),
-        // ));
 
       } on PlatformException catch (err) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -475,63 +297,73 @@ class _NewMessageUserState extends State<NewMessageUser> {
                 ),
               ),
               decoration: InputDecoration(
-                hintText: 'Send a Message',
-                enabledBorder: OutlineInputBorder(
+                hintText: isRecording ? ''
+                :
+                'Send a Message',
+                enabledBorder: isRecording ? null : OutlineInputBorder(
                   borderRadius: BorderRadius.circular(6),
                   borderSide: BorderSide(
                       color: Theme.of(context).primaryColor, width: 1),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: isRecording ? null : OutlineInputBorder(
                   borderRadius: BorderRadius.circular(6),
                   borderSide: BorderSide(
                       color: Theme.of(context).primaryColor, width: 1),
                 ),
-                border: OutlineInputBorder(
+                border:isRecording ? 
+               InputBorder.none :  
+                OutlineInputBorder(
                   borderRadius: BorderRadius.circular(6),
                   borderSide: BorderSide(
                       color: Theme.of(context).primaryColor, width: 1),
                 ),
-                suffixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        _pickFiles();
-                      },
-                      icon: Icon(
-                        Icons.collections,
-                        color: Theme.of(context).primaryColor,
+                suffixIcon: _textController.text != ''
+                    ? const SizedBox.shrink()
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if(!isRecording)
+                          IconButton(
+                            onPressed: () {
+                              _pickFiles();
+                            },
+                            icon: Icon(
+                              Icons.collections,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          if(!isRecording)
+                          IconButton(
+                            onPressed: () {
+                              pickImage();
+                            },
+                            icon: Icon(
+                              Icons.local_see,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          RecordAudio(
+                            key: audioKey,
+                            userId: widget.userid,
+                            username: widget.username,
+                            isFileSending: widget.isFileSendingTrue,
+                            details: widget.details,
+                            questions: widget.questions,
+                            changeMessageSent: widget.changeMessageSent,
+                            changeSameScreen: widget.changeSameScreen,
+                            sameScreen: widget.sameScreen,
+                            docId: widget.docId,
+                            appBarTitle: widget.appBarTitle,
+                            scaffoldKey: widget.scaffoldKey,
+                            scrollToEnd: widget.scrollToEnd,
+                            changeShowInputMessageField:
+                                widget.changeShowInputMessageField,
+                            isFromUserChats: widget.isFromUserChats,
+                            changeShowReplyAgain: widget.changeShowReplyAgain,
+                            changeIsRecording : changeIsRecording,
+                          ),
+                        ],
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        pickImage();
-                      },
-                      icon: Icon(
-                        Icons.local_see,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    RecordAudio(
-                      userId: widget.userid,
-                      username: widget.username,
-                      isFileSending: widget.isFileSendingTrue,
-                      details: widget.details,
-                      questions: widget.questions,
-                      changeMessageSent: widget.changeMessageSent,
-                      changeSameScreen: widget.changeSameScreen,
-                      sameScreen: widget.sameScreen,
-                      docId: widget.docId,
-                      appBarTitle: widget.appBarTitle,
-                      scaffoldKey: widget.scaffoldKey,
-                      scrollToEnd: widget.scrollToEnd,
-                      changeShowInputMessageField:
-                          widget.changeShowInputMessageField,
-                      isFromUserChats: widget.isFromUserChats,
-                      changeShowReplyAgain: widget.changeShowReplyAgain,
-                    ),
-                  ],
-                ),
               ),
               onChanged: (value) {
                 setState(() {
@@ -540,6 +372,7 @@ class _NewMessageUserState extends State<NewMessageUser> {
               },
             ),
           ),
+          if(!isRecording)
           IconButton(
             onPressed: _enteredText.isEmpty ? null : _sendMessage,
             icon: Icon(

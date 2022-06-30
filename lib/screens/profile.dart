@@ -1,8 +1,36 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
-class Profile extends StatelessWidget {
+import '../providers/user_details.dart';
+
+class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  Map<String, dynamic> profile = {};
+  var userDetails = {};
+  PickedFile? imageChosen;
+  bool savingData = false;
+  String profileUrl = '';
+
+  @override
+  void initState() {
+    super.initState();
+    userDetails =
+        Provider.of<UserDetails>(context, listen: false).getUserDetails;
+    profileUrl = userDetails['profileUrl'] ?? '';
+  }
+
   Widget makeTextField(context, title) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -19,8 +47,16 @@ class Profile extends StatelessWidget {
             height: 10,
           ),
           TextField(
+            textCapitalization: TextCapitalization.sentences,
+            onChanged: (value) {
+              setState(() {
+                profile[title.toString().toLowerCase()] = value;
+              });
+            },
+            keyboardType:
+                title == 'Age' ? TextInputType.number : TextInputType.text,
             decoration: InputDecoration(
-              hintText: title,
+              hintText: userDetails[title.toString().toLowerCase()] ?? title,
               hintStyle: GoogleFonts.openSans(
                 color: Theme.of(context).primaryColor,
               ),
@@ -52,6 +88,58 @@ class Profile extends StatelessWidget {
     );
   }
 
+  void chooseProfilePic() async {
+    var image =
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        imageChosen = image;
+      });
+    }
+  }
+
+  void saveData() async {
+    // print(userDetails);
+    FocusScope.of(context).unfocus();
+    try {
+      setState(() {
+        savingData = true;
+      });
+      // Deleting Previous Image
+      if (profileUrl != '') {
+        // print(profileUrl);
+      await FirebaseStorage.instance.refFromURL(profileUrl).delete();
+      }
+      if (imageChosen != null) {
+        var ref = FirebaseStorage.instance
+            .ref()
+            .child('profile_pics')
+            .child('${userDetails['userId']}${Timestamp.now()}.jpg');
+        await ref.putFile(File(imageChosen!.path));
+        var url = await ref.getDownloadURL();
+        profile['profileUrl'] = url;
+      }
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userDetails['userId'])
+          .update(profile);
+      Provider.of<UserDetails>(context, listen: false).loadUserDetails();
+      setState(() {
+        savingData = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+         const  SnackBar(content: Text('Details Update'), duration: Duration(milliseconds: 1000)));
+    } catch (e) {
+      print(e);
+      setState(() {
+        savingData = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var sizedBox = const SizedBox(
@@ -66,10 +154,16 @@ class Profile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             sizedBox,
-            Icon(
-              Icons.account_circle,
-              size: 200,
-              color: Theme.of(context).primaryColor,
+            InkWell(
+              onTap: chooseProfilePic,
+              child: CircleAvatar(
+                radius: 40,
+                backgroundImage: imageChosen != null
+                    ? Image.file(File(imageChosen!.path)).image
+                    : profileUrl != ''
+                        ? NetworkImage(profileUrl)
+                        : Image.asset('assets/images/default.jpg').image,
+              ),
             ),
             sizedBox,
             makeTextField(context, 'Name'),
@@ -82,8 +176,8 @@ class Profile extends StatelessWidget {
             sizedBox,
             makeTextField(context, 'Gender'),
             sizedBox,
-            makeTextField(context, 'Verified/Unverified'),
-            sizedBox,
+            // makeTextField(context, 'Verified/Unverified'),
+            // sizedBox,
             sizedBox,
             MaterialButton(
               color: Theme.of(context).primaryColor,
@@ -91,15 +185,19 @@ class Profile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              onPressed: () {},
-              child: Text('SAVE', style: GoogleFonts.openSans(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              
-              ),),
-              ),
-              sizedBox,
+              onPressed: saveData,
+              child: savingData
+                  ? CircularProgressIndicator()
+                  : Text(
+                      'SAVE',
+                      style: GoogleFonts.openSans(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+            ),
+            sizedBox,
           ],
         ),
       ),

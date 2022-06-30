@@ -199,13 +199,6 @@ class _NewMessageAdminState extends State<NewMessageAdmin> {
               });
             },
           )),
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: Icon(
-          //     Icons.mic,
-          //     color: Theme.of(context).errorColor,
-          //   ),
-          // ),
           IconButton(
             onPressed: () {
               _pickFiles();

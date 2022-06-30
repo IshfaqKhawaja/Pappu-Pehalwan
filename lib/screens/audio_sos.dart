@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../chat/widgets/audio_bubble.dart';
 import '../providers/user_details.dart';
@@ -43,6 +45,12 @@ class _AudioSOSState extends State<AudioSOS> {
     });
   }
 
+  List<Color> spinKitColors = [
+    Colors.blue,
+    Colors.red,
+    Colors.yellow,
+    Colors.green,
+  ];
 // Recorder Details
   FlutterSoundRecorder? myRecorder;
   bool recording = false;
@@ -65,12 +73,9 @@ class _AudioSOSState extends State<AudioSOS> {
           .child('$userId${Timestamp.now()}.wav');
       File temp =
           File('/data/user/0/com.abscodinformatics.pappupehalwan/cache/$audioFile');
-      print('temp is $temp');
       await ref.putFile(temp);
-      isFileSendingTrue(false, '', '');
       final url = await ref.getDownloadURL();
-      print(url);
-
+      isFileSendingTrue(false, '', '');
       var res = await FirebaseFirestore.instance
           .collection('audio-sos') //'chats
           .doc(userId)
@@ -127,12 +132,34 @@ class _AudioSOSState extends State<AudioSOS> {
     super.dispose();
   }
 
+  void initializeRecord() async {
+    Fluttertoast.showToast(
+        msg: 'Recording started',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+        webShowClose: true);
+
+    setState(() {
+      recording = true;
+    });
+
+    await initRecorder();
+    startRecording();
+  }
+
   @override
   void initState() {
     super.initState();
-    userId =widget.isAdmin ? widget.userId :  FirebaseAuth.instance.currentUser!.uid;
+    userId =
+        widget.isAdmin ? widget.userId : FirebaseAuth.instance.currentUser!.uid;
     userDetails =
         Provider.of<UserDetails>(context, listen: false).getUserDetails;
+    if (!userDetails['isAdmin']) {
+      initializeRecord();
+    }
   }
 
   @override
@@ -165,18 +192,6 @@ class _AudioSOSState extends State<AudioSOS> {
             );
           }
           final data = snapshots.data!.docs;
-          if (data.isEmpty) {
-            return Center(
-              child: Text(
-                'No Audios yet',
-                style: GoogleFonts.openSans(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            );
-          }
           return Column(
             children: [
               Expanded(
@@ -192,6 +207,7 @@ class _AudioSOSState extends State<AudioSOS> {
                               isMe: tempData['userId'] == userId,
                               read: tempData['read'],
                               isNetwork: true,
+                              showDate: true,
                             )
                           : const SizedBox.shrink();
                     }),
@@ -204,33 +220,61 @@ class _AudioSOSState extends State<AudioSOS> {
                         isMe: userId == FirebaseAuth.instance.currentUser!.uid,
                         read: 0,
                         isNetwork: false,
+                        showDate: true,
                       )
                     : const SizedBox.shrink(),
+          const SizedBox(height: 20,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [  
+              if(recording)        
+                SpinKitWave(
+                  itemCount: 5, 
+                  size: 40,               
+                  itemBuilder: (ctx, index) {
+                    return Container(
+                      height: 10,
+                      width: 0,
+                      margin: const EdgeInsets.only(left: 6),
+                      decoration: BoxDecoration(
+                        color: spinKitColors[index % spinKitColors.length],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    );
+                  },
+                ),
+              if (recording)
+                const SizedBox(
+                  width: 20,
+                ),
+              IconButton(
+                onPressed: () async {
+                  if (recording) {
+                    stopRecording();
+                    setState(() {
+                      recording = false;
+                    });
+                  } else {
+                    setState(() {
+                      recording = true;
+                    });
+                    await initRecorder();
+                    startRecording();
+                  }
+                },
+                icon: Icon(
+                  recording ? Icons.stop : Icons.mic,
+                  color: recording ?  Colors.red : Theme.of(context).primaryColor,
+                  size: 30,
+                ),
+              ),
+            ],
+          ),
               const SizedBox(height: 50),
             ],
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          if (recording) {
-            stopRecording();
-            setState(() {
-              recording = false;
-            });
-          } else {
-            setState(() {
-              recording = true;
-            });
-            await initRecorder();
-            startRecording();
-          }
-        },
-        child: Icon(
-          recording ? Icons.stop : Icons.mic,
-          color: Colors.white,
-          size: 30,
-        ),
       ),
     );
   }

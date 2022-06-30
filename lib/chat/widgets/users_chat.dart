@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import '../screens/chat.dart';
+import '../../chat/screens/chat.dart';
 
 class UsersChat extends StatelessWidget {
   final username;
@@ -64,8 +64,6 @@ class UsersChat extends StatelessWidget {
                     questions: questions,
                     datetime: datetime,
                     isFromChatScreen: true,
-                    
-
                   ),
                 ),
               );
@@ -78,10 +76,6 @@ class UsersChat extends StatelessWidget {
                 color: Colors.white,
                 size: 24,
               ),
-
-              // backgroundImage: profileUrl!.isEmpty
-              //     ? Image.asset('assets/images/default_userimage.jpeg').image
-              //     : CachedNetworkImageProvider(profileUrl as String),
             ),
             title: Text(
               username,

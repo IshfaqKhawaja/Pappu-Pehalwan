@@ -46,9 +46,6 @@ class _ShowImageState extends State<ShowImage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // leading:const  BackButton(
-        //   color: Colors.white,
-        // ),
       ),
       body: Container(
         color: Colors.black,

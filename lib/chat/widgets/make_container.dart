@@ -109,12 +109,6 @@ class _MakeContainerState extends State<MakeContainer> {
     } else {
       datetime = Timestamp.now();
     }
-
-    //  else  if (!widget.isFromUsersChat) {
-    //     datetime = Timestamp.now();
-    //   } else {
-    //     datetime = widget.datetime;
-    //   }
   }
 
   @override
@@ -127,29 +121,33 @@ class _MakeContainerState extends State<MakeContainer> {
 
     return widget.isInitial && widget.userDetails['isAdmin']
         ? Dialog(
+          
+
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AutoDialogField(
-                    addQuestionText: addQuestionText,
-                    lastParentIndex: lastParentIndex,
-                    index: widget.index,
-                    questions: widget.questions,
-                    questionIndex: widget.questionIndex,
-                    parentId: widget.field['id'],
-                  ),
-                  AutoFieldEditOption(
-                    addOptions: addOptions,
-                    lastOptionId: lastParentIndex,
-                    questionIndex: widget.questionIndex,
-                  ),
-                  TextButton(
-                    onPressed: saveData,
-                    child: const Text('Save'),
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AutoDialogField(
+                      addQuestionText: addQuestionText,
+                      lastParentIndex: lastParentIndex,
+                      index: widget.index,
+                      questions: widget.questions,
+                      questionIndex: widget.questionIndex,
+                      parentId: widget.field['id'],
+                    ),
+                    AutoFieldEditOption(
+                      addOptions: addOptions,
+                      lastOptionId: lastParentIndex,
+                      questionIndex: widget.questionIndex,
+                    ),
+                    TextButton(
+                      onPressed: saveData,
+                      child: const Text('Save'),
+                    ),
+                  ],
+                ),
               ),
             ),
           )
@@ -180,31 +178,35 @@ class _MakeContainerState extends State<MakeContainer> {
 
                         showDialog(
                             context: context,
+                            barrierDismissible: false,
+
                             builder: (c) {
                               return Dialog(
                                 child: Padding(
                                   padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      AutoDialogField(
-                                        addQuestionText: addQuestionText,
-                                        lastParentIndex: lastParentIndex,
-                                        index: widget.index,
-                                        questions: widget.questions,
-                                        questionIndex: widget.questionIndex,
-                                        parentId: widget.field['id'],
-                                      ),
-                                      AutoFieldEditOption(
-                                        addOptions: addOptions,
-                                        lastOptionId: lastParentIndex,
-                                        questionIndex: widget.questionIndex,
-                                      ),
-                                      TextButton(
-                                        onPressed: saveData,
-                                        child: const Text('Save'),
-                                      ),
-                                    ],
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        AutoDialogField(
+                                          addQuestionText: addQuestionText,
+                                          lastParentIndex: lastParentIndex,
+                                          index: widget.index,
+                                          questions: widget.questions,
+                                          questionIndex: widget.questionIndex,
+                                          parentId: widget.field['id'],
+                                        ),
+                                        AutoFieldEditOption(
+                                          addOptions: addOptions,
+                                          lastOptionId: lastParentIndex,
+                                          questionIndex: widget.questionIndex,
+                                        ),
+                                        TextButton(
+                                          onPressed: saveData,
+                                          child: const Text('Save'),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
@@ -218,74 +220,72 @@ class _MakeContainerState extends State<MakeContainer> {
                         String tempData = '';
                         showDialog(
                             context: context,
+                            
                             builder: (ctx) {
                               return Dialog(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: TextField(
-                                        decoration: InputDecoration(
-                                          labelText: widget.field['title'],
-                                          labelStyle: GoogleFonts.openSans(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                            labelText: widget.field['title'],
+                                            labelStyle: GoogleFonts.openSans(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w800,
+                                              color: Colors.black,
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          textCapitalization:
+                                              TextCapitalization.sentences,
+                                          style: GoogleFonts.openSans(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w800,
                                             color: Colors.black,
                                           ),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              tempData = value;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      MaterialButton(
+                                        child: Text(
+                                          'Edit',
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w800,
+                                            color: Colors.greenAccent,
                                           ),
                                         ),
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        style: GoogleFonts.openSans(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w800,
-                                          color: Colors.black,
-                                        ),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            tempData = value;
-                                          });
+                                        onPressed: () {
+                                          if (tempData != '') {
+                                            // print(field);
+                                            widget.messages[widget.screenIndex]
+                                                .where((element) =>
+                                                    element['id'] ==
+                                                    widget.field['id'])
+                                                .toList()[0]['title'] = tempData;
+                                            widget.addMessagesToFirebase(
+                                                widget.messages,
+                                                widget.questions);
+                                          }
+                                          Navigator.pop(context);
                                         },
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    MaterialButton(
-                                      child: Text(
-                                        'Edit',
-                                        style: GoogleFonts.openSans(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w800,
-                                          color: Colors.greenAccent,
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        if (tempData != '') {
-                                          // print(field);
-                                          widget.messages[widget.screenIndex]
-                                              .where((element) =>
-                                                  element['id'] ==
-                                                  widget.field['id'])
-                                              .toList()[0]['title'] = tempData;
-                                          widget.addMessagesToFirebase(
-                                              widget.messages,
-                                              widget.questions);
-
-                                          //   .forEach((element) {
-                                          // element['title'] = tempData;
-                                          // });
-                                          // print(messages[widget.index]);
-                                        }
-                                        Navigator.pop(context);
-                                      },
-                                    )
-                                  ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               );
                             }).then((value) {
@@ -323,23 +323,6 @@ class _MakeContainerState extends State<MakeContainer> {
                                   : MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // if (widget.isFromChatScreen &&
-                                //     widget.field.containsKey('createdAt') &&
-                                //     widget.userDetails['isAdmin'] &&
-                                //     widget.field['isMe'] == 0)
-                                //   Row(
-                                //     children: const [
-                                //       SizedBox(
-                                //         width: 10,
-                                //       ),
-                                //       CircleAvatar(
-                                //         backgroundImage: AssetImage(
-                                //           'assets/images/appBarImage.png',
-                                //         ),
-                                //         radius: 20,
-                                //       ),
-                                //     ],
-                                //   ),
                                 widget.field['type'] == 'text'
                                     ? Container(
                                         width: width * 0.45,
@@ -368,10 +351,6 @@ class _MakeContainerState extends State<MakeContainer> {
                                             ],
                                             borderRadius:
                                                 BorderRadius.circular(4),
-                                            // border: Border.all(
-                                            //   color: Colors.grey,
-                                            //   width: 1,
-                                            // ),
                                             ),
                                         child: Text(
                                           widget.field['title'],
@@ -417,25 +396,6 @@ class _MakeContainerState extends State<MakeContainer> {
                                                     isNetwork: true,
                                                   )
                                                 : const SizedBox.shrink(),
-                                // if (widget.field['isMe'] == 1)
-                                //   Row(
-                                //     children: [
-                                //       CircleAvatar(
-                                //         backgroundImage: widget.userDetails
-                                //                 .containsKey('profileUrl')
-                                //             ? CachedNetworkImageProvider(
-                                //                 widget.userDetails[
-                                //                         'profileUrl'] ??
-                                //                     '')
-                                //             : Image.asset(
-                                //                     'assets/images/default.jpg')
-                                //                 .image,
-                                //       ),
-                                //       const SizedBox(
-                                //         width: 10,
-                                //       )
-                                //     ],
-                                //   ),
                               ],
                             ),
                           ),
@@ -494,7 +454,6 @@ class _MakeContainerState extends State<MakeContainer> {
                                   ],
                                 ),
                               ),
-                          // if (widget.isFromUsersChat)
                             if (widget.field.containsKey('createdAt') &&
                                 widget.showDate)
                               const SizedBox(
@@ -507,23 +466,6 @@ class _MakeContainerState extends State<MakeContainer> {
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          // if (widget.isFromChatScreen &&
-                          //     widget.field.containsKey('createdAt') &&
-                          //     widget.userDetails['isAdmin'] &&
-                          //     widget.field['isMe'] == 0)
-                          //   Row(
-                          //     children: const [
-                          //       SizedBox(
-                          //         width: 10,
-                          //       ),
-                          //       CircleAvatar(
-                          //         backgroundImage: AssetImage(
-                          //           'assets/images/appBarImage.png',
-                          //         ),
-                          //         radius: 20,
-                          //       ),
-                          //     ],
-                          //   ),
                           Row(
                               mainAxisAlignment: widget.field['isMe'] == 0
                                   ? MainAxisAlignment.start
@@ -559,10 +501,6 @@ class _MakeContainerState extends State<MakeContainer> {
                                       borderRadius: widget.field['isMe'] == 1
                                           ? BorderRadius.circular(10)
                                           : BorderRadius.zero,
-                                      // border: Border.all(
-                                      //   color: Theme.of(context).primaryColor,
-                                      //   width: 1,
-                                      // ),
                                       ),
                                   child: Row(
                                     mainAxisAlignment:
@@ -574,35 +512,16 @@ class _MakeContainerState extends State<MakeContainer> {
                                           fontSize: 12,
                                           fontWeight: FontWeight.w800,
                                           color: widget.field['isMe'] == 0
-                                              ? Colors.green
+                                              ? Color(0xff545454)
                                               : Colors.white,
                                         ),
                                       ),
                                       if (widget.field['isMe'] == 0)
                                         const Icon(Icons.arrow_forward_ios,
-                                            size: 12, color: Colors.red,)
+                                            size: 12, color: Color(0xff545454),)
                                     ],
                                   ),
                                 ),
-                                // if (widget.field['isMe'] == 1)
-                                //   Row(
-                                //     children: [
-                                //       CircleAvatar(
-                                //         backgroundImage: widget.userDetails
-                                //                 .containsKey('profileUrl')
-                                //             ? CachedNetworkImageProvider(
-                                //                 widget.userDetails[
-                                //                         'profileUrl'] ??
-                                //                     '')
-                                //             : Image.asset(
-                                //                     'assets/images/default.jpg')
-                                //                 .image,
-                                //       ),
-                                //       const SizedBox(
-                                //         width: 10,
-                                //       )
-                                //     ],
-                                //   ),
                               ]),
                           if (widget.field['isMe'] == 1 && widget.showDate)
                             const SizedBox(

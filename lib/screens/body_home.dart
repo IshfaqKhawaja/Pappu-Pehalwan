@@ -40,21 +40,17 @@ class _StateBodyHome extends State<BodyHome> {
                 color: Theme.of(context).primaryColor,
                 thickness: 1,
               ),
-              BodyPart1(),
-              //   Divider(
-              //   color: Theme.of(context).primaryColor,
-              //   thickness: 1,
-              // ),
-              // BodyPart2(),
-
-              // NEWS(),
-              BodyPart2(
+              const SizedBox(
+                height: 10,
               ),
-              // spaceWidget,
-              // Divider(
-              //   color: Theme.of(context).primaryColor,
-              //   thickness: 1,
-              // ),
+              BodyPart1(),
+
+              BodyPart2(),
+
+              Divider(
+                color: Theme.of(context).primaryColor,
+                thickness: 1,
+              ),
               BodyPart3(),
             ],
           ),

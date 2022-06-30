@@ -66,12 +66,12 @@ class ImageSOSAdmin extends StatelessWidget {
                         scaffoldKey: null,
                         isAdmin: true,
                         userId: data[index].id,
-                        username: tempData['username'],
+                        username: tempData['username'] ?? 'User',
                       ),
                     ));
                   },
                   title: Text(
-                    tempData['username'],
+                    tempData['username'] ?? 'User',
                     style: GoogleFonts.openSans(
                       color: Colors.black,
                       fontSize: 16,
@@ -79,7 +79,7 @@ class ImageSOSAdmin extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    tempData['recentText'],
+                    tempData['recentText'] ?? '',
                     style: GoogleFonts.openSans(
                       color: Colors.black,
                       fontSize: 14,
@@ -98,7 +98,7 @@ class ImageSOSAdmin extends StatelessWidget {
                   ),
                   leading: CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,
-                    child: Icon(Icons.person, color: Colors.white),
+                    child: const  Icon(Icons.person, color: Colors.white),
                   ),
                 ),
               );

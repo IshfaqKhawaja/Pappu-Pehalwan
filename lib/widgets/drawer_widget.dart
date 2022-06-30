@@ -7,80 +7,69 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(       
+    return Drawer(
       semanticLabel: 'Pappu Pehalwan',
       backgroundColor: Theme.of(context).backgroundColor,
       child: ListView(
         children: [
           AppBar(
             title: Column(
-           children: [
-             ClipRRect(
-               borderRadius: BorderRadius.circular(64),
-               child: Image.asset(
-                 'assets/images/icon.jpg',
-                 height: 120,
-                 fit: BoxFit.cover,
-                 width: 120,
-               
-               ),
-             ),
-             const SizedBox(
-               height: 10,
-             ),
-             Text('पप्पू पहलवान', style: GoogleFonts.openSans(
-               color: Colors.white,
-               fontSize: 24,
-               fontWeight: FontWeight.w800,
-             ),),
-            
-             
-           ],
-           
-        ),
-        automaticallyImplyLeading: false,
-        toolbarHeight: 200,
-        centerTitle: true,
-          ),
-          
-        // Header End:
-        const SizedBox(
-          height: 10,
-        ),
-        ListTile(
-          title: Text('Profile', style: GoogleFonts.openSans(
-            color: Theme.of(context).primaryColor,
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
+              children: [
+                Image.asset(
+                  'assets/images/icon.jpg',
+                  height: 120,
+                  fit: BoxFit.cover,
+                  width: 120,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'पप्पू पहलवान',
+                  style: GoogleFonts.openSans(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+            automaticallyImplyLeading: false,
+            toolbarHeight: 200,
+            centerTitle: true,
           ),
 
+          // Header End:
+          const SizedBox(
+            height: 10,
           ),
-          leading: Icon(
-            Icons.person,
-            color: Theme.of(context).primaryColor,
-          ),
-          onTap: () {
-            Navigator.of(context).push(
-
-            MaterialPageRoute(
-              
-              builder: (context) => Profile(
-                
+          ListTile(
+            title: Text(
+              'Profile',
+              style: GoogleFonts.openSans(
+                color: Theme.of(context).primaryColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
               ),
             ),
-            );
-           
-          },
-          focusColor: Theme.of(context).primaryColor,
-          hoverColor: Theme.of(context).primaryColor,
-          mouseCursor: MaterialStateMouseCursor.clickable,
-         
-              ),
-        
-            
-        
+            leading: Icon(
+              Icons.person,
+              color: Theme.of(context).primaryColor,
+            ),
+            onTap: () {
+              Navigator.of(context)
+                  .push(
+                    MaterialPageRoute(
+                      builder: (context) => const Profile(),
+                    ),
+                  )
+                  .then((value) => Navigator.of(context).pop());
+            },
+            focusColor: Theme.of(context).primaryColor,
+            hoverColor: Theme.of(context).primaryColor,
+            mouseCursor: MaterialStateMouseCursor.clickable,
+          ),
         ],
-
       ),
     );
   }

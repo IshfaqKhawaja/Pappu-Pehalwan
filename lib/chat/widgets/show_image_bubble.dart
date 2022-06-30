@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,23 +10,24 @@ class ShowImageBubble extends StatelessWidget {
   final read;
   final isNetwork;
   final showDate;
-  ShowImageBubble(
-      {
-      this.url,
-      this.datetime,
-      this.isMe,
-      this.read,
-      this.isNetwork = true,
-      this.showDate = false,});
+  ShowImageBubble({
+    this.url,
+    this.datetime,
+    this.isMe,
+    this.read,
+    this.isNetwork = true,
+    this.showDate = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    
-    
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(ShowImage.routeName,
-            arguments: {'image': url, 'flag': 1, 'send': null,});
+        Navigator.of(context).pushNamed(ShowImage.routeName, arguments: {
+          'image': url,
+          'flag': 1,
+          'send': null,
+        });
       },
       child: Row(
         mainAxisAlignment:
@@ -59,6 +59,16 @@ class ShowImageBubble extends StatelessWidget {
                 isNetwork
                     ? CachedNetworkImage(
                         imageUrl: url,
+                        placeholder: (ctx, _) {
+                          return Container(
+                            height: 80,
+                            // width: 0,
+                            child: const 
+                            Center(
+                              child: CircularProgressIndicator(),
+                              ),
+                          );
+                        },
                       )
                     : Stack(
                         children: [
@@ -79,36 +89,35 @@ class ShowImageBubble extends StatelessWidget {
                           )
                         ],
                       ),
-              if(showDate)
-                Column(
-                  children: [
-                    const SizedBox(
-                      height: 6,
-                    ),
-                    Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (isMe)
-                      Icon(
-                        Icons.done_all,
-                        size: 22,
-                        color: read == 0 ? Colors.grey : Colors.deepPurple,
+                if (showDate)
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 6,
                       ),
-                    Text(
-                      DateFormat().add_jm().format(
-                            DateTime.parse(datetime),
-
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (isMe)
+                            Icon(
+                              Icons.done_all,
+                              size: 22,
+                              color:
+                                  read == 0 ? Colors.grey : Colors.deepPurple,
+                            ),
+                          Text(
+                            DateFormat().add_jm().format(
+                                  DateTime.parse(datetime),
+                                ),
+                            style: TextStyle(
+                              color: isMe ? Colors.black : Colors.white,
+                              fontSize: 12,
+                            ),
                           ),
-                        style:TextStyle(
-                        color: isMe ? Colors.black : Colors.white,
-                        fontSize: 12,
-                          ),
-                    ),
-                  ],
-                ),
-                  ],
-                ),
-                
+                        ],
+                      ),
+                    ],
+                  ),
               ],
             ),
           )

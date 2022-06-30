@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../providers/load_data_from_facebook.dart';
@@ -29,19 +28,6 @@ class _AppBarItemState extends State<AppBarItem> {
     return InkWell(
       splashColor: Colors.redAccent,
       onTap: () {
-        // var rng = Random();
-        // int index = rng.nextInt(posts.length);
-        // String description = '';
-        //             final containsDescription =
-        //                 (posts[index]['message'] as String)
-        //                     .contains('Description');
-        //             if (!containsDescription) {
-        //               description = '';
-        //             } else {
-        //               description = (posts[index]['message'] as String)
-        //                   .split('Description')[1]
-        //                   .replaceAll(':', '');
-        //             }
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => TagStory(
@@ -64,8 +50,6 @@ class _AppBarItemState extends State<AppBarItem> {
             boxShadow: const [
               BoxShadow(
                 color: Color(0xff001322),
-                // blurRadius: 10,
-                // spreadRadius: 10,
               ),
             ]),
         child: Text(

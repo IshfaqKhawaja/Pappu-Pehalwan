@@ -39,6 +39,7 @@ class BodyPart3JSItem extends StatelessWidget {
       margin: const EdgeInsets.only(
         right: 10,
       ),
+      
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -56,24 +57,6 @@ class BodyPart3JSItem extends StatelessWidget {
                   color: Colors.grey,
                 ),
               ),
-          // const SizedBox(
-          //   height: 2,
-          
-          // ),
-          // Row(
-          //   children: [
-          //     Text(
-          //     provider,
-          //       style: style.copyWith(
-          //         color: Colors.red,
-          //       ),
-          //     ),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-              
-          //   ],
-          // ),
           spaceWidget,
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
@@ -95,6 +78,5 @@ class BodyPart3JSItem extends StatelessWidget {
         ],
       ),
     );
-
   }
 }

@@ -18,17 +18,18 @@ class _ChatScreenState extends State<ChatScreen> {
       children: [
         const CircleAvatar(
           radius: 3,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.black,
         ),
         const SizedBox(width: 6),
         Container(
-          width: 80,
+          width: 73.7,
           child: Text(
             title,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.montserrat(
               fontSize: 10,
               fontWeight: FontWeight.w800,
+              color: Color(0xff37688B)
             ),
           ),
         ),
@@ -38,127 +39,150 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget makeContainerCard(title, index) {
     return InkWell(
-      onTap: index > 0 ? null : () {
-        showDialog(
-            context: context,
-            builder: (ctx) {
-              return Dialog(
-                child: Container(
-                  height: height * 0.2,
-                  width: width * 0.8,
-                  padding: const EdgeInsets.only(top: 30, left: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'किया आप सुझाव देना चाहते हैं?',
-                        style: GoogleFonts.openSans(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(
-                              'ना',
+      onTap: index > 0
+          ? null
+          : () {
+              showDialog(
+                  context: context,
+                  builder: (ctx) {
+                    return Dialog(
+                      child: Container(
+                        height: height * 0.2,
+                        width: width * 0.8,
+                        padding: const EdgeInsets.only(top: 30, left: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'किया आप सुझाव देना चाहते हैं?',
                               style: GoogleFonts.openSans(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              List listTiles = [
-                                'पर्यटन',
-                                'नगर विकास',
-                                'महिला सुरक्षा',
-                                'स्वच्छ भारत',
-                                'अन्य',
-                              ];
-                              Navigator.of(context).pop();
-                              showCupertinoModalPopup(
-                                  context: context,
-                                  builder: (ctx) {
-                                    return Material(
-                                      animationDuration: const Duration(seconds:1),
-                                      child: Container(
-                                        width: width,
-                                        height: height * 0.5,
-                                        child: ListView(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(left : 8.0),
-                                              child: Text('इनमे से कोई एक विकल्प चुने', style: GoogleFonts.openSans(
-                                                color: Theme.of(context).primaryColor,
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.w800,
-                                              ),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 6,),
-                                            ...List.generate(listTiles.length,
-                                                (index) {
-                                              return ListTile(
-                                                 title:Card(
-                                                   elevation: 5,
-                                                   child: Padding(
-                                                     padding: const EdgeInsets.only(bottom: 20, top: 20, left:10, right: 10),
-                                                     child: Text(
-                                                      listTiles[index],
-                                                      style: GoogleFonts.openSans(
-                                                        fontSize: 15,
-                                                        fontWeight: FontWeight.w800,
-                                                      ),
-                                                ),
-                                                   ),
-                                                 ),
-                                                onTap: () {
-                                                  Navigator.of(context).pop();
-                                                  setState(() {
-                                                    controller.text = listTiles[index];
-                                                  
-                                                  });
-                                                },
-                                              );
-                                            }),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  });
-                            },
-                            child: Text(
-                              'हां',
-                              style: GoogleFonts.openSans(
-                                fontSize: 15,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w800,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'ना',
+                                    style: GoogleFonts.openSans(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.redAccent,
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    List listTiles = [
+                                      'पर्यटन',
+                                      'नगर विकास',
+                                      'महिला सुरक्षा',
+                                      'स्वच्छ भारत',
+                                      'अन्य',
+                                    ];
+                                    Navigator.of(context).pop();
+                                    showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (ctx) {
+                                          return Material(
+                                            animationDuration:
+                                                const Duration(seconds: 1),
+                                            child: Container(
+                                              width: width,
+                                              height: height * 0.5,
+                                              child: ListView(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8.0),
+                                                    child: Text(
+                                                      'इनमे से कोई एक विकल्प चुने',
+                                                      style:
+                                                          GoogleFonts.openSans(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 6,
+                                                  ),
+                                                  ...List.generate(
+                                                      listTiles.length,
+                                                      (index) {
+                                                    return ListTile(
+                                                      title: Card(
+                                                        elevation: 5,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  bottom: 20,
+                                                                  top: 20,
+                                                                  left: 10,
+                                                                  right: 10),
+                                                          child: Text(
+                                                            listTiles[index],
+                                                            style: GoogleFonts
+                                                                .openSans(
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        setState(() {
+                                                          controller.text =
+                                                              listTiles[index];
+                                                        });
+                                                      },
+                                                    );
+                                                  }),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: Text(
+                                    'हाँ',
+                                    style: GoogleFonts.openSans(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w800,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              );
-            });
-      },
+                    );
+                  });
+            },
       child: Container(
         height: 27,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -240,220 +264,141 @@ class _ChatScreenState extends State<ChatScreen> {
       'अन्य'
     ];
     return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          //Upper Jaiveer Image Part:
-          Container(
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.5),
-                blurRadius: 2,
-                offset: const Offset(1.0, 2.0),
-              )
-            ]),
-            margin: const EdgeInsets.symmetric(
-              vertical: 20.0,
-              horizontal: 20,
-            ),
-            padding: const EdgeInsets.only(
-              right: 10,
-            ),
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Expanded(
-                flex: 3,
-                child: Column(
-                  children: [
-                    Container(
-                      color: const Color(0xffbbc8d5),
-                      child: Image.asset(
-                        'assets/images/icon.jpg',
-                        height: 110,
-                        width: 145,
-                        fit: BoxFit.fitWidth,
-                      ),
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        //Upper Pappu pehalwan Image Part:
+        Container(
+          decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              blurRadius: 2,
+              offset: const Offset(1.0, 2.0),
+            )
+          ]),
+          margin: const EdgeInsets.symmetric(
+            vertical: 20.0,
+            horizontal: 20,
+          ),
+          padding: const EdgeInsets.only(
+            right: 10,
+          ),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Expanded(
+              flex: 3,
+              child: Column(
+                children: [
+                  Container(
+                    color: const Color(0xffbbc8d5),
+                    child: Image.asset(
+                      'assets/images/icon.jpg',
+                      height: 110,
+                      width: 145,
+                      fit: BoxFit.fill,
                     ),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 2, horizontal: 4),
-                      child: Column(
-                        children: [
-                          Text(
-                            'पप्पू पहलवान',
-                            style: GoogleFonts.openSans(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          Text(
-                            'आपकी मदद के लिए',
-                            style: GoogleFonts.openSans(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                flex: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    spaceWidget,
-                    Container(
-                      child: Text(
-                        'आप अपने सुझाव अथवा समस्या हमें निम्नलिखित माध्यम से पंहुचा सकते हैं',
-                        style: GoogleFonts.openSans(
-                          fontSize: 11,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                    spaceWidget,
-                    Row(
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                    child: Column(
                       children: [
-                        Expanded(
-                          flex: 1,
-                          child: Column(
-                            children: [
-                              makeListWidget(listTitles[0]),
-                              makeListWidget(listTitles[2]),
-                              // makeListWidget(listTitles[4]),
-                            ],
+                        Text(
+                          'पप्पू पहलवान',
+                          style: GoogleFonts.openSans(
+                            color: Color(0xff37688B),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Column(
-                            children: [
-                              makeListWidget(listTitles[1]),
-                              makeListWidget(listTitles[3]),
-                              // makeListWidget(listTitles[5]),
-                            ],
-                          ),
-                        ),
+                        // Text(
+                        //   'आपकी मदद के लिए',
+                        //   style: GoogleFonts.openSans(
+                        //     color: Theme.of(context).primaryColor,
+                        //     fontSize: 10,
+                        //     fontWeight: FontWeight.w600,
+                        //   ),
+                        // )
                       ],
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 28,
-                        right: 4,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              flex: 4,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  spaceWidget,
+                  Container(
+                    child: Text(
+                      'आप अपने सुझाव अथवा समस्या हमें निम्नलिखित माध्यम से पंहुचा सकते हैं',
+                      style: GoogleFonts.openSans(
+                        fontSize: 11,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
                       ),
-                      color: Colors.red,
-                      height: 2,
                     ),
-                    const SizedBox(
-                      height: 6,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(
-                        left: 3,
-                        right: 0,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        'हम आपकी सेवा के लिए तत्पर हैं और आपकी समस्या को जल्द से जल्द हल करेंगे',
-                        style: GoogleFonts.openSans(
-                          fontSize: 10,
-                          color: Colors.black.withOpacity(0.4),
-                          fontWeight: FontWeight.w500,
+                  ),
+                  spaceWidget,
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          children: [
+                            makeListWidget(listTitles[0]),
+                            makeListWidget(listTitles[2]),
+                          ],
                         ),
                       ),
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          children: [
+                            makeListWidget(listTitles[1]),
+                            makeListWidget(listTitles[3]),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 28,
+                      right: 4,
                     ),
-                  ],
-                ),
+                    color: Colors.black,
+                    height: 2,
+                  ),
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(
+                      left: 3,
+                      right: 0,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'हम आपकी सेवा के लिए तत्पर हैं और आपकी समस्या को जल्द से जल्द हल करेंगे',
+                      style: GoogleFonts.openSans(
+                        fontSize: 10,
+                        color: Color(0xFF545454),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ]),
-          ),
-          // Cards
-          // Wrap(
-          //   direction: Axis.horizontal,
-          //   children: [
-          //     ...List.generate(
-          //       cardTitles.length,
-          //       (index) => makeContainerCard(cardTitles[index], index),
-          //     ),
-          //   ],
-          // ),
-          // const Spacer(),
-          // Container(
-          //   decoration: BoxDecoration(
-          //     color: Colors.white.withOpacity(
-          //       0.7,
-          //     ),
-          //   ),
-          //   child: Row(
-          //     children: [
-          //       IconButton(
-          //         onPressed: () async {
-          //           FilePickerResult? result =
-          //               await FilePicker.platform.pickFiles();
-          //         },
-          //         icon: const Icon(
-          //           Icons.attach_file,
-          //           color: Colors.redAccent,
-          //         ),
-          //       ),
-          //       Expanded(
-          //         child: TextField(
-          //           controller: controller,
-          //           decoration: const InputDecoration(
-          //             hintText: 'अपना संदेश यहां लिखें',
-          //             enabledBorder: OutlineInputBorder(
-          //               borderSide:
-          //                   BorderSide(color: Colors.transparent, width: 0.0),
-          //             ),
-          //             focusedBorder: OutlineInputBorder(
-          //               borderSide:
-          //                   BorderSide(color: Colors.transparent, width: 0.0),
-          //             ),
-          //             // border: OutlineInputBorder(
-          //             //      borderSide:  BorderSide(color: Colors.transparent, width: 0.0),
-          //             //    ),
-          //           ),
-          //           style: GoogleFonts.openSans(
-          //             fontSize: 14,
-          //             color: Colors.black,
-          //             fontWeight: FontWeight.w600,
-          //           ),
-          //         ),
-          //       ),
-          //       TextButton(
-          //           onPressed: () {},
-          //           child: Text(
-          //             'Send',
-          //             style: GoogleFonts.openSans(
-          //               color: Colors.redAccent,
-          //               fontSize: 12,
-          //               fontWeight: FontWeight.bold,
-          //             ),
-          //           )),
-          //       IconButton(
-          //         onPressed: () {},
-          //         icon: const Icon(
-          //           Icons.mic_none,
-          //           color: Colors.redAccent,
-          //         ),
-          //       ),
-          //       const SizedBox(
-          //         width: 10,
-          //       )
-          //     ],
-          //   ),
-          // ),
-        ],
-      
+            ),
+          ]),
+        ),
+      ],
     );
   }
 }

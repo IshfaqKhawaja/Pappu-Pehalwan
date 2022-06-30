@@ -72,7 +72,6 @@ class _HomeAppBarState extends State<HomeAppBar> {
                         ),
                       ),
                     ),
-                // transitionDuration: const  Duration(milliseconds: 1000),
                 closedColor: Colors.transparent,
                 openElevation: 0.0,
                 closedElevation: 0.0,

@@ -71,12 +71,12 @@ class _AudioSOSAdminState extends State<AudioSOSAdmin> {
                         scaffoldKey: null,
                         isAdmin: true,
                         userId: data[index].id,
-                        username: tempData['username'],
+                        username: tempData['username'] ?? 'User',
                       ),
                     ));
                   },
                   title: Text(
-                    tempData['username'],
+                    tempData['username'] ?? 'User',
                     style: GoogleFonts.openSans(
                       color: Colors.black,
                       fontSize: 16,
@@ -84,7 +84,7 @@ class _AudioSOSAdminState extends State<AudioSOSAdmin> {
                     ),
                   ),
                   subtitle: Text(
-                    tempData['recentText'],
+                    tempData['recentText'] ?? '',
                     style: GoogleFonts.openSans(
                       color: Colors.black,
                       fontSize: 14,

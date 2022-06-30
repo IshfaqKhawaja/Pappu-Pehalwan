@@ -40,16 +40,13 @@ class _BodyPart3State extends State<BodyPart3> {
   @override
   Widget build(BuildContext context) {
  
-    return posts.isEmpty ? const SizedBox.shrink() : 
-    Container(
-      // height: 230,
-      // color: Colors.white,
+    return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-           Text('सामाजिक मीडिया',
+           Text('पप्पू पहलवान',
                style: GoogleFonts.openSans(
                  color: Colors.black.withOpacity(0.7),
                  fontSize: 16,
@@ -81,7 +78,6 @@ class _BodyPart3State extends State<BodyPart3> {
                           closedBuilder: (_, __) => BodyPart3Item(
                                 key: ValueKey(posts[index]['id']),
                                 title: posts[index]['title'],
-                                // 'Thakur Jaiveer Singh announced as soon as he took over the chair of tourism minister',
                                 subTitle: '',
                                 provider: 'Facebook',
                                 image: posts[index].containsKey('media') &&

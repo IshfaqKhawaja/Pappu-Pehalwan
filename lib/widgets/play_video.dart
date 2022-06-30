@@ -51,9 +51,6 @@ class _PlayVideoState extends State<PlayVideo> {
     return playerWidget;
   }
 
-//Using cached controller:
-  // CachedVideoPlayerController? controller;
-
   @override
   void initState() {
     super.initState();
@@ -62,10 +59,6 @@ class _PlayVideoState extends State<PlayVideo> {
         player = value;
       });
     });
-    // if (widget.type.toString().toUpperCase() == 'network'.toUpperCase()) {
-    //   controller = CachedVideoPlayerController.network(widget.video);
-    //   controller!.initialize().then((_) {});
-    // }
   }
 
   @override
@@ -78,34 +71,6 @@ class _PlayVideoState extends State<PlayVideo> {
 
   @override
   Widget build(BuildContext context) {
-    // return player == null
-    //     ? Container(
-    //         height: chewieController != null
-    //       ? chewieController!.videoPlayerController.value.size.height
-    //       : null,
-    //         child: Center(
-    //           child: Icon(
-    //             Icons.play_arrow,
-    //             size: 50,
-    //             color: Theme.of(context).errorColor,
-    //           ),
-    //         ),
-    //       )
-    //     : widget.type.toString().toUpperCase() == 'file'.toUpperCase()
-    //         ? Container(
-    //             child: player,
-    //           )
-    //         : InkWell(
-    //             onTap: () {
-    //               // controller!.value.isPlaying
-    //               //     ? controller!.pause()
-    //               //     : controller!.play();
-    //               chewieController!.isPlaying
-    //                   ? chewieController!.pause()
-    //                   : chewieController!.play();
-    //             },
-    //             child: player,
-    //           );
     return Container(
       height: chewieController != null
           ? chewieController!.videoPlayerController.value.size.height

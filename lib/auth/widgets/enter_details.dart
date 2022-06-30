@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jeevansetu/screens/body.dart';
+import '../../screens/body.dart';
 
 class EnterDetails extends StatefulWidget {
   final userId;
@@ -61,9 +61,6 @@ class _EnterDetailsState extends State<EnterDetails> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                 ),
-                // margin: EdgeInsets.only(
-                //   bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-                // ),
                 decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(10)),
@@ -122,9 +119,6 @@ class _EnterDetailsState extends State<EnterDetails> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                 ),
-                // margin: EdgeInsets.only(
-                //   bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-                // ),
                 decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(10)),
@@ -166,9 +160,6 @@ class _EnterDetailsState extends State<EnterDetails> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                 ),
-                // margin: EdgeInsets.only(
-                //   bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-                // ),
                 decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(10)),
@@ -213,7 +204,7 @@ class _EnterDetailsState extends State<EnterDetails> {
                   Container(
                     width: width * 0.8,
                     child: Text(
-                      'I agree to share my name, email, phone number, interests,demographic details, etc. with the Pappu Pehalwan App & integrated third party services for processing, to understand my app usage and receive personalized communication from Pappu Pehalwan. I understand this usage will be based on the Privacy policy.',
+                      'I agree to share my name, email, phone number, interests,demographic details, etc. with the Jiwan Setu App & integrated third party services for processing, to understand my app usage and receive personalized communication from Jiwan Setu. I understand this usage will be based on the Privacy policy.',
                       textAlign: TextAlign.justify,
                       style: style.copyWith(
                         fontSize: 12,
@@ -242,16 +233,6 @@ class _EnterDetailsState extends State<EnterDetails> {
                               _isLoading = false;
                               isNameError = true;
                             });
-                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            //   content: Text('Please Enter Name',
-                            //       style: GoogleFonts.openSans(
-                            //         color: Colors.white,
-                            //       )),
-                            //   shape: RoundedRectangleBorder(
-                            //     borderRadius: BorderRadius.circular(10),
-                            //   ),
-                            //   backgroundColor: Colors.redAccent,
-                            // ));
                           } else {
                             // _formKey.currentState!.save();
                             await FirebaseFirestore.instance

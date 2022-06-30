@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'play_video.dart';
 import 'show_annoncement_files.dart';
-
+import 'package:share_plus/share_plus.dart';
 class ViewFBPost extends StatefulWidget {
   final id;
   final title;
@@ -42,7 +42,15 @@ class _ViewFBPostState extends State<ViewFBPost> {
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
-            onPressed: () {},
+            onPressed: () async  {
+              final box = context.findRenderObject() as RenderBox?;
+
+              await Share.share(
+                    'https://play.google.com/store/apps/details?id=com.quantumcoders.jeevansetu',
+                    subject: 'Jiwan Setu App on PlayStore',
+                    sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+);
+            },
           ),
           const SizedBox(
             width: 10,
@@ -50,7 +58,7 @@ class _ViewFBPostState extends State<ViewFBPost> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(4).copyWith(top: 2,),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,7 +120,7 @@ class _ViewFBPostState extends State<ViewFBPost> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       IconButton(
                         onPressed: () {
                           setState(() {
