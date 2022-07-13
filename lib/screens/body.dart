@@ -12,6 +12,7 @@ import 'body_home.dart';
 import 'groups.dart';
 import 'image_sos.dart';
 import 'image_sos_admin.dart';
+import 'load_posts.dart';
 import 'users.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/drawer_widget.dart';
@@ -44,14 +45,18 @@ class _BodyState extends State<Body> {
             ? ImageSOSAdmin()
             : ImagesSOS(
                 scaffoldKey: scaffoldKey,
+                username: userDetails['name'] ?? userDetails['phoneNumber'],
+                userId: userDetails['userId'],
               ),
       ));
     } else if (index == 4) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => userDetails['isAdmin']
             ? AudioSOSAdmin()
-            : AudioSOS(
+            :  AudioSOS(
                 scaffoldKey: scaffoldKey,
+                username: userDetails['name'] ?? userDetails['phoneNumber'],
+                userId: userDetails['userId'],
               ),
       ));
     } else {
@@ -150,11 +155,13 @@ class _BodyState extends State<Body> {
                     //     content: Text('Loading...'),
                     //   ),
                     // );
-                    widget.rebuilt();
-                    await Provider.of<LoadDataFromFacebook>(context,
-                            listen: false)
-                        .loadPosts();
-                    widget.built();
+                    // widget.rebuilt();
+                    // await Provider.of<LoadDataFromFacebook>(context,
+                    //         listen: false)
+                    //     .loadPosts();
+                    // widget.built();
+                    Navigator.of(context).push(
+                            MaterialPageRoute(builder: (ctx) => LoadPosts()));
                     // ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     // ScaffoldMessenger.of(context).showSnackBar(
                     //   const SnackBar(
@@ -169,29 +176,29 @@ class _BodyState extends State<Body> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
-                ),
-                FloatingActionButton(
-                  heroTag: null,
-                  backgroundColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    Provider.of<LoadDataFromFacebook>(context, listen: false)
-                        .pushDataToFirebase();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Data Saved ...'),
-                      ),
-                    );
-                  },
-                  child: const Icon(
-                    Icons.save,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
                   height: 70,
                 ),
+                // FloatingActionButton(
+                //   heroTag: null,
+                //   backgroundColor: Theme.of(context).primaryColor,
+                //   onPressed: () {
+                //     Provider.of<LoadDataFromFacebook>(context, listen: false)
+                //         .pushDataToFirebase();
+                //     ScaffoldMessenger.of(context).showSnackBar(
+                //       const SnackBar(
+                //         content: Text('Data Saved ...'),
+                //       ),
+                //     );
+                //   },
+                //   child: const Icon(
+                //     Icons.save,
+                //     size: 30,
+                //     color: Colors.white,
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 70,
+                // ),
               ],
             )
           : null,

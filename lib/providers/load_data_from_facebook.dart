@@ -19,7 +19,8 @@ class LoadDataFromFacebook with ChangeNotifier {
     stories = [];
     hpccPosts = [];
     int limit = 100;
-    var accessToken = 'EAAHAavFovc4BAEwHSYktHlMv1GeB8ZCEZB3YxDoNgclNT1bQtQzmPnETNHFyQaEa5zRoA8mw6EIsITlh9QpKbZCfu0B150c792aCElkx7kwG3enGl0hgHdAjAViZA7npXW3wlQa4ouiniRZBPcKhFU2sIuNhHHsPoG6tDkPr2EVEESwcfQos7';
+    var accessToken =
+        'EAAHAavFovc4BAITfd4LTeU8pHezZB12OwtvzxZAZBA5aNeqKibSQAYTOgONNJGmP46n20ek3HVF6ZCO3AZCEzRsAkFYebgFYtbZAwZAYUgbq3aUR4udSqxwzWzb0mdhLgADZAAtNqVjkEzkTZBSVnwyrB02o9jMeO26fTGi7IKPPBSw9Q5ZCqUhvtz';
     var urlPart = '';
     var url = '';
     urlPart = 'https://graph.facebook.com/v13.0/';
@@ -27,6 +28,7 @@ class LoadDataFromFacebook with ChangeNotifier {
         "${urlPart}106458985426806/feed?access_token=$accessToken&limit=$limit";
     try {
       var res = await http.get(Uri.parse(url));
+      print(res.body);
       final tempPosts = jsonDecode(res.body)['data'];
 
       if (tempPosts != null && tempPosts.isNotEmpty) {
@@ -74,7 +76,7 @@ class LoadDataFromFacebook with ChangeNotifier {
             'media': media,
             'subattachments': subAttachments,
             'createdTime': postData['created_time'],
-            'type': attachments['type'] ?? null,
+            'type': attachments['type'] ?? '',
           };
           if (type == 'POST') {
             posts.add(tempPost);
