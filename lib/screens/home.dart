@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../auth/splash_screen.dart';
 import '../chat/screens/chat.dart';
@@ -56,6 +57,15 @@ class _HomeState extends State<Home> {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        supportedLocales: [
+          Locale('hi', 'IN'),
+          Locale('en', 'US')
+        ],
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         theme: ThemeData(
             appBarTheme: const AppBarTheme(
               backgroundColor: Color(0xff56514D),

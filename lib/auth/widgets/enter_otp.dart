@@ -189,12 +189,12 @@ class _EnterOTPState extends State<EnterOTP> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _otpTextField(0),
-                        _otpTextField(1),
-                        _otpTextField(2),
-                        _otpTextField(3),
-                        _otpTextField(4),
-                        _otpTextField(5),
+                        _otpTextField(0,true,false),
+                        _otpTextField(1,false,false),
+                        _otpTextField(2,false,false),
+                        _otpTextField(3,false,false),
+                        _otpTextField(4,false,false),
+                        _otpTextField(5,false,true),
                       ],
                     )
                   ],
@@ -270,7 +270,7 @@ class _EnterOTPState extends State<EnterOTP> {
                         ),
                       );
                       otp = otpFields.join('');
-                      print(otp);
+                      // print(otp);
                       sendCodeToFirebase(otp: otp, context: context);
                     },
               child: Container(
@@ -302,7 +302,7 @@ class _EnterOTPState extends State<EnterOTP> {
   }
 
   //OTP TextField
-  _otpTextField(int index) {
+  _otpTextField(int index,bool first, bool last) {
     return Container(
       height: 45,
       width: 43,
@@ -312,9 +312,13 @@ class _EnterOTPState extends State<EnterOTP> {
           keyboardType: TextInputType.number,
           autofocus: true,
           onChanged: (val) {
-            setState(() {
+            if(val.length==1){
+              FocusScope.of(context).nextFocus();
               otpFields[index] = val;
-            });
+            }
+            if(val.length==0){
+              FocusScope.of(context).previousFocus();
+            }
           },
           showCursor: false,
           readOnly: false,
@@ -326,7 +330,7 @@ class _EnterOTPState extends State<EnterOTP> {
           ),
           maxLength: 1,
           decoration: InputDecoration(
-            fillColor: Color(0xffC4C4C4),
+            fillColor: const Color(0xffC4C4C4),
             filled: true,
             counter: Offstage(),
             enabledBorder: OutlineInputBorder(

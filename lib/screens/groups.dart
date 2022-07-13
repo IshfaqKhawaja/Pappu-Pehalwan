@@ -131,7 +131,7 @@ class _GroupsState extends State<Groups> {
             ]
             ),
           ),
-          const Spacer(),
+          // const Spacer(),
             MaterialButton(
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
               shape: RoundedRectangleBorder(

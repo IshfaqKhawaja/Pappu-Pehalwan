@@ -20,6 +20,7 @@ import 'package:provider/provider.dart';
 class Body extends StatefulWidget {
   final rebuilt;
   final built;
+
   const Body({
     Key? key,
     this.rebuilt,
@@ -37,18 +38,18 @@ class _BodyState extends State<Body> {
   int currentIndex = 2;
   List screens = [];
   Map userDetails = {};
+
+
   void changeIndex(index) {
     if (index == 0) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => userDetails['isAdmin']
-            ? ImageSOSAdmin()
-            : About()
-        // ImagesSOS(
-        //         scaffoldKey: scaffoldKey,
-        //         username: userDetails['name'] ?? userDetails['phoneNumber'],
-        //         userId: userDetails['userId'],
-        //       ),
-      ));
+          builder: (_) => userDetails['isAdmin'] ? ImageSOSAdmin() : About()
+          // ImagesSOS(
+          //         scaffoldKey: scaffoldKey,
+          //         username: userDetails['name'] ?? userDetails['phoneNumber'],
+          //         userId: userDetails['userId'],
+          //       ),
+          ));
     } else if (index == 4) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => userDetails['isAdmin']
@@ -67,6 +68,7 @@ class _BodyState extends State<Body> {
   }
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -101,38 +103,52 @@ class _BodyState extends State<Body> {
     return WillPopScope(
       onWillPop: () async {
         bool value = false;
-        await showDialog(context: context, builder: (ctx) {
-          return AlertDialog(
-            title: const Text('Are you sure?'),
-            content: const Text('Do you want to exit'),
-            actions: [
-              TextButton(
-                child: const Text('No'),
-                onPressed: () {
-                  Navigator.of(ctx).pop(false);
-                  value = false;
-                },
-              ),
-              TextButton(
-                child:const  Text('Yes'),
-                onPressed: () {
-                  Navigator.of(ctx).pop(true);
-                  value = true;
-                },
-              ),
-            ],
-          );
-        });
+        await showDialog(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                title: const Text('Are you sure?'),
+                content: const Text('Do you want to exit'),
+                actions: [
+                  TextButton(
+                    child: const Text('No'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop(false);
+                      value = false;
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Yes'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop(true);
+                      value = true;
+                    },
+                  ),
+                ],
+              );
+            });
         return value;
-        },
-      
+      },
       child: Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
           // title: const HomeAppBar(),
           title: const Text('पप्पू पहलवान'),
-          backgroundColor: Color(0xFF56514D),
+          backgroundColor: const Color(0xFF56514D),
           actions: [
+            // Padding(
+            //   padding: EdgeInsets.all(8.0),
+            //   child: DropdownButton(
+            //     onChanged: (Language? language){
+            //     },
+            //       underline: SizedBox(),
+            //       icon: Icon(Icons.language,color: Colors.white,),
+            //       items:languageList().map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+            //           value: lang,
+            //           child: Text(lang.name)
+            //       )).toList(),
+            //   ),
+            // ),
             InkWell(
               onTap: () {
                 Navigator.of(context)

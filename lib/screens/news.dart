@@ -9,25 +9,25 @@ class NEWS extends StatelessWidget {
     const news = [
         {
           'image':  'assets/images/news1.jpg',
-          'title' : 'कोरोना काल में अपने माता पिता को खो चुके बच्चों के साथ जीवन ठाकुर ने मनाई दीपावली',
+          'title' : 'कोरोना काल में अपने माता पिता को खो चुके बच्चों के साथ पप्पू पहलवान ने मनाई दीपावली',
           'url' :'https://www.himachalxpresstv.com/story/-26537.html',
 
         },
           {
           'image':  'assets/images/news2.jpg',
-          'title' : 'बेटी बचाओ बेटी पढ़ाओ महिला सुरक्षा के नाम पर जानवरों से बदतर व्यवहार किया जा रहा: जीवन ठाकुर',
+          'title' : 'बेटी बचाओ बेटी पढ़ाओ महिला सुरक्षा के नाम पर जानवरों से बदतर व्यवहार किया जा रहा: पप्पू पहलवान',
           'url' :'https://www.himachalxpresstv.com/story/-20468.html',
 
         },
           {
           'image':  'assets/images/news3.jpeg',
-          'title' : 'प्रकाश राणा के नेतृत्व में विकास में पिछड़ा जोगिंदर नगर, नशे में सबसे आगेः जीवन ठाकुर',
+          'title' : 'प्रकाश राणा के नेतृत्व में विकास में पिछड़ा जोगिंदर नगर, नशे में सबसे आगेः पप्पू पहलवान',
           'url' :'https://www.etvbharat.com/hindi/himachal-pradesh/city/mandi/congress-leader-jeevan-thakur-press-conference-in-mandi/hp20220226180316249',
 
         },
           {
           'image':  'assets/images/chat_screen.jpg',
-          'title' : 'प्रकाश राणा के नेतृत्व में विकास में पिछड़ा जोगिंदरनगर, नशे में सबसे आगेः जीवन ठाकुर',
+          'title' : 'प्रकाश राणा के नेतृत्व में विकास में पिछड़ा जोगिंदरनगर, नशे में सबसे आगेः पप्पू पहलवान',
           'url' :'https://www.livetimes.tv/hi/news/article/7751a367-498d-4a18-a22a-0098ce0392d0',
 
         },

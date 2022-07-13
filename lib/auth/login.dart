@@ -5,6 +5,7 @@ import 'widgets/enter_otp.dart';
 
 class Login extends StatefulWidget {
   final loadData;
+
   const Login({
     Key? key,
     this.loadData,
@@ -165,7 +166,7 @@ class _LoginState extends State<Login> {
               ],
             ),
             SizedBox(
-              height: height *0.12,
+              height: height * 0.12,
             ),
             CircleAvatar(
               radius: width * 0.3,
@@ -241,8 +242,7 @@ class _LoginState extends State<Login> {
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.black.withOpacity(0.4))
-              ),
+                  border: Border.all(color: Colors.black.withOpacity(0.4))),
               child: Form(
                 key: formKey,
                 child: TextFormField(
@@ -276,33 +276,33 @@ class _LoginState extends State<Login> {
             const SizedBox(
               height: 40,
             ),
-            Container(
-              // width: width * 0.85,
-              height: 60,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-              ),
-              decoration: BoxDecoration(
-                  color: Color(0xff56514D),
-                  borderRadius: BorderRadius.circular(10)),
-              child: InkWell(
-                onTap: _isLoading
-                    ? null
-                    : () async {
+            InkWell(
+              onTap: _isLoading
+                  ? null
+                  : () async {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      try {
+                        phoneVerification();
+                      } catch (e) {
                         setState(() {
-                          _isLoading = true;
+                          _isLoading = false;
                         });
-                        await Future.delayed(const Duration(milliseconds: 500));
-                        try {
-                          phoneVerification();
-                        } catch (e) {
-                          setState(() {
-                            _isLoading = false;
-                          });
-                          print(e);
-                        }
-                      },
+                        print(e);
+                      }
+                    },
+              child: Container(
+                // width: width * 0.85,
+                height: 60,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+                decoration: BoxDecoration(
+                    color: Color(0xff56514D),
+                    borderRadius: BorderRadius.circular(10)),
                 child: _isLoading
                     ? const Center(
                         child: CircularProgressIndicator(),

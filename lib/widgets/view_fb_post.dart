@@ -46,8 +46,8 @@ class _ViewFBPostState extends State<ViewFBPost> {
               final box = context.findRenderObject() as RenderBox?;
 
               await Share.share(
-                    'https://play.google.com/store/apps/details?id=com.quantumcoders.jeevansetu',
-                    subject: 'Jiwan Setu App on PlayStore',
+                    'https://play.google.com/store/apps/details?id=com.abscodinformatics.pappupehalwan',
+                    subject: 'Pappu Pehalwan App on PlayStore',
                     sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
 );
             },
