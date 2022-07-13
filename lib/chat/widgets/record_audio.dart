@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class RecordAudio extends StatefulWidget {
@@ -24,6 +25,7 @@ class RecordAudio extends StatefulWidget {
   final changeShowInputMessageField;
   final isFromUserChats;
   final changeShowReplyAgain;
+  final changeIsRecording;
   const RecordAudio({
     Key? key,
     this.userId,
@@ -41,16 +43,23 @@ class RecordAudio extends StatefulWidget {
     this.changeShowInputMessageField,
     this.isFromUserChats,
     this.changeShowReplyAgain,
+    this.changeIsRecording,
   }) : super(key: key);
 
   @override
-  State<RecordAudio> createState() => _RecordAudioState();
+  State<RecordAudio> createState() => RecordAudioState();
 }
 
-class _RecordAudioState extends State<RecordAudio> {
+class RecordAudioState extends State<RecordAudio> {
   FlutterSoundRecorder? myRecorder;
   bool recording = false;
   String audioFile = 'temp';
+  List<Color> spinKitColors = [
+    Colors.blue,
+    Colors.red,
+    Colors.yellow,
+    Colors.green,
+  ];
 
   Future<void> initRecorder() async {
     myRecorder = await FlutterSoundRecorder().openRecorder();
@@ -122,48 +131,10 @@ class _RecordAudioState extends State<RecordAudio> {
         'unread': 1,
         'recentText': 'audio',
         'username': widget.username,
-        // 'profile_url': widget.profileUrl,
-      });
-      // ScaffoldMessenger.of(widget.scaffoldKey.currentContext!)
-      //     .showSnackBar(SnackBar(
-      //   content: Text(widget.appBarTitle == 'सुझाव'
-      //       ? ' धन्यवाद, आपका सुझाव हमारे पास पहुंच गया है l हम जल्द ही आपसे संपर्क करेंगे |'
-      //       : 'धन्यवाद, आपकी समस्या हमारे पास पहुंच गई है l हम जल्द ही आपसे संपर्क करेंगे |'),
-      // ));
+          });
       if (!widget.isFromUserChats) {
-       widget.changeShowInputMessageField(false);
-       widget.changeShowReplyAgain(true);
-        // await showDialog(
-        //     barrierDismissible: false,
-        //     context: context,
-        //     builder: (ctx) {
-        //       return AlertDialog(
-        //         content: const Text('Do you want to reply again?'),
-        //         actions: [
-        //           TextButton(
-        //             onPressed: () {
-        //               widget.changeShowInputMessageField(true);
-        //               closeChat = false;
-        //               Navigator.of(ctx).pop();
-        //             },
-        //             child: const Text('Yes'),
-        //           ),
-        //           TextButton(
-        //             onPressed: () {
-        //               widget.changeShowInputMessageField(false);
-        //               closeChat = true;
-        //               Navigator.of(ctx).pop();
-        //             },
-        //             child: const Text('No'),
-        //           ),
-        //         ],
-        //       );
-        //     }).then((value) {
-        //   if (closeChat) {
-        //     Navigator.of(context).pop();
-        //   }
-        //   print(closeChat);
-        // });
+        widget.changeShowInputMessageField(false);
+        widget.changeShowReplyAgain(true);
       }
     } on PlatformException catch (err) {
       Scaffold.of(ctx).showSnackBar(SnackBar(
@@ -208,25 +179,54 @@ class _RecordAudioState extends State<RecordAudio> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () async {
-        if (recording) {
-          stopRecording();
-          setState(() {
-            recording = false;
-          });
-        } else {
-          setState(() {
-            recording = true;
-          });
-          await initRecorder();
-          startRecording();
-        }
-      },
-      icon: Icon(
-        recording ? Icons.stop : Icons.mic,
-        color: Theme.of(context).primaryColor,
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        if (recording)
+          SpinKitWave(
+            itemCount: 5,
+            size: 35,
+            itemBuilder: (ctx, index) {
+              return Container(
+                height: 10,
+                width: 0,
+                margin: const EdgeInsets.only(left: 6),
+                decoration: BoxDecoration(
+                  color: spinKitColors[index % spinKitColors.length],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              );
+            },
+          ),
+        if (recording)
+          const SizedBox(
+            width: 20,
+          ),
+        IconButton(
+          onPressed: () async {
+            if (recording) {
+              widget.changeIsRecording(false);
+              stopRecording();
+              setState(() {
+                recording = false;
+              });
+            } else {
+              setState(() {
+                recording = true;
+              });
+              widget.changeIsRecording(true);
+              await initRecorder();
+              startRecording();
+            }
+          },
+          icon: Icon(
+            recording ? Icons.stop : Icons.mic,
+            color: recording ? Colors.red : Theme.of(context).primaryColor,
+            size: 26,
+          ),
+        ),
+      ],
     );
   }
 }

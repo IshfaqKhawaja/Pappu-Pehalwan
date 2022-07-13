@@ -60,8 +60,7 @@ dependencies:
   url_launcher: ^6.1.0
   toggle_switch: ^2.0.1
   fluttertoast: ^8.0.9
-dependency_overrides:
-  image_picker_android: 0.8.4+13
+  share_plus: ^4.0.10
 flutter_icons:
   android: true
   ios: true

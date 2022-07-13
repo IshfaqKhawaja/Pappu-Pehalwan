@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jeevansetu/chat/widgets/auto_messages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:jeevansetu/chat/widgets/new_message_user.dart';
-import 'package:jeevansetu/providers/user_details.dart';
 import 'package:provider/provider.dart';
+import '../../providers/user_details.dart';
+import '../widgets/auto_messages.dart';
+import '../widgets/new_message_user.dart';
 
 class Chat extends StatefulWidget {
   final username;
@@ -55,6 +55,8 @@ class _ChatState extends State<Chat> {
   String docId = '';
   bool showInputMessageField = false;
   GlobalKey<AutoMessagesState> key = GlobalKey<AutoMessagesState>();
+
+ 
 
   void changeSameScreen(docId) {
     setState(() {
@@ -112,14 +114,6 @@ class _ChatState extends State<Chat> {
     String phoneNumber = '';
     final adminDetails =
         Provider.of<UserDetails>(context, listen: false).getUserDetails;
-    // print(widget.details);
-    // if (!widget.isDirect) {
-    //   final routeArgs =
-    //       ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    //   username = routeArgs['username'] as String;
-    //   userid = routeArgs['userId'] as String;
-    //   phoneNumber = routeArgs['phoneNumber'] as String;
-    // } else {
     username = widget.username;
     userid = widget.userId;
     phoneNumber = widget.phoneNumber;
@@ -167,6 +161,8 @@ class _ChatState extends State<Chat> {
           // Messages(
           //   userid: userid,
           // ),
+          
+
 
           showInputMessageField
               ? NewMessageUser(

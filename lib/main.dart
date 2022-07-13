@@ -5,12 +5,12 @@ import 'screens/home.dart';
 
 void main() async  {
   SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
-  statusBarColor: Color(0xff4a7fd1), //or set color with: Color(0xFF0000FF)
+  statusBarColor: Color(0xFF56514D), //or set color with: Color(0xFF0000FF)
 ));
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   runApp(
-    Home(),
+    const Home(),
   );
 }

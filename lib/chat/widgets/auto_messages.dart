@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../chat_screen.dart';
+import '../../chat/chat_screen.dart';
 import 'audio_bubble.dart';
 import 'display_question.dart';
 import 'make_container.dart';
@@ -63,7 +63,7 @@ class AutoMessagesState extends State<AutoMessages> {
       // Question 0
       '0': [
         {
-          'title': 'मैं जीवन ठाकुर आपकी किस तरीके से सहायता कर सकता हूँ',
+          'title': 'मैं पप्पू पहलवान आपकी किस प्रकार से सहायता कर सकता हूँ',
           'parentId': '0',
           'isQuestion': true,
           'id': '0',
@@ -73,7 +73,7 @@ class AutoMessagesState extends State<AutoMessages> {
     '1': {
       '0': [
         {
-          'title': 'मैं जीवन ठाकुर आपकी किस तरीके से सहायता कर सकता हूँ',
+          'title': 'मैं पप्पू पहलवान आपकी किस प्रकार से सहायता कर सकता हूँ',
           'parentId': '0',
           'isQuestion': true,
           'id': '0',
@@ -117,7 +117,7 @@ class AutoMessagesState extends State<AutoMessages> {
   // Utility Functions :
   void saveData(questionText, questionId, parentId, options, optionId) {
     String i = '${questionId + 1}$optionId';
-    // print(i);
+    print(i);
     // First Remove all Options
     messages[index].removeWhere((element) => element['questionId'] == i);
     // Add new Options:
@@ -238,24 +238,7 @@ class AutoMessagesState extends State<AutoMessages> {
   }
 
   void scrollAnimateToEnd() {
-    // Future.delayed(const Duration(milliseconds: 100)).then((_) {
     try {
-      // if (controller.hasClients) {
-      //   controller.jumpTo(controller.position.maxScrollExtent);
-      // controller
-      //     .animateTo(
-      //   controller.position.maxScrollExtent,
-      //   duration: const Duration(milliseconds: 500),
-      //   curve: Curves.easeIn,
-      // )
-      //     .then((value) {
-      //   controller.animateTo(
-      //     controller.position.maxScrollExtent,
-      //     duration: const Duration(milliseconds: 500),
-      //     curve: Curves.easeIn,
-      //   );
-      // });
-      // }
     } catch (e) {
       print('error on scroll $e');
     }
@@ -300,7 +283,7 @@ class AutoMessagesState extends State<AutoMessages> {
         horizontal: 20,
         vertical: 10,
       ),
-      height: 93,
+      height: 95,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -421,19 +404,7 @@ class AutoMessagesState extends State<AutoMessages> {
     parentId = '$index';
     userDetails =
         Provider.of<UserDetails>(context, listen: false).getUserDetails;
-
-    // hideButtons = questions['$index']!.length <= 1 ? true : false;
-    // var savedChat =
-    //     Provider.of<SaveChats>(context, listen: false).getSavedChats;
-    // if (savedChat['isChatPresent'] == true) {
-    //   previousMessageFields = savedChat['previousMessageFields'];
-    //   questionIndex = savedChat['questionNumber'];
-    //   parentId = savedChat['parentId'];
-    //   questions['$index'] = savedChat['questions']['$index'];
-    //   print(parentId);
-    // } else {
     getDataFromFirebase();
-    // }
   }
 
   @override
@@ -552,10 +523,6 @@ class AutoMessagesState extends State<AutoMessages> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () async {
-                            // await FirebaseFirestore.instance
-                            //     .collection('messages')
-                            //     .doc('messages')
-                            //     .delete();
                             showDialog(
                                 context: context,
                                 builder: (ctx) {
@@ -570,7 +537,7 @@ class AutoMessagesState extends State<AutoMessages> {
                                             '0': [
                                               {
                                                 'title':
-                                                    'मैं जीवन ठाकुर आपकी किस तरीके से सहायता कर सकता हूँ',
+                                                    'मैं पप्पू पहलवान आपकी किस प्रकार से सहायता कर सकता हूँ',
                                                 'parentId': '0',
                                                 'isQuestion': true,
                                                 'id': '0',
@@ -735,163 +702,6 @@ class AutoMessagesState extends State<AutoMessages> {
                             'क्या आप ${categorySelected.last} संबंधी सुझाव देना चाहते हैं?',
                             isFirst: true,
                           ),
-
-                          // MakeContainer(
-                          //   field: {
-                          //     'title':
-                          //         'क्या आप ${categorySelected.last} संबंधी सुझाव देना चाहते हैं?',
-                          //     'isMe': 1,
-                          //   },
-                          //   index: -1,
-                          //   clickable: false,
-                          //   addData: addData,
-                          //   addMessagesToFirebase: addMessagesToFirebase,
-                          //   controller: controller,
-                          //   isFromUsersChat: widget.isFromUsersChat,
-                          //   messages: messages,
-                          //   questions: questions,
-                          //   userDetails: userDetails,
-                          //   optionId: optionId,
-                          //   questionIndex: questionIndex,
-                          //   update: update,
-                          //   isFirstQuestion: false,
-                          //   scrollAnimateToEnd: scrollAnimateToEnd,
-                          //   screenIndex: index,
-                          //   saveData: saveData,
-                          //   createDelay: createDelay,
-                          //   updateInitialClick: updateInitialClick,
-                          //   datetime: widget.datetime,
-                          //   showDate: false,
-                          //   isFromChatScreen: widget.isFromChatScreen,
-                          // ),
-                          //     Row(
-                          //       mainAxisAlignment: MainAxisAlignment.end,
-                          //       // mainAxisSize: MainAxisSize.min,
-                          //       children: [
-                          //         TextButton(
-                          //           onPressed: () {
-                          //             //   setState(() {
-
-                          //             // });
-
-                          //             //   ScaffoldMessenger.of(
-                          //             //           widget.scaffoldKey.currentContext!)
-                          //             //       .hideCurrentMaterialBanner();
-                          //             //   ScaffoldMessenger.of(
-                          //             //           widget.scaffoldKey.currentContext!)
-                          //             //       .showMaterialBanner(MaterialBanner(
-                          //             //     backgroundColor: Theme.of(context).primaryColor,
-                          //             //     content: Text(
-                          //             //       categorySelected.isNotEmpty
-                          //             //           ? 'आप हमें अपना ${categorySelected.last} संबंधी सुझाव नीचे दिए विकल्प की सहायता से भेज सकते है।'
-                          //             //           : '',
-                          //             //       style: GoogleFonts.openSans(
-                          //             //         fontSize: 14,
-                          //             //         color: Colors.white,
-                          //             //       ),
-                          //             //     ),
-                          //             //     actions: [
-                          //             //       TextButton(
-                          //             //           onPressed: () {
-                          //             //             ScaffoldMessenger.of(widget
-                          //             //                     .scaffoldKey.currentContext!)
-                          //             //                 .hideCurrentMaterialBanner();
-                          //             //           },
-                          //             //           child: Text(
-                          //             //             'Okay',
-                          //             //             style: GoogleFonts.openSans(
-                          //             //               fontSize: 12,
-                          //             //               color: Colors.white,
-                          //             //               fontWeight: FontWeight.bold,
-                          //             //             ),
-                          //             //           ))
-                          //             //     ],
-                          //             //   ));
-                          //             widget.changeShowInputMessageField(true);
-                          //             setState(() {
-                          //               hideButtons = true;
-                          //               displayMessage = true;
-                          //               previousMessageFields.add({
-                          //                 'title': categorySelected.isNotEmpty
-                          //                     ? 'आप हमें अपना ${categorySelected.last} संबंधी सुझाव नीचे दिए विकल्प की सहायता से भेज सकते है।'
-                          //                     : '',
-                          //                 'isQuestion': true,
-                          //                 'doNotDelete': true,
-                          //                 'notClickable': false,
-                          //               });
-                          //             });
-
-                          //             // Future.delayed(const Duration(seconds: 2), () {
-                          //             //   ScaffoldMessenger.of(
-                          //             //           widget.scaffoldKey.currentContext!)
-                          //             //       .hideCurrentMaterialBanner();
-                          //             // });
-                          //           },
-                          //           child: Chip(
-                          //             backgroundColor: Colors.green,
-                          //             label: Text(
-                          //               'Yes',
-                          //               style: GoogleFonts.openSans(
-                          //                 fontSize: 12,
-                          //                 color: Colors.white,
-                          //               ),
-                          //             ),
-                          //           ),
-                          //         ),
-                          //         TextButton(
-                          //           onPressed: () async {
-                          //             try {
-                          //               // Provider.of<SaveChats>(context, listen: false)
-                          //               //     .saveChats(
-                          //               //   saveChats: saveChats,
-                          //               //   parentId: parentId,
-                          //               //   previousMessageFields: previousMessageFields,
-                          //               //   questionNumber: questionIndex,
-                          //               //   questions: questions,
-                          //               // );
-                          //               // final userDetails = Provider.of<UserDetails>(
-                          //               //         context,
-                          //               //         listen: false)
-                          //               //     .getUserDetails;
-                          //               // List details = previousMessageFields;
-                          //               // await FirebaseFirestore.instance
-                          //               //     .collection('suggestions') //'chats
-                          //               //     .doc('${widget.userId}')
-                          //               //     .collection('messages') //messages
-                          //               //     .add({
-                          //               //   'details': details,
-                          //               //   'createdAt': Timestamp.now(),
-                          //               //   'title': widget.appBarTitle,
-                          //               // });
-                          //               // await FirebaseFirestore.instance
-                          //               //     .collection('suggestions')
-                          //               //     .doc('${widget.userId}')
-                          //               //     .set({
-                          //               //   'createdAt': Timestamp.now(),
-                          //               //   'unread': 1,
-                          //               //   'recentText': widget.appBarTitle,
-                          //               //   'username': userDetails['name'],
-                          //               //   'profileUrl': '',
-                          //               // });
-                          //               Navigator.of(context).pop();
-                          //             } catch (e) {
-                          //               ScaffoldMessenger.of(context).showSnackBar(
-                          //                   SnackBar(content: Text(e.toString())));
-                          //             }
-                          //           },
-                          //           child: Chip(
-                          //             backgroundColor: Colors.redAccent,
-                          //             label: Text(
-                          //               'No',
-                          //               style: GoogleFonts.openSans(
-                          //                 fontSize: 12,
-                          //                 color: Colors.white,
-                          //               ),
-                          //             ),
-                          //           ),
-                          //         )
-                          //       ],
-                          //     ),
                         ],
                       ),
                     if (widget.isFileSending)
@@ -937,23 +747,11 @@ class AutoMessagesState extends State<AutoMessages> {
                                             isNetwork: false,
                                           )
                                         : const SizedBox.shrink(),
-                            // Profile Photo
-                            // CircleAvatar(
-                            //   backgroundImage:
-                            //       userDetails.containsKey('profileUrl')
-                            //           ? CachedNetworkImageProvider(
-                            //               userDetails['profileUrl'] ?? '')
-                            //           : Image.asset('assets/images/default.jpg')
-                            //               .image,
-                            // ),
-                            // const SizedBox(
-                            //   width: 10,
-                            // ),
                           ],
                         ),
                       ),
                     if (showReplyAgain)
-                      replyAgain("किया आप कोई सन्देश लिखना चाहते हैं"),
+                      replyAgain("क्या आप कोई सन्देश लिखना चाहते हैं"),
                     const SizedBox(
                       height: 20,
                     ),
@@ -967,6 +765,7 @@ class AutoMessagesState extends State<AutoMessages> {
                       onPressed: () {
                         showDialog(
                             context: context,
+                            barrierDismissible: false,
                             builder: (ctx) {
                               return MakeContainer(
                                 addData: addData,

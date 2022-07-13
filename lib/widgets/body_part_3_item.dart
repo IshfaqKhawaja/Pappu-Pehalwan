@@ -56,7 +56,8 @@ class _BodyPart3ItemState extends State<BodyPart3Item> {
       margin: const EdgeInsets.symmetric(
         horizontal: 10,
       ).copyWith(
-        top: 10
+        top: 10,
+        bottom: 20,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,8 +79,9 @@ class _BodyPart3ItemState extends State<BodyPart3Item> {
                     fit: BoxFit.cover,
                   ),
           ),
-        spaceWidget,
-        spaceWidget,
+        
+        // spaceWidget,
+        const SizedBox(height:6),
 
           Text(
             widget.title.toString().trimLeft(),
@@ -87,96 +89,12 @@ class _BodyPart3ItemState extends State<BodyPart3Item> {
             overflow: TextOverflow.ellipsis,
             style: style,
           ),
-        //  const SizedBox(
-        //     height: 2,          
-        //   ),
             Text(
                 DateFormat('MMM dd yyyy').format(widget.date),
                 style: style.copyWith(
                   color: Colors.grey,
                 ),
               ),
-          // Row(
-          //   children: [
-          //     Text(
-          //       widget.provider,
-          //       style: style.copyWith(
-          //         color: Colors.red,
-          //       ),
-          //     ),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-            
-          //   ],
-          // ),
-         
-          // spaceWidget,
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     IconButton(
-          //       onPressed: changeIsLiked,
-          //       icon: Icon(
-          //         Icons.thumb_up,
-          //         color: isLiked ? Colors.redAccent : Colors.grey,
-          //       ),
-          //     ),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //     Text(
-          //       widget.likes.toString(),
-          //       style: style.copyWith(
-          //         color: Colors.black,
-          //       ),
-          //     ),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //     const Icon(
-          //       Icons.comment,
-          //       color: Colors.grey,
-          //     ),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //     Text(
-          //       widget.comments.toString(),
-          //       style: style.copyWith(
-          //         color: Colors.black,
-          //       ),
-          //     ),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //     const Icon(
-          //       Icons.share,
-          //       color: Colors.grey,
-          //     ),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //     Text(
-          //       widget.shares.toString(),
-          //       style: style.copyWith(
-          //         color: Colors.black,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-        //  const  Divider(
-        //     color: Colors.black,
-        //     height: 4,
-        //   )
-          // spaceWidget,
-          // Text(
-          //   widget.subTitle,
-          //   style: style.copyWith(
-          //     fontSize: 16,
-          //     color: Colors.black.withOpacity(0.7),
-          //   ),
-          // ),
         ],
       ),
     );

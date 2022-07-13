@@ -131,12 +131,6 @@ class _AudioBubbleState extends State<AudioBubble> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // if (widget.isMe)
-                    //   Icon(
-                    //     Icons.done_all,
-                    //     size: 20,
-                    //     color: widget.read == 0 ? Colors.grey : Colors.purple,
-                    //   ),
                     Text(
                       DateFormat().add_jm().format(
                             DateTime.parse(widget.datetime),

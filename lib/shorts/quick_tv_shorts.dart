@@ -28,11 +28,6 @@ class _QuickTVShortsState extends State<QuickTVShorts> {
     if (Navigator.canPop(context)) {
       Navigator.pop(context);
     }
-    // Navigator.of(context).pushAndRemoveUntil(
-    //   MaterialPageRoute(builder: ((context) => Body()),),
-    //   (route) => false,
-
-    // );
   }
 
   void changeImage() async {

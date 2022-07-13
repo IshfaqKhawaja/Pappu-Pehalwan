@@ -14,6 +14,7 @@ class BodyPart2JS extends StatelessWidget {
   Widget makeIconContainer(context, icon, title, index, width, color) {
     return InkWell(
       splashColor: Colors.redAccent,
+
       onHover: (_) {},
       onTap: () {
         final userDetails =
@@ -53,14 +54,6 @@ class BodyPart2JS extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: color,
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Theme.of(context).primaryColor.withOpacity(0.5),
-          //     blurRadius: 1,
-          //     spreadRadius: 2,
-          //     offset: const Offset(0, 1),
-          //   ),
-          // ]
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
@@ -92,13 +85,21 @@ class BodyPart2JS extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var titles = [
-      {'icon': Icons.quiz, 'title': 'शिकायत', 'color': Colors.green},
+      {
+        'icon': Icons.quiz,
+        'title': 'शिकायत', 
+        'color': Color(0xFF149531),
+      },
       {
         'icon': Icons.woman_outlined,
-        'title': 'महिला हेल्‍पलाइन',
-        'color': Colors.redAccent
+        'title': 'आपातकालीन नंबर',
+        'color': Color(0xFFF20202)
       },
-      {'icon': Icons.assistant, 'title': 'सुझाव', 'color': Colors.yellow[900]}
+      {
+        'icon': Icons.assistant_outlined,
+        'title': 'सुझाव', 
+        'color': Color(0xFF149531),
+        },
     ];
     final width = MediaQuery.of(context).size.width;
     return Container(

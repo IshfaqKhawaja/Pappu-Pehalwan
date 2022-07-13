@@ -9,6 +9,8 @@ import '../providers/user_details.dart';
 import 'show_files.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/save_chats.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -50,17 +52,18 @@ class _HomeState extends State<Home> {
       providers: [
         ChangeNotifierProvider(create: (_) => LoadDataFromFacebook()),
         ChangeNotifierProvider(create: (_)=> UserDetails()),
+        ChangeNotifierProvider(create: (_)=> SaveChats()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             appBarTheme: const AppBarTheme(
-              backgroundColor: Color(0xff4a7fd1),
+              backgroundColor: Color(0xff56514D),
               actionsIconTheme: IconThemeData(
                 color: Color(0xffeef3f6),
               ),
             ),
-            scaffoldBackgroundColor: const Color(0xfff0e8f8),
+            scaffoldBackgroundColor: const Color(0xffF0EAE5),
             textTheme: TextTheme(
               bodyLarge: GoogleFonts.openSans(
                 fontSize: 20,
@@ -77,30 +80,15 @@ class _HomeState extends State<Home> {
                 fontWeight: FontWeight.w600,
                 color: Color(0xff082545),
               ),
-              // button: GoogleFonts.openSans(
-              //   fontSize: 16,
-              //   fontWeight: FontWeight.w600,
-              //   color: Color(0xff082545),
-              // ),
-              // headline1: GoogleFonts.openSans(
-              //   fontSize: 24,
-              //   fontWeight: FontWeight.w600,
-              //   color: Color(0xff082545),
-              // ),
-              // headline2: GoogleFonts.openSans(
-              //   fontSize: 22,
-              //   fontWeight: FontWeight.w600,
-              //   color: Color(0xff082545),
-              // ),
             ),
-            primaryColor: const Color(0xff4a7fd1),
+            primaryColor: const Color(0xff626262),
             iconTheme: const IconThemeData(
               color: Color(0xffeef3f6),
             ),
-            backgroundColor: const Color(0xfff0e8f8),
+            backgroundColor: const Color(0xffF0EAE5),
             buttonColor: const Color(0xffe51818),
             bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-              backgroundColor: Color(0xffd5dadf),
+              backgroundColor: Color(0xffF0EAE5),
             )),
         home: SplashScreen(),
         routes: {

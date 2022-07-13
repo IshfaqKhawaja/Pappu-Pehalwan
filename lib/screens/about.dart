@@ -9,7 +9,7 @@ class About extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const  Text('About'),
+        title: Text('About'),
       ),
       body: Container(
         padding: const EdgeInsets.all(10.0).copyWith(top: 20),
@@ -25,7 +25,7 @@ class About extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          'पप्पू पहलवान ',
+                          'पप्पू पहलवान',
                           style: GoogleFonts.openSans(
                             fontSize: 25,
                             fontWeight: FontWeight.w600,
@@ -41,17 +41,6 @@ class About extends StatelessWidget {
                             color: Colors.black.withOpacity(0.7),
                           ),
                         ),
-                        // const SizedBox(
-                        //   height: 12,
-                        // ),
-                        // Text(
-                        //   'सन 1984 में राजनीति में कदम रखने के बाद वर्ष 2002 में (घिरोर, मैनपुरी) से विधायक चुने गए। वर्ष 2003 में उत्तर प्रदेश सरकार में राज्य मंत्री ( चिकित्सा एवं स्वास्थ्य) नियुक्त हुए। राज्य मंत्री के रूप में कार्यकाल 2006 तक रहा। वर्ष 2007-2012 तक राज्य मंत्री स्वतंत्र प्रभार के दायित्व का निर्वहन किया। इनकी छवि प्रखर वक्ता एवं कुशल राजनेता के रूप में विकसित रही है।',
-                        //   style: GoogleFonts.openSans(
-                        //     fontSize: 10,
-                        //     fontWeight: FontWeight.w600,
-                        //     color: Colors.black.withOpacity(0.7),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -68,9 +57,6 @@ class About extends StatelessWidget {
                   )
                 ],
               ),
-              // const SizedBox(
-              //   height: 10,
-              // ), 
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

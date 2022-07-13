@@ -24,6 +24,7 @@ class _BodyPart2ItemState extends State<BodyPart2Item> {
             margin: const EdgeInsets.symmetric(
               horizontal: 5,
             ),
+            color: Theme.of(context).scaffoldBackgroundColor,
             child: Stack(
               children: [
                 CachedNetworkImage(
@@ -32,18 +33,15 @@ class _BodyPart2ItemState extends State<BodyPart2Item> {
                   width: width,
                   fit: BoxFit.cover,
                 ),
-               if(widget.title != '') 
-               Positioned(
+                Positioned(
                   bottom: 1,
                   child: Container(
                     width: width,
-                    // height: 40,
                     color: Colors.black.withOpacity(0.2),
                     padding: const EdgeInsets.all(6),
                     child: Text(
                       widget.title.toString().trim(),
                       textAlign: TextAlign.justify,
-                      // overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.openSans(
                         fontSize: 10,
                         color: Theme.of(context).iconTheme.color,
@@ -72,12 +70,13 @@ class _BodyPart2ItemState extends State<BodyPart2Item> {
                     }
     return OpenContainer(
       closedBuilder: (context, action) => closedConatiner(),
-      // transitionDuration: const Duration(milliseconds: 1000),
+      closedColor: Theme.of(context).scaffoldBackgroundColor,
+      openColor: Theme.of(context).scaffoldBackgroundColor,
       transitionType: ContainerTransitionType.values[1],
       openBuilder: (context, action) => ViewFBPost(
                       id: widget.hpccPost['id'],
                       title: widget.hpccPost['title'],
-                      appbarTitle: 'समाचार',
+                      appbarTitle: 'हर दिन अद्यतन',
                       description: description,
                       date: DateTime.parse(widget.hpccPost['date']),
                       attachement:

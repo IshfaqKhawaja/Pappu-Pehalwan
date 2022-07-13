@@ -48,6 +48,12 @@ class _BodyState extends State<Body> {
                 username: userDetails['name'] ?? userDetails['phoneNumber'],
                 userId: userDetails['userId'],
               ),
+            // : About()
+        // ImagesSOS(
+        //         scaffoldKey: scaffoldKey,
+        //         username: userDetails['name'] ?? userDetails['phoneNumber'],
+        //         userId: userDetails['userId'],
+        //       ),
       ));
     } else if (index == 4) {
       Navigator.of(context).push(MaterialPageRoute(
@@ -85,11 +91,11 @@ class _BodyState extends State<Body> {
       BodyHome(
         scaffoldKey: scaffoldKey,
       ),
-      userDetails['isAdmin'] 
-      ? Users():
-      Groups(
-        scaffoldKey: scaffoldKey,
-      ),
+      userDetails['isAdmin']
+          ? Users()
+          : Groups(
+              scaffoldKey: scaffoldKey,
+            ),
       BodyHome(),
     ];
   }
@@ -98,26 +104,55 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        // title: const HomeAppBar(),
-        title: const Text('पप्पू पहलवान'),
-
-        actions: [
-          InkWell(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => About()));
-            },
-            child: const CircleAvatar(
-              backgroundColor: Colors.transparent,
-              backgroundImage: AssetImage(
-                'assets/images/icon.jpg',
+    return WillPopScope(
+      onWillPop: () async {
+        bool value = false;
+        await showDialog(context: context, builder: (ctx) {
+          return AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit'),
+            actions: [
+              TextButton(
+                child: const Text('No'),
+                onPressed: () {
+                  Navigator.of(ctx).pop(false);
+                  value = false;
+                },
               ),
-              radius: 20,
+              TextButton(
+                child:const  Text('Yes'),
+                onPressed: () {
+                  Navigator.of(ctx).pop(true);
+                  value = true;
+                },
+              ),
+            ],
+          );
+        });
+        return value;
+        },
+      
+      child: Scaffold(
+        key: scaffoldKey,
+        appBar: AppBar(
+          // title: const HomeAppBar(),
+          title: const Text('पप्पू पहलवान'),
+          backgroundColor: Color(0xFF56514D),
+          actions: [
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => const About()));
+              },
+              child: const CircleAvatar(
+                backgroundColor: Colors.transparent,
+                backgroundImage: AssetImage(
+                  'assets/images/icon.jpg',
+                ),
+                radius: 20,
+              ),
             ),
-          ),
+          
           const SizedBox(
             width: 10,
           ),
@@ -202,6 +237,71 @@ class _BodyState extends State<Body> {
               ],
             )
           : null,
+        //     const SizedBox(
+        //       width: 10,
+        //     ),
+        //   ],
+        //   centerTitle: true,
+        //   elevation: 0,
+        // ),
+        // body: screens[currentIndex],
+        // bottomNavigationBar: showBottomBar
+        //     ? BottomBar(
+        //         currentIndex: currentIndex,
+        //         changeIndex: changeIndex,
+        //         scaffoldKey: scaffoldKey,
+        //       )
+        //     : null,
+        // drawer: DrawerWidget(),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        // floatingActionButton: userDetails['isAdmin']
+        //     ? Column(
+        //         mainAxisAlignment: MainAxisAlignment.end,
+        //         children: [
+        //           FloatingActionButton(
+        //             heroTag: null,
+        //             backgroundColor: Theme.of(context).primaryColor,
+        //             onPressed: () async {
+        //               widget.rebuilt();
+        //               await Provider.of<LoadDataFromFacebook>(context,
+        //                       listen: false)
+        //                   .loadPosts();
+        //               widget.built();
+        //             },
+        //             child: const Icon(
+        //               Icons.refresh,
+        //               size: 30,
+        //               color: Colors.white,
+        //             ),
+        //           ),
+        //           const SizedBox(
+        //             height: 10,
+        //           ),
+        //           FloatingActionButton(
+        //             heroTag: null,
+        //             backgroundColor: Theme.of(context).primaryColor,
+        //             onPressed: () {
+        //               Provider.of<LoadDataFromFacebook>(context, listen: false)
+        //                   .pushDataToFirebase();
+        //               ScaffoldMessenger.of(context).showSnackBar(
+        //                 const SnackBar(
+        //                   content: Text('Data Saved ...'),
+        //                 ),
+        //               );
+        //             },
+        //             child: const Icon(
+        //               Icons.save,
+        //               size: 30,
+        //               color: Colors.white,
+        //             ),
+        //           ),
+        //           const SizedBox(
+        //             height: 70,
+        //           ),
+        //         ],
+        //       )
+        //     : null,
+      ),
     );
   }
 }

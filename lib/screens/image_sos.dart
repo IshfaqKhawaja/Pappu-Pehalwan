@@ -71,6 +71,7 @@ class _ImagesSOSState extends State<ImagesSOS> {
               .child('$userId${Timestamp.now()}');
           await ref.putFile(file);
           final url = await ref.getDownloadURL();
+          isFileSendingTrue(false, '', '');
 
           await FirebaseFirestore.instance
               .collection('images-sos')
@@ -89,7 +90,6 @@ class _ImagesSOSState extends State<ImagesSOS> {
                 : 'video',
             'attachment': url,
           });
-          isFileSendingTrue(false, '', '');
 
           await FirebaseFirestore.instance
               .collection('images-sos')
@@ -102,7 +102,7 @@ class _ImagesSOSState extends State<ImagesSOS> {
                     file.path.endsWith('.png')
                 ? 'image'
                 : 'video',
-            'username': userDetails['name'],
+            'username': widget.username,
             'profile_url': '',
           });
         }
@@ -168,6 +168,9 @@ class _ImagesSOSState extends State<ImagesSOS> {
         Provider.of<UserDetails>(context, listen: false).getUserDetails;
     print(userDetails);
     print(userId);
+    if(!userDetails['isAdmin']){
+        pickImage();
+    }
   }
 
   @override
@@ -200,18 +203,6 @@ class _ImagesSOSState extends State<ImagesSOS> {
             );
           }
           final data = snapshots.data!.docs;
-          if (data.isEmpty) {
-            return Center(
-              child: Text(
-                'No Attachments Yet',
-                style: GoogleFonts.openSans(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            );
-          }
           return Column(
             children: [
               Expanded(
@@ -220,9 +211,6 @@ class _ImagesSOSState extends State<ImagesSOS> {
                     reverse: true,
                     itemBuilder: (ct, index) {
                       final tempData = data[index].data()! as Map;
-                      print(tempData['userId']);
-                      print(userId);
-                      print(tempData['userId'] == userId);
                       return tempData['type'] == 'image'
                           ? ShowImageBubble(
                               datetime: tempData['date'],
@@ -246,43 +234,55 @@ class _ImagesSOSState extends State<ImagesSOS> {
               ),
               if (isFileSending)
                 isImage
-                    ? ShowImageBubble(
-                        url: file,
-                        datetime: DateTime.now().toIso8601String(),
-                        isMe: userId == FirebaseAuth.instance.currentUser!.uid,
-                        read: 0,
-                        isNetwork: false,
-                      )
+                    ? Align(
+                      alignment:  userId == FirebaseAuth.instance.currentUser!.uid ? Alignment.centerRight : Alignment.centerLeft,
+                      child: ShowImageBubble(
+                          url: file,
+                          datetime: DateTime.now().toIso8601String(),
+                          isMe: userId == FirebaseAuth.instance.currentUser!.uid,
+                          read: 0,
+                          isNetwork: false,
+                        ),
+                    )
                     : isVideo
-                        ? ShowVideoBubble(
+                        ?  Align(
+                        alignment:  userId == FirebaseAuth.instance.currentUser!.uid ? Alignment.centerRight : Alignment.centerLeft,
+                        child:ShowVideoBubble(
                             url: file,
                             datetime: DateTime.now().toIso8601String(),
-                            isMe: userId == FirebaseAuth.instance.currentUser!.uid,
+                            isMe: userId ==
+                                FirebaseAuth.instance.currentUser!.uid,
                             read: 0,
                             isNetwork: false,
-                          )
+                          ),
+                        )
                         : const SizedBox.shrink(),
-              const SizedBox(height: 50),
-            ],
-          );
-        },
+      const SizedBox(
+        height: 20,
       ),
-      floatingActionButton: Column(
+    Align(
+      alignment: Alignment.centerRight,
+            child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: pickImage,
-            child: const Icon(
-              Icons.party_mode,
-              color: Colors.white,
-              size: 30,
+              heroTag: null,
+            backgroundColor: Color(0xff56514D),
+              onPressed: pickImage,
+              child: const Icon(
+                Icons.party_mode,
+                color: Colors.white,
+                size: 30,
+              ),
             ),
-          ),
+          
           const SizedBox(
             height: 4,
           ),
           FloatingActionButton(
+            backgroundColor: Color(0xff56514D),
+            heroTag: null,
             onPressed: _pickFiles,
             child: const Icon(
               Icons.collections,
@@ -291,6 +291,12 @@ class _ImagesSOSState extends State<ImagesSOS> {
             ),
           ),
         ],
+      ),
+      ),
+              const SizedBox(height: 20),
+            ],
+          );
+        },
       ),
     );
   }

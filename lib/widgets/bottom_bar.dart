@@ -23,6 +23,7 @@ class BottomBar extends StatelessWidget {
       color: Colors.black,
     );
     return BottomNavigationBar(
+      backgroundColor: Color(0xff56514D),
       currentIndex: currentIndex,
       onTap: (index) {
         changeIndex(index);
@@ -30,23 +31,24 @@ class BottomBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       selectedFontSize: 13,
       unselectedFontSize: 12,
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.black,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white,
       selectedLabelStyle: labelStyle,
       unselectedLabelStyle: labelStyle,
       items: [
         BottomNavigationBarItem(
+          // change name from SOS to about but functionality of sos is still there which we will change
           icon: Icon(
-            currentIndex == 0 ? Icons.party_mode : Icons.party_mode_outlined,
-            color: Colors.black,
+            currentIndex == 0 ? Icons.manage_accounts : Icons.manage_accounts_outlined,
+            color: Color(0xffA9ADB6),
             size: currentIndex == 0 ? 25 : 20,
           ),
-          label: 'SOS',
+          label: 'ABOUT',
         ),
         BottomNavigationBarItem(
           icon: Icon(
             currentIndex == 1 ? Icons.work : Icons.work_outline,
-            color: Colors.black,
+            color: Color(0xffA9ADB6),
             size: currentIndex == 1 ? 25 : 20,
           ),
           label: 'MESSAGES',
@@ -54,15 +56,15 @@ class BottomBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(
             currentIndex == 2 ? Icons.home : Icons.home_outlined,
-            color: Colors.black,
+            color: Color(0xffA9ADB6),
             size: currentIndex == 2 ? 25 : 20,
           ),
           label: 'HOME',
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            currentIndex == 3 ? Icons.person_add : Icons.person_add_outlined,
-            color: Colors.black,
+            currentIndex == 3 ? Icons.person_add : Icons.group,
+            color: Color(0xffA9ADB6),
             size: currentIndex == 3 ? 25 : 20,
           ),
           label: userDetails['isAdmin'] ? 'Users' : 'GROUPS',
@@ -70,10 +72,10 @@ class BottomBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(
             currentIndex == 4 ? Icons.mic : Icons.mic_outlined,
-            color: Colors.black,
+            color: Color(0xffA9ADB6),
             size: currentIndex == 4 ? 25 : 20,
           ),
-          label: 'SOS',
+          label: 'RECORD',
         ),
       ],
     );

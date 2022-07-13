@@ -13,11 +13,12 @@ class AdminMessageChat extends StatelessWidget {
   final username;
   final isRedirect;
   final details;
+  final questions;
   final docId;
   final appBarTitle;
-  final questions;
 
   const AdminMessageChat({
+
     Key? key,
     this.datetime,
     this.appBarTitle,
@@ -28,8 +29,8 @@ class AdminMessageChat extends StatelessWidget {
     this.username,
     this.isRedirect = false,
     this.details,
-    this.docId,
     this.questions,
+    this.docId,
   }) : super(key: key);
 
   @override
@@ -52,7 +53,6 @@ class AdminMessageChat extends StatelessWidget {
                     ? Chat(
                         appBarTitle: appBarTitle,
                         details: details,
-                        questions: questions,
                         docId: docId,
                         index: 0,
                         isAdmin: true,
@@ -63,7 +63,9 @@ class AdminMessageChat extends StatelessWidget {
                         scaffoldKey: null,
                         userId: userid,
                         username: username,
-
+                        questions: questions,
+                        datetime: datetime,
+                        isFromChatScreen: true,
                       )
                     : AdminChatScreen(
                         userId: userid,
@@ -79,10 +81,6 @@ class AdminMessageChat extends StatelessWidget {
                 color: Colors.white,
                 size: 24,
               ),
-
-              // backgroundImage: profileUrl!.isEmpty
-              //     ? Image.asset('assets/images/default_userimage.jpeg').image
-              //     : CachedNetworkImageProvider(profileUrl as String),
             ),
             title: Text(
               username,
@@ -101,15 +99,29 @@ class AdminMessageChat extends StatelessWidget {
                 fontSize: 14,
               ),
             ),
-            trailing: Text(
-              DateFormat().add_jm().format(
-                    datetime!.toDate(),
+            trailing: Column(
+              children: [
+                 Text(
+                  DateFormat().add_MMMEd().format(
+                        datetime!.toDate(),
+                      ),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
                   ),
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-              ),
+                ),
+                Text(
+                  DateFormat().add_jm().format(
+                        datetime!.toDate(),
+                      ),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

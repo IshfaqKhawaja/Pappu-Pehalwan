@@ -1,14 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jeevansetu/auth/login.dart';
-import 'package:provider/provider.dart';
-
+import 'login.dart';
 import '../providers/load_data_from_facebook.dart';
 import '../providers/user_details.dart';
 import '../screens/body.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -48,13 +46,10 @@ class _SplashScreenState extends State<SplashScreen> {
       isRebuilding = true;
     });
   }
-  void built(){
-    setState(() {
-     
 
+  void built() {
+    setState(() {
       isRebuilding = false;
-      
-    
     });
   }
 
@@ -62,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       setState(() {
-        isLoggedIn = true ;
+        isLoggedIn = true;
         loadData();
       });
     } else {
@@ -100,27 +95,15 @@ class _SplashScreenState extends State<SplashScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  // TextLiquidFill(
-                  //         text: 'Pappu Pehalwan',
-                  //         waveColor: Theme.of(context).primaryColor,
-                  //         boxBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  //         textStyle: const TextStyle(
-                  //           fontSize: 40.0,
-                  //           fontWeight: FontWeight.bold,
-                  //         ),
-                  //         boxHeight: 100.0,
-                  //       ),
-                      
                   AnimatedTextKit(
                     animatedTexts: [
                       TypewriterAnimatedText(
-                      'Pappu Pehalwan',
+                        'Pappu Pehalwan',
                         textStyle: GoogleFonts.openSans(
                           fontSize: 32.0,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor,
                         ),
-                        
                         speed: const Duration(milliseconds: 200),
                       ),
                     ],
@@ -134,23 +117,19 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           )
         : isLoggedIn
-            ? isRebuilding ? Container(
-              color: Colors.white,
-              child : Center(
-                child: SpinKitChasingDots(
-
-                  color: Theme.of(context).primaryColor,
-                  size: 50.0,
-                ),
-              ),
-            ) : Body(
-                rebuilt: rebuilt,
-                built: built,
-              )
+            ? isRebuilding
+                ? Container(
+                    color: Colors.white,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Body(
+                    rebuilt: rebuilt,
+                    built: built,
+                  )
             : Login(
                 loadData: loadData,
-                rebuilt: rebuilt,
-                built: built
               );
   }
 }

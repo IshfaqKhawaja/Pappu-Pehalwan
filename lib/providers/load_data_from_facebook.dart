@@ -25,7 +25,7 @@ class LoadDataFromFacebook with ChangeNotifier {
     var url = '';
     urlPart = 'https://graph.facebook.com/v13.0/';
     url =
-        "${urlPart}106458985426806/feed?access_token=$accessToken&limit=$limit";
+        "${urlPart}107159638649665/feed?access_token=$accessToken&limit=$limit";
     try {
       var res = await http.get(Uri.parse(url));
       print(res.body);
