@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../chat/screens/chat_screen.dart';
 import '../providers/load_data_from_facebook.dart';
 import '../providers/user_details.dart';
@@ -21,11 +22,13 @@ import 'package:provider/provider.dart';
 class Body extends StatefulWidget {
   final rebuilt;
   final built;
+  final loadData;
 
   const Body({
     Key? key,
     this.rebuilt,
     this.built,
+    this.loadData,
   }) : super(key: key);
 
   @override
@@ -39,13 +42,13 @@ class _BodyState extends State<Body> {
   int currentIndex = 2;
   List screens = [];
   Map userDetails = {};
-
+  bool loading = false;
 
   void changeIndex(index) {
     if (index == 0) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => userDetails['isAdmin'] ? ImageSOSAdmin() : About()
-          // ImagesSOS(
+          builder: (_) => userDetails['isAdmin'] ? const About() : const About()
+          // ImageSOSAdmin() : ImagesSOS(
           //         scaffoldKey: scaffoldKey,
           //         username: userDetails['name'] ?? userDetails['phoneNumber'],
           //         userId: userDetails['userId'],
@@ -165,18 +168,12 @@ class _BodyState extends State<Body> {
             //       )).toList(),
             //   ),
             // ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => const About()));
-              },
-              child: const CircleAvatar(
-                backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage(
-                  'assets/images/icon.jpg',
-                ),
-                radius: 20,
+            const CircleAvatar(
+              backgroundColor: Colors.transparent,
+              backgroundImage: AssetImage(
+                'assets/images/icon.jpg',
               ),
+              radius: 20,
             ),
           
           const SizedBox(
@@ -203,7 +200,7 @@ class _BodyState extends State<Body> {
       // ),
       drawer: DrawerWidget(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: userDetails['isAdmin']
+      floatingActionButton: userDetails['isAdmin'] && currentIndex == 2
           ? Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -211,18 +208,17 @@ class _BodyState extends State<Body> {
                   heroTag: null,
                   backgroundColor: Theme.of(context).primaryColor,
                   onPressed: () async {
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   const SnackBar(
-                    //     content: Text('Loading...'),
-                    //   ),
-                    // );
                     // widget.rebuilt();
                     // await Provider.of<LoadDataFromFacebook>(context,
                     //         listen: false)
                     //     .loadPosts();
                     // widget.built();
                     Navigator.of(context).push(
-                            MaterialPageRoute(builder: (ctx) => LoadPosts()));
+                            MaterialPageRoute(builder: (ctx) => LoadPosts())).then((value) async{
+                              widget.rebuilt();
+                              await Provider.of<LoadDataFromFacebook>(context, listen: false).loadPostsFromFirebase();
+                              widget.built();
+                    });
                     // ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     // ScaffoldMessenger.of(context).showSnackBar(
                     //   const SnackBar(
@@ -230,14 +226,17 @@ class _BodyState extends State<Body> {
                     //   ),
                     // );
                   },
-                  child: const Icon(
+                  child: loading ? const SpinKitWave(
+                    color: Colors.white,
+                    size: 20,
+                  ) : const Icon(
                     Icons.refresh,
                     size: 30,
                     color: Colors.white,
                   ),
                 ),
                 const SizedBox(
-                  height: 70,
+                  height: 10,
                 ),
                 // FloatingActionButton(
                 //   heroTag: null,
@@ -257,76 +256,12 @@ class _BodyState extends State<Body> {
                 //     color: Colors.white,
                 //   ),
                 // ),
-                // const SizedBox(
-                //   height: 70,
-                // ),
+                const SizedBox(
+                  height: 70,
+                ),
               ],
             )
           : null,
-        //     const SizedBox(
-        //       width: 10,
-        //     ),
-        //   ],
-        //   centerTitle: true,
-        //   elevation: 0,
-        // ),
-        // body: screens[currentIndex],
-        // bottomNavigationBar: showBottomBar
-        //     ? BottomBar(
-        //         currentIndex: currentIndex,
-        //         changeIndex: changeIndex,
-        //         scaffoldKey: scaffoldKey,
-        //       )
-        //     : null,
-        // drawer: DrawerWidget(),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        // floatingActionButton: userDetails['isAdmin']
-        //     ? Column(
-        //         mainAxisAlignment: MainAxisAlignment.end,
-        //         children: [
-        //           FloatingActionButton(
-        //             heroTag: null,
-        //             backgroundColor: Theme.of(context).primaryColor,
-        //             onPressed: () async {
-        //               widget.rebuilt();
-        //               await Provider.of<LoadDataFromFacebook>(context,
-        //                       listen: false)
-        //                   .loadPosts();
-        //               widget.built();
-        //             },
-        //             child: const Icon(
-        //               Icons.refresh,
-        //               size: 30,
-        //               color: Colors.white,
-        //             ),
-        //           ),
-        //           const SizedBox(
-        //             height: 10,
-        //           ),
-        //           FloatingActionButton(
-        //             heroTag: null,
-        //             backgroundColor: Theme.of(context).primaryColor,
-        //             onPressed: () {
-        //               Provider.of<LoadDataFromFacebook>(context, listen: false)
-        //                   .pushDataToFirebase();
-        //               ScaffoldMessenger.of(context).showSnackBar(
-        //                 const SnackBar(
-        //                   content: Text('Data Saved ...'),
-        //                 ),
-        //               );
-        //             },
-        //             child: const Icon(
-        //               Icons.save,
-        //               size: 30,
-        //               color: Colors.white,
-        //             ),
-        //           ),
-        //           const SizedBox(
-        //             height: 70,
-        //           ),
-        //         ],
-        //       )
-        //     : null,
       ),
     );
   }

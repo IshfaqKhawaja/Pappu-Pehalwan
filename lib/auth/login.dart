@@ -246,10 +246,12 @@ class _LoginState extends State<Login> {
               child: Form(
                 key: formKey,
                 child: TextFormField(
+                  maxLength: 10,
                   style: labelStyle,
                   focusNode: focusNode,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
+                    counterText: '',
                     hintText: 'अपना मोबाइल नंबर दर्ज करें',
                     hintStyle: labelStyle.copyWith(
                       fontSize: width * 0.04,

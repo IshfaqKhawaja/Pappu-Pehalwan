@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pappupehalwan/auth/splash_screen.dart';
 import '../screens/profile.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -64,6 +66,29 @@ class DrawerWidget extends StatelessWidget {
                     ),
                   )
                   .then((value) => Navigator.of(context).pop());
+            },
+            focusColor: Theme.of(context).primaryColor,
+            hoverColor: Theme.of(context).primaryColor,
+            mouseCursor: MaterialStateMouseCursor.clickable,
+          ),
+          ListTile(
+            title: Text(
+              'LogOut',
+              style: GoogleFonts.openSans(
+                color: Theme.of(context).primaryColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            leading: Icon(
+              Icons.logout,
+              color: Theme.of(context).primaryColor,
+            ),
+            onTap: () {
+             FirebaseAuth.instance.signOut();
+             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const SplashScreen(
+               isFromLogout: true,
+             )));
             },
             focusColor: Theme.of(context).primaryColor,
             hoverColor: Theme.of(context).primaryColor,

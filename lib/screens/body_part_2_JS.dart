@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pappupehalwan/screens/yojana_screen.dart';
 import '../chat/screens/chat.dart';
 import '../providers/user_details.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,7 @@ class BodyPart2JS extends StatelessWidget {
           );
         }
         if (index == 1) {
-          launch("tel://9999999999");
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>const YojanaScreen()));
         }
       },
       child: Container(
@@ -88,17 +89,17 @@ class BodyPart2JS extends StatelessWidget {
       {
         'icon': Icons.quiz,
         'title': 'शिकायत', 
-        'color': Color(0xFF149531),
+        'color': const Color(0xFF149531),
       },
       {
-        'icon': Icons.woman_outlined,
-        'title': 'आपातकालीन नंबर',
-        'color': Color(0xFFF20202)
+        'icon': Icons.synagogue,
+        'title': 'सरकारी योजनाएं',
+        'color': const Color(0xFFF85611)
       },
       {
         'icon': Icons.assistant_outlined,
         'title': 'सुझाव', 
-        'color': Color(0xFF149531),
+        'color': const Color(0xFF149531),
         },
     ];
     final width = MediaQuery.of(context).size.width;

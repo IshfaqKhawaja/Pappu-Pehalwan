@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:pappupehalwan/chat/widgets/message_ticket_status.dart';
 import '../../chat/screens/chat.dart';
 
 class UsersChat extends StatelessWidget {
@@ -85,14 +86,24 @@ class UsersChat extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            subtitle: Text(
-              recentText,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-              ),
+            subtitle: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  recentText,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const MessageTicketStatus()
+              ],
             ),
             trailing: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

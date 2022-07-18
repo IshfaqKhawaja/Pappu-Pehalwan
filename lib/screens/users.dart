@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pappupehalwan/screens/admin_typeahead.dart';
 import '../providers/user_details.dart';
 import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -97,10 +98,28 @@ class Users extends StatelessWidget {
 
 
                          
-                          onToggle: (index) {
-                            FirebaseFirestore.instance.collection('users').doc(user['userId']).update({
-                              'isAdmin': index == 0 ? true : false,
-                            });
+                          onToggle: (index) async {
+                            if (index == 0) {
+                              await showDialog(
+                                  context: context,
+                                  builder: (ctx) => const AdminTypeAhead()
+                              ).then((value) {
+                                if (value != null) {
+                                  FirebaseFirestore.instance.collection('users')
+                                      .doc(user['userId'])
+                                      .update({
+                                    'isAdmin': false,
+                                    'shikayat': value,
+                                  });
+                                }
+                              });
+                            } else {
+                              FirebaseFirestore.instance.collection('users')
+                                  .doc(user['userId'])
+                                  .update({
+                                'isAdmin': index == 0 ? true : false,
+                              });
+                            }
                           },
                           activeBgColors: const [[Colors.blue],[Colors.pink]],
 

@@ -8,9 +8,11 @@ class ShowAnnoncementFiles extends StatefulWidget {
   static const routeName = '/show-annoncement-files';
   final files;
   final isHomeScreen;
+  final type;
   ShowAnnoncementFiles({
     this.files,
     this.isHomeScreen = false,
+    this.type = '',
   });
 
   @override
@@ -38,17 +40,15 @@ class _ShowAnnoncementFilesState extends State<ShowAnnoncementFiles> {
                   setState(() {
                     this.index = index;
                   });
-                
                 },
-                ),
+            ),
             itemCount: widget.files.length,
 
             itemBuilder: (BuildContext context, int index, int pageViewIndex) {
-              String type = widget.files[index]['type'];
-
+              String type = widget.type;
               return Container(
                 child: Center(
-                  child: type.toUpperCase() == 'photo'.toUpperCase()
+                  child: type.toUpperCase() == 'album'.toUpperCase()
                       ? InkWell(
                           onTap: () {
                             showDialog(
@@ -81,8 +81,8 @@ class _ShowAnnoncementFilesState extends State<ShowAnnoncementFiles> {
                           },
                           child: CachedNetworkImage(
                             placeholder: (context, url) => Container(
-                              height: 280,
-                              width: MediaQuery.of(context).size.width,
+                              height: (widget.files[index]['media']['image']['height'] as int).toDouble(),
+                              width: (widget.files[index]['media']['image']['width'] as int).toDouble(),
                               child: const Center(
                                 child: CircularProgressIndicator(),
                               ),
@@ -92,10 +92,11 @@ class _ShowAnnoncementFilesState extends State<ShowAnnoncementFiles> {
                             fit: fit ? BoxFit.cover : BoxFit.contain,
                           ),
                         )
-                      : PlayVideo(
-                          video: widget.files[index]['url'],
-                          type: 'network',
-                        ),
+                      : const SizedBox()
+                  // PlayVideo(
+                  //         video: widget.files[index]['url'],
+                  //         type: 'network',
+                  //       ),
                 ),
               );
             }),

@@ -63,6 +63,7 @@ dependencies:
   toggle_switch: ^2.0.1
   fluttertoast: ^8.0.9
   share_plus: ^4.0.10
+  flutter_typeahead: ^3.2.7
 flutter_icons:
   android: true
   ios: true

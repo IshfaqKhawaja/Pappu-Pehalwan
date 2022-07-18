@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,7 +40,7 @@ class _LoadPostsState extends State<LoadPosts> {
 
   Future<void> loadPostsFromFirebase() async {
     var res = await FirebaseFirestore.instance.collection('posts').get();
-    print('Data loaded from Firebase');
+    // print('Data loaded from Firebase');
     if (res.docs.isNotEmpty) {
       posts = res.docs[0].data()['posts'] ?? [];
     }
@@ -49,23 +50,16 @@ class _LoadPostsState extends State<LoadPosts> {
   Future<void> loadAllPosts(int start, int end) async {
     try {
       await loadPostsFromFirebase();
+      List postCategories = ['FEATURED','POST','HPCC'];
+      Random random = Random();
       if (tempPosts.isNotEmpty) {
         for (var post in tempPosts) {
-          // if (start >= end) {
-          //   break;
-          // }
-          // print('Start is $start');
-          start += 1;
           var id = post['id'];
-          // print(id);
-          final res = await http.get(Uri.parse(
-              '$urlPart$id?fields=message,attachments,created_time&access_token=$accessToken'));
-          var postData = jsonDecode(res.body);
           var attachments = {};
           var subAttachments = [];
           var media = {};
-          if (postData.containsKey('attachments')) {
-            attachments = postData['attachments']['data'][0];
+          if (post.containsKey('attachments')) {
+            attachments = post['attachments']['data'][0];
             if (attachments.containsKey('media')) {
               media = attachments;
             }
@@ -75,14 +69,14 @@ class _LoadPostsState extends State<LoadPosts> {
           }
           Map<String, dynamic> tempPost = {
             'id': id,
-            'message': postData['message'] ?? '',
-            'date': postData["created_time"] ?? DateTime.now(),
+            'message': post['message'] ?? '',
+            'date': post["created_time"] ?? DateTime.now(),
             'media': media,
             'subattachments': subAttachments,
-            'createdTime': postData['created_time'],
+            'createdTime': post['created_time'],
             'type': attachments['type'] ?? '',
             'userType': '',
-            'postType': '',
+            'postType': postCategories[random.nextInt(3)],
           };
           var index = posts.indexWhere(((element) => element['id'] == id));
           if (index != -1) {
@@ -93,9 +87,8 @@ class _LoadPostsState extends State<LoadPosts> {
             posts.insert(0, tempPost);
           }
 
-          // print(posts.length);
         }
-        // this.start += total;
+        posts.sort(((a, b) => DateTime.parse(b['date']).compareTo(DateTime.parse(a['date']))));
       }
       setState(() {
         loaded = true;
@@ -106,20 +99,27 @@ class _LoadPostsState extends State<LoadPosts> {
   }
 
   Future<void> loadPosts() async {
-    // accessToken =
-    //     Provider.of<LoadDataFromFacebook>(context, listen: false).getFbKey;
     accessToken =
-        'EAAHAavFovc4BAITfd4LTeU8pHezZB12OwtvzxZAZBA5aNeqKibSQAYTOgONNJGmP46n20ek3HVF6ZCO3AZCEzRsAkFYebgFYtbZAwZAYUgbq3aUR4udSqxwzWzb0mdhLgADZAAtNqVjkEzkTZBSVnwyrB02o9jMeO26fTGi7IKPPBSw9Q5ZCqUhvtz';
+        Provider.of<LoadDataFromFacebook>(context, listen: false).getFbKey;
+    // accessToken =
+    //     'EAAHAavFovc4BAITfd4LTeU8pHezZB12OwtvzxZAZBA5aNeqKibSQAYTOgONNJGmP46n20ek3HVF6ZCO3AZCEzRsAkFYebgFYtbZAwZAYUgbq3aUR4udSqxwzWzb0mdhLgADZAAtNqVjkEzkTZBSVnwyrB02o9jMeO26fTGi7IKPPBSw9Q5ZCqUhvtz';
     int limit = 100;
     url =
         "${urlPart}106458985426806/feed?access_token=$accessToken&limit=$limit";
     var res;
     try {
       res = await http.get(Uri.parse(url));
-      tempPosts = jsonDecode(res.body)['data'];
-      print('Base URL Loaded From Facebook');
-      loadAllPosts(start, total);
+      if(jsonDecode(res.body).containsKey('data')) {
+        tempPosts = jsonDecode(res.body)['data'];
+        print('Base URL Loaded From Facebook');
+        loadAllPosts(start, total);
+      } else{
+        Fluttertoast.showToast(msg: '${res.body}',toastLength: Toast.LENGTH_LONG);
+      }
     } catch (e) {
+      Fluttertoast.showToast(msg: 'Error Loading Posts From Facebook because $e or ${res.body}',
+        toastLength: Toast.LENGTH_LONG,
+      );
       print('The error in load posts from facebook $e ${res.body}');
       setState(() {
         loaded = true;
@@ -155,24 +155,28 @@ class _LoadPostsState extends State<LoadPosts> {
                 setState(() {
                   updating = true;
                 });
-                await FirebaseFirestore.instance
-                    .collection('posts')
-                    .doc('posts')
-                    .set({
-                  'posts': posts,
-                });
-                setState(() {
-                  updating = false;
-                });
-                Fluttertoast.showToast(msg: 'Datebase Updated!');
+                try {
+                  await FirebaseFirestore.instance
+                      .collection('posts')
+                      .doc('posts')
+                      .set({
+                    'posts': posts,
+                  });
+                  setState(() {
+                    updating = false;
+                  });
+                } catch(e){
+                  setState((){
+                    updating = false;
+                  });
+                }
+                Fluttertoast.showToast(msg: 'Database Updated!');
               },
               child: updating ? Container(
                 height: 20,
                 width: 20,
                 child: const CircularProgressIndicator(
                   color: Colors.white,
-                  
-                  
                 ),
               ) : Text(
                 'Update',

@@ -9,7 +9,9 @@ import '../screens/body.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  final isFromLogout;
+
+  const SplashScreen({Key? key, this.isFromLogout = false}) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -25,8 +27,12 @@ class _SplashScreenState extends State<SplashScreen> {
       // await Provider.of<LoadDataFromFacebook>(context, listen: false).loadPosts();
 
       Provider.of<UserDetails>(context, listen: false).loadUserDetails();
+      Provider.of<LoadDataFromFacebook>(context, listen: false)
+          .loadFacebookKey();
+      // await Provider.of<LoadDataFromFacebook>(context, listen: false)
+      //     .loadDataFromFirebase();
       await Provider.of<LoadDataFromFacebook>(context, listen: false)
-          .loadDataFromFirebase();
+          .loadPostsFromFirebase();
       await Future.delayed(const Duration(milliseconds: 2400));
       setState(() {
         isLoading = false;
@@ -76,60 +82,65 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.asset(
-                      'assets/images/icon.jpg',
-                      height: 200,
-                      width: 200,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  AnimatedTextKit(
-                    animatedTexts: [
-                      TypewriterAnimatedText(
-                        'Pappu Pehalwan',
-                        textStyle: GoogleFonts.openSans(
-                          fontSize: 32.0,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
+    return widget.isFromLogout
+        ? Login(
+            loadData: loadData,
+          )
+        : isLoading
+            ? Scaffold(
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.asset(
+                          'assets/images/icon.jpg',
+                          height: 200,
+                          width: 200,
+                          fit: BoxFit.cover,
                         ),
-                        speed: const Duration(milliseconds: 200),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      AnimatedTextKit(
+                        animatedTexts: [
+                          TypewriterAnimatedText(
+                            'Pappu Pehalwan',
+                            textStyle: GoogleFonts.openSans(
+                              fontSize: 32.0,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            speed: const Duration(milliseconds: 200),
+                          ),
+                        ],
+                        totalRepeatCount: 4,
+                        // pause: const Duration(milliseconds: 500),
+                        displayFullTextOnTap: true,
+                        stopPauseOnTap: true,
                       ),
                     ],
-                    totalRepeatCount: 4,
-                    // pause: const Duration(milliseconds: 500),
-                    displayFullTextOnTap: true,
-                    stopPauseOnTap: true,
                   ),
-                ],
-              ),
-            ),
-          )
-        : isLoggedIn
-            ? isRebuilding
-                ? Container(
-                    color: Colors.white,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : Body(
-                    rebuilt: rebuilt,
-                    built: built,
-                  )
-            : Login(
-                loadData: loadData,
-              );
+                ),
+              )
+            : isLoggedIn
+                ? isRebuilding
+                    ? Container(
+                        color: Colors.white,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : Body(
+                        rebuilt: rebuilt,
+                        built: built,
+                        loadData: loadData,
+                      )
+                : Login(
+                    loadData: loadData,
+                  );
   }
 }

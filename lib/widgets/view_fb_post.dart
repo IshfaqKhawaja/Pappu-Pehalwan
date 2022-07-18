@@ -13,6 +13,7 @@ class ViewFBPost extends StatefulWidget {
   final media;
   final description;
   final appbarTitle;
+  final type;
   const ViewFBPost({
     Key? key,
     this.id,
@@ -22,6 +23,7 @@ class ViewFBPost extends StatefulWidget {
     this.media,
     this.attachement,
     this.description,
+    this.type = '',
   }) : super(key: key);
 
   @override
@@ -72,18 +74,23 @@ class _ViewFBPostState extends State<ViewFBPost> {
                   child: ShowAnnoncementFiles(
                     files: widget.attachement,
                     isHomeScreen: true,
+                    type: widget.type,
                   ),
                 ),
               if (widget.attachement.length == 0 &&
                   widget.media != null &&
-                  widget.media['type'] == "video_inline")
+                  // widget.media['type'] == "video_inline"
+              widget.type == 'video_inline'
+              )
                 PlayVideo(
                   type: 'network',
                   video: widget.media['media']['source'],
                 ),
               if (widget.attachement.length == 0 &&
                   widget.media != null &&
-                  widget.media['type'] == "photo")
+                  // widget.media['type'] == "photo"
+              widget.type == 'photo'
+              )
                 CachedNetworkImage(
                   imageUrl: widget.media['media']['image']['src'],
                   fit: BoxFit.cover,

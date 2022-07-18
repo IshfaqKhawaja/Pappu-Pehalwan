@@ -59,7 +59,7 @@ class _EnterOTPState extends State<EnterOTP> {
           if (user.docs.isNotEmpty) {
             await widget.loadData();
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => Body()), (route) => false);
+                MaterialPageRoute(builder: (_) => const Body()), (route) => false);
           } else {
             Navigator.of(context).pop();
             showModalBottomSheet(
@@ -119,11 +119,11 @@ class _EnterOTPState extends State<EnterOTP> {
     final style2 = GoogleFonts.lato(
       fontSize: 20,
       fontWeight: FontWeight.w800,
-      color: Color(0xffC4C4C4),
+      color: const Color(0xffC4C4C4),
     );
     scrollToEnd();
     return Container(
-      color: Color(0xffEDDFD4),
+      color: const Color(0xffEDDFD4),
       alignment: Alignment.center,
       height: MediaQuery.of(context).size.height * 0.64,
       padding: const EdgeInsets.all(10).copyWith(
@@ -199,27 +199,6 @@ class _EnterOTPState extends State<EnterOTP> {
                     )
                   ],
                 )
-                // TextFormField(
-                //   style: style,
-                //   keyboardType: TextInputType.number,
-                //   decoration: const InputDecoration(
-                //     hintText: 'OTP',
-                //     enabledBorder: OutlineInputBorder(
-                //         borderSide: BorderSide(
-                //       color: Colors.transparent,
-                //     )),
-                //     focusedBorder: OutlineInputBorder(
-                //       borderSide: BorderSide(
-                //         color: Colors.transparent,
-                //       ),
-                //     ),
-                //   ),
-                //   onChanged: (val) {
-                //     setState(() {
-                //       otp = val;
-                //     });
-                //   },
-                // ),
                 ),
             const SizedBox(
               height: 13,
@@ -284,7 +263,7 @@ class _EnterOTPState extends State<EnterOTP> {
                     bottom: MediaQuery.of(context).viewInsets.bottom + 15,
                   ),
                   decoration: BoxDecoration(
-                      color: Color(0xff56514D),
+                      color: const Color(0xff56514D),
                       borderRadius: BorderRadius.circular(10)),
                   child: isLoading
                       ? const Center(
@@ -309,6 +288,7 @@ class _EnterOTPState extends State<EnterOTP> {
       child: AspectRatio(
         aspectRatio: 0.7,
         child: TextFormField(
+          textAlignVertical: TextAlignVertical.center,
           keyboardType: TextInputType.number,
           autofocus: true,
           onChanged: (val) {
@@ -316,13 +296,13 @@ class _EnterOTPState extends State<EnterOTP> {
               FocusScope.of(context).nextFocus();
               otpFields[index] = val;
             }
-            if(val.length==0){
+            if(val.isEmpty){
               FocusScope.of(context).previousFocus();
             }
           },
           showCursor: false,
           readOnly: false,
-          textAlign: TextAlign.center,
+          textInputAction: TextInputAction.next,
           style: GoogleFonts.lato(
             fontSize: 20,
             fontWeight: FontWeight.w800,
@@ -330,14 +310,15 @@ class _EnterOTPState extends State<EnterOTP> {
           ),
           maxLength: 1,
           decoration: InputDecoration(
+            contentPadding: const EdgeInsets.only(left: 14.5),
             fillColor: const Color(0xffC4C4C4),
             filled: true,
-            counter: Offstage(),
+            counter: const Offstage(),
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(width: 2,color: Colors.black.withOpacity(0.3)),
                 borderRadius: BorderRadius.circular(10)),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 2, color: Color(0xff56514D)),
+                borderSide: const BorderSide(width: 2, color: Color(0xff56514D)),
                 borderRadius: BorderRadius.circular(10)),
           ),
         ),

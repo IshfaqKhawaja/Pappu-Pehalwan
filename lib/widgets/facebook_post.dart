@@ -193,8 +193,8 @@ class _DropDownWidgetState extends State<DropDownWidget> {
           value: 'FEATURED',
         ),
         DropdownMenuItem(
-          child: Text('STORY'),
-          value: 'STORY',
+          child: Text('HPCC'),
+          value: 'HPCC',
         ),
         DropdownMenuItem(
           child: Text('POST'),

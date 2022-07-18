@@ -12,18 +12,52 @@ class BodyPart2 extends StatefulWidget {
 
 class _BodyPart2State extends State<BodyPart2> {
   List hpccPosts = [];
+  List posts = [];
+  List displayPosts = [];
+  int start = 0;
+  int stop = 5;
+  int count = 5;
+  final _controller = ScrollController();
+
+  void getDisplayPosts(int start, int stop){
+    setState((){
+      if(stop < hpccPosts.length && start < hpccPosts.length){
+        displayPosts.addAll(hpccPosts.sublist(start, stop));
+      } else if (stop > hpccPosts.length && start < hpccPosts.length){
+        displayPosts.addAll(hpccPosts.sublist(start));
+      }
+    });
+  }
   @override
   void initState() {
     super.initState();
+    posts = Provider.of<LoadDataFromFacebook>(context, listen: false).getPosts;
     hpccPosts =
-        Provider.of<LoadDataFromFacebook>(context, listen: false).getHpccPosts;
+    posts.where((element) => element['postType'] == 'HPCC').toList();
+    getDisplayPosts(start, stop);
+    _controller.addListener(() {
+      if(_controller.offset == _controller.position.maxScrollExtent){
+        Future.delayed(const Duration(milliseconds: 500), (){
+          setState((){
+            start = stop;
+            stop = stop + count;
+            getDisplayPosts(start, stop);
+          });
+        });
+      }
+    });
   }
 
+  @override
+  void dispose(){
+    super.dispose();
+    _controller.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Container(
-      // height: 230,
+      height: 250,
       // color: Colors.white,
       width: width,
       padding: const EdgeInsets.only(left: 10, top: 10, bottom: 20,),
@@ -42,25 +76,28 @@ class _BodyPart2State extends State<BodyPart2> {
           const SizedBox(
             height: 10,
           ),
-          SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(
-                  hpccPosts.length,
-                  (index) {
-                    return BodyPart2Item(
-                      images: hpccPosts[index]['subattachments'].length != 0
-                          ? hpccPosts[index]['subattachments']
-                          : hpccPosts[index]['media'] != 0
-                              ? [hpccPosts[index]['media']]
-                              : [],
-                      title: hpccPosts[index]['title'],
-                      hpccPost: hpccPosts[index],
+          Expanded(
+              child: ListView.builder(
+                itemCount: displayPosts.length + 1,
+                  scrollDirection: Axis.horizontal,
+                  controller: _controller,
+                  itemBuilder: (_, index){
+                  if(index == displayPosts.length && displayPosts.length != hpccPosts.length){
+                    return Container(
+                      width: MediaQuery.of(context).size.width * 0.13,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     );
-                  },
-                ),
-              ),),
-             
+                  }
+                  return index == hpccPosts.length ? const SizedBox.shrink() : BodyPart2Item(
+                   images: displayPosts[index]['subattachments'].length != 0 ? displayPosts[index]['subattachments'] : displayPosts[index]['media'] != 0 ? [displayPosts[index]['media']] : [],
+                   title: displayPosts[index].containsKey('message') ? displayPosts[index]['message'].split('\n')[0] : '',
+                    hpccPost: displayPosts[index],
+                  );
+                  }
+              )
+          ),
         ],
       ),
     );
