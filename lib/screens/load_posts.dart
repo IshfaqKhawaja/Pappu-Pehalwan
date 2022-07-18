@@ -50,7 +50,7 @@ class _LoadPostsState extends State<LoadPosts> {
   Future<void> loadAllPosts(int start, int end) async {
     try {
       await loadPostsFromFirebase();
-      List postCategories = ['FEATURED','POST','HPCC'];
+      List postCategories = ['FEATURED', 'POST', 'STORY'];
       Random random = Random();
       if (tempPosts.isNotEmpty) {
         for (var post in tempPosts) {
@@ -86,9 +86,9 @@ class _LoadPostsState extends State<LoadPosts> {
           } else {
             posts.insert(0, tempPost);
           }
-
         }
-        posts.sort(((a, b) => DateTime.parse(b['date']).compareTo(DateTime.parse(a['date']))));
+        posts.sort(((a, b) =>
+            DateTime.parse(b['date']).compareTo(DateTime.parse(a['date']))));
       }
       setState(() {
         loaded = true;
@@ -101,23 +101,23 @@ class _LoadPostsState extends State<LoadPosts> {
   Future<void> loadPosts() async {
     accessToken =
         Provider.of<LoadDataFromFacebook>(context, listen: false).getFbKey;
-    // accessToken =
-    //     'EAAHAavFovc4BAITfd4LTeU8pHezZB12OwtvzxZAZBA5aNeqKibSQAYTOgONNJGmP46n20ek3HVF6ZCO3AZCEzRsAkFYebgFYtbZAwZAYUgbq3aUR4udSqxwzWzb0mdhLgADZAAtNqVjkEzkTZBSVnwyrB02o9jMeO26fTGi7IKPPBSw9Q5ZCqUhvtz';
     int limit = 100;
     url =
-        "${urlPart}106458985426806/feed?access_token=$accessToken&limit=$limit";
+        "${urlPart}106458985426806/feed?fields=attachments{media,type,subattachments},message,created_time&access_token=$accessToken&limit=$limit";
     var res;
     try {
       res = await http.get(Uri.parse(url));
-      if(jsonDecode(res.body).containsKey('data')) {
+      if (jsonDecode(res.body).containsKey('data')) {
         tempPosts = jsonDecode(res.body)['data'];
         print('Base URL Loaded From Facebook');
         loadAllPosts(start, total);
-      } else{
-        Fluttertoast.showToast(msg: '${res.body}',toastLength: Toast.LENGTH_LONG);
+      } else {
+        Fluttertoast.showToast(
+            msg: '${res.body}', toastLength: Toast.LENGTH_LONG);
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Error Loading Posts From Facebook because $e or ${res.body}',
+      Fluttertoast.showToast(
+        msg: 'Error Loading Posts From Facebook because $e or ${res.body}',
         toastLength: Toast.LENGTH_LONG,
       );
       print('The error in load posts from facebook $e ${res.body}');
@@ -141,6 +141,7 @@ class _LoadPostsState extends State<LoadPosts> {
 
   @override
   Widget build(BuildContext context) {
+    print(posts.length);
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -165,25 +166,27 @@ class _LoadPostsState extends State<LoadPosts> {
                   setState(() {
                     updating = false;
                   });
-                } catch(e){
-                  setState((){
+                } catch (e) {
+                  setState(() {
                     updating = false;
                   });
                 }
                 Fluttertoast.showToast(msg: 'Database Updated!');
               },
-              child: updating ? Container(
-                height: 20,
-                width: 20,
-                child: const CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-              ) : Text(
-                'Update',
-                style: GoogleFonts.openSans(
-                  color: Colors.white,
-                ),
-              ),
+              child: updating
+                  ? Container(
+                      height: 20,
+                      width: 20,
+                      child: const CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : Text(
+                      'Update',
+                      style: GoogleFonts.openSans(
+                        color: Colors.white,
+                      ),
+                    ),
             ),
           ],
         ),

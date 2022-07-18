@@ -197,7 +197,9 @@ class LoadDataFromFacebook with ChangeNotifier {
 
   void loadFacebookKey() async{
     var res = await FirebaseFirestore.instance.collection('key').get();
-    fbKey = res.docs[0].data()['key'];
+    if(res.docs.isNotEmpty){
+      fbKey = res.docs[0].data()['key'];
+    }
     notifyListeners();
   }
 

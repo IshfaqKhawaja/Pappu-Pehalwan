@@ -23,7 +23,7 @@ class _BodyPart2State extends State<BodyPart2> {
     setState((){
       if(stop < hpccPosts.length && start < hpccPosts.length){
         displayPosts.addAll(hpccPosts.sublist(start, stop));
-      } else if (stop > hpccPosts.length && start < hpccPosts.length){
+      } else if (stop >= hpccPosts.length && start < hpccPosts.length){
         displayPosts.addAll(hpccPosts.sublist(start));
       }
     });
@@ -33,7 +33,7 @@ class _BodyPart2State extends State<BodyPart2> {
     super.initState();
     posts = Provider.of<LoadDataFromFacebook>(context, listen: false).getPosts;
     hpccPosts =
-    posts.where((element) => element['postType'] == 'HPCC').toList();
+    posts.where((element) => element['postType'] == 'STORY').toList();
     getDisplayPosts(start, stop);
     _controller.addListener(() {
       if(_controller.offset == _controller.position.maxScrollExtent){
