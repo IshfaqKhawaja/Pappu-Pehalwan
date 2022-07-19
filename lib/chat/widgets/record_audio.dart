@@ -105,6 +105,7 @@ class RecordAudioState extends State<RecordAudio> {
           'questions': widget.questions,
           'createdAt': Timestamp.now(),
           'title': widget.appBarTitle,
+          'status' : 0,
         });
         widget.changeMessageSent(res.id);
         widget.changeSameScreen(res.id);

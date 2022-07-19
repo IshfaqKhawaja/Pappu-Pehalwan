@@ -79,6 +79,7 @@ class ChatScreen extends StatelessWidget {
                 appBarTitle: docs[index]['title'],
                 questions : docs[index]['questions'],
                 scaffoldKey: scaffoldKey,
+                status : docs[index]['status'] ?? 0,
               );
             },
           );

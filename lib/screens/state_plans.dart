@@ -32,7 +32,7 @@ class _StatesPlansState extends State<StatesPlans> {
             height: 65,
             color: const Color(0xffD9D9D9),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/viklang_pention.png'),
                 Column(
@@ -41,14 +41,13 @@ class _StatesPlansState extends State<StatesPlans> {
                     const Text("यू.पी विकलांग (दिव्यांग) पेंशन योजना"),
                     Row(
                       children: [
-                        Text("यूपी विकलांग पेंशन योजना का लाभ लेने के लिए.....",style: plansContentTextStyle,),
+                        Text("यूपी विकलांग पेंशन योजना का लाभ लेने के लिए आप.....",style: plansContentTextStyle,),
                         const SizedBox(
                           width: 4,
                         ),
                         Row(
                           children: const [
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7),),
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7))
+                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
                           ],
                         )
                       ],
@@ -72,7 +71,7 @@ class _StatesPlansState extends State<StatesPlans> {
             height: 65,
             color: const Color(0xffD9D9D9),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/majdoori_durghatna.png'),
                 Column(
@@ -81,14 +80,13 @@ class _StatesPlansState extends State<StatesPlans> {
                     const Text("मुख्यमंत्री कृषक दुर्घटना कल्याण योजना"),
                     Row(
                       children: [
-                        Text("मुख्यमंत्री कृषक दुर्घटना कल्याण योजना के अंतर्गत.....",style: plansContentTextStyle,),
+                        Text("मुख्यमंत्री कृषक दुर्घटना कल्याण योजना के अंतर्गत आप.....",style: plansContentTextStyle,),
                         const SizedBox(
                           width: 4,
                         ),
                         Row(
                           children: const [
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7),),
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7))
+                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
                           ],
                         )
                       ],
@@ -112,7 +110,7 @@ class _StatesPlansState extends State<StatesPlans> {
             height: 65,
             color: const Color(0xffD9D9D9),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/vradha_pention.png'),
                 Column(
@@ -127,8 +125,7 @@ class _StatesPlansState extends State<StatesPlans> {
                         ),
                         Row(
                           children: const [
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7),),
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7))
+                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
                           ],
                         )
                       ],
@@ -152,7 +149,7 @@ class _StatesPlansState extends State<StatesPlans> {
             height: 65,
             color: const Color(0xffD9D9D9),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/vishwakarma_samman.png'),
                 Column(
@@ -161,14 +158,13 @@ class _StatesPlansState extends State<StatesPlans> {
                     const Text("उत्तर प्रदेश विश्वकर्मा श्रम सम्मान योजना"),
                     Row(
                       children: [
-                        Text("उत्तर प्रदेश के मुख्यमंत्री श्री योगी आदित्यनाथ ने.....",style: plansContentTextStyle,),
+                        Text("उत्तर प्रदेश के मुख्यमंत्री श्री योगी आदित्यनाथ ने आप की.....",style: plansContentTextStyle,),
                         const SizedBox(
                           width: 4,
                         ),
                         Row(
                           children: const [
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7),),
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7))
+                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
                           ],
                         )
                       ],
@@ -192,7 +188,7 @@ class _StatesPlansState extends State<StatesPlans> {
             height: 65,
             color: const Color(0xffD9D9D9),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/kukut_palan.png'),
                 Column(
@@ -207,8 +203,7 @@ class _StatesPlansState extends State<StatesPlans> {
                         ),
                         Row(
                           children: const [
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7),),
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7))
+                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
                           ],
                         )
                       ],
@@ -232,7 +227,7 @@ class _StatesPlansState extends State<StatesPlans> {
             height: 65,
             color: const Color(0xffD9D9D9),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/madjoori_bharta.png'),
                 Column(
@@ -247,8 +242,7 @@ class _StatesPlansState extends State<StatesPlans> {
                         ),
                         Row(
                           children: const [
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7),),
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7))
+                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
                           ],
                         )
                       ],
@@ -272,7 +266,7 @@ class _StatesPlansState extends State<StatesPlans> {
             height: 65,
             color: const Color(0xffD9D9D9),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/kanya_sumangala.png'),
                 Column(
@@ -287,8 +281,7 @@ class _StatesPlansState extends State<StatesPlans> {
                         ),
                         Row(
                           children: const [
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7),),
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7))
+                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
                           ],
                         )
                       ],
@@ -312,7 +305,7 @@ class _StatesPlansState extends State<StatesPlans> {
             height: 65,
             color: const Color(0xffD9D9D9),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/viklang_sadhi.png'),
                 Column(
@@ -327,8 +320,7 @@ class _StatesPlansState extends State<StatesPlans> {
                         ),
                         Row(
                           children: const [
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7),),
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7))
+                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
                           ],
                         )
                       ],
@@ -352,7 +344,7 @@ class _StatesPlansState extends State<StatesPlans> {
             height: 65,
             color: const Color(0xffD9D9D9),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/dignity_kit.png'),
                 Column(
@@ -367,8 +359,7 @@ class _StatesPlansState extends State<StatesPlans> {
                         ),
                         Row(
                           children: const [
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7),),
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7))
+                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
                           ],
                         )
                       ],
@@ -392,7 +383,7 @@ class _StatesPlansState extends State<StatesPlans> {
             height: 65,
             color: const Color(0xffD9D9D9),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/images/vidwa_pention.png'),
                 Column(
@@ -407,8 +398,7 @@ class _StatesPlansState extends State<StatesPlans> {
                         ),
                         Row(
                           children: const [
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7),),
-                            Icon(Icons.arrow_forward_ios,size: 10,color: Color(0xff146AA7))
+                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
                           ],
                         )
                       ],

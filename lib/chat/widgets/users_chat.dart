@@ -18,6 +18,7 @@ class UsersChat extends StatelessWidget {
   final String? profileUrl;
   final Timestamp? datetime;
   final scaffoldKey;
+  final status;
   UsersChat({
     this.username,
     this.docId,
@@ -31,6 +32,7 @@ class UsersChat extends StatelessWidget {
     this.questions,
     this.appBarTitle,
     this.scaffoldKey,
+    this.status = 0,
   });
 
   @override
@@ -102,7 +104,9 @@ class UsersChat extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                const MessageTicketStatus()
+                 MessageTicketStatus(
+                  status: status,
+                )
               ],
             ),
             trailing: Column(

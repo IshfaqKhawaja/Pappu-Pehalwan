@@ -2,17 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:pappupehalwan/screens/contact_us.dart';
+import 'package:pappupehalwan/screens/profile.dart';
 import '../chat/screens/chat_screen.dart';
 import '../providers/load_data_from_facebook.dart';
 import '../providers/user_details.dart';
 import 'about.dart';
 import 'admin_messages.dart';
-import 'audio_sos.dart';
-import 'audio_sos_admin.dart';
 import 'body_home.dart';
-import 'groups.dart';
 import 'image_sos.dart';
-import 'image_sos_admin.dart';
 import 'load_posts.dart';
 import 'users.dart';
 import '../widgets/bottom_bar.dart';
@@ -47,7 +45,8 @@ class _BodyState extends State<Body> {
   void changeIndex(index) {
     if (index == 0) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => userDetails['isAdmin'] ? const About() : const About()
+          builder: (_) => const About()
+          // userDetails['isAdmin'] ?
           // ImageSOSAdmin() : ImagesSOS(
           //         scaffoldKey: scaffoldKey,
           //         username: userDetails['name'] ?? userDetails['phoneNumber'],
@@ -71,13 +70,14 @@ class _BodyState extends State<Body> {
       // ));
     } else if (index == 4) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => userDetails['isAdmin']
-            ? AudioSOSAdmin()
-            :  AudioSOS(
-                scaffoldKey: scaffoldKey,
-                username: userDetails['name'] ?? userDetails['phoneNumber'],
-                userId: userDetails['userId'],
-              ),
+        builder: (_) => const ContactUs()
+        // userDetails['isAdmin']
+        //     ? AudioSOSAdmin()
+        //     :  AudioSOS(
+        //         scaffoldKey: scaffoldKey,
+        //         username: userDetails['name'] ?? userDetails['phoneNumber'],
+        //         userId: userDetails['userId'],
+        //       ),
       ));
     } else {
       setState(() {
@@ -95,9 +95,10 @@ class _BodyState extends State<Body> {
         Provider.of<UserDetails>(context, listen: false).getUserDetails;
     print(userDetails);
     screens = [
-      ImagesSOS(
-        scaffoldKey: scaffoldKey,
-      ),
+      const About(),
+      // ImagesSOS(
+      //   scaffoldKey: scaffoldKey,
+      // ),
       userDetails['isAdmin']
           ? AdminMessages()
           : ChatScreen(
@@ -107,10 +108,10 @@ class _BodyState extends State<Body> {
         scaffoldKey: scaffoldKey,
       ),
       userDetails['isAdmin']
-          ? Users()
-          : Groups(
-              scaffoldKey: scaffoldKey,
-            ),
+          ? Users() : Profile(),
+          // : Groups(
+          //     scaffoldKey: scaffoldKey,
+          //   ),
       BodyHome(),
     ];
   }

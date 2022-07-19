@@ -71,6 +71,7 @@ class AdminChatScreen extends StatelessWidget {
                 questions: data['questions'],
                 docId: docs[index].id,
                 appBarTitle: data['title'],
+                status: data['status'],
 
               );
             },

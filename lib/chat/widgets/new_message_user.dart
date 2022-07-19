@@ -109,6 +109,7 @@ class _NewMessageUserState extends State<NewMessageUser> {
               'details': details,
               'questions': widget.questions,
               'createdAt': Timestamp.now(),
+              'status' : 0,
               'title': widget.appBarTitle,
             });
             widget.changeMessageSent(res.id);
@@ -124,6 +125,7 @@ class _NewMessageUserState extends State<NewMessageUser> {
               'createdAt': Timestamp.now(),
               'questions': widget.questions,
               'title': widget.appBarTitle,
+              'status' : 0,
             });
             widget.changeMessageSent(widget.docId);
           }
@@ -226,6 +228,7 @@ class _NewMessageUserState extends State<NewMessageUser> {
             'questions': widget.questions,
             'createdAt': Timestamp.now(),
             'title': widget.appBarTitle,
+            'status' : 0
           });
           widget.changeMessageSent(res.id);
           widget.changeSameScreen(res.id);

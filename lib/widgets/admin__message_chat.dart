@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import '../chat/widgets/message_ticket_status.dart';
 import '../chat/screens/admin_chat_screen.dart';
 import '../chat/screens/chat.dart';
 
@@ -16,9 +18,9 @@ class AdminMessageChat extends StatelessWidget {
   final questions;
   final docId;
   final appBarTitle;
+  final status;
 
   const AdminMessageChat({
-
     Key? key,
     this.datetime,
     this.appBarTitle,
@@ -31,6 +33,7 @@ class AdminMessageChat extends StatelessWidget {
     this.details,
     this.questions,
     this.docId,
+    this.status = 0,
   }) : super(key: key);
 
   @override
@@ -47,7 +50,15 @@ class AdminMessageChat extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            onTap: () {
+            onTap: () async {
+              if (isRedirect && status < 1) {
+                await FirebaseFirestore.instance
+                    .collection('suggestions')
+                    .doc(userid)
+                    .collection('messages')
+                    .doc(docId)
+                    .update({'status': 1});
+              }
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (ctx) => isRedirect
                     ? Chat(
@@ -90,18 +101,28 @@ class AdminMessageChat extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            subtitle: Text(
-              recentText,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-              ),
+            subtitle: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  recentText,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+                if (isRedirect)
+                  MessageTicketStatus(
+                    status: status,
+                  )
+              ],
             ),
             trailing: Column(
               children: [
-                 Text(
+                Text(
                   DateFormat().add_MMMEd().format(
                         datetime!.toDate(),
                       ),

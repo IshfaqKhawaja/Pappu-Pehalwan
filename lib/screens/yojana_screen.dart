@@ -44,16 +44,16 @@ class _YojanaScreenState extends State<YojanaScreen>
               GoogleFonts.openSans(fontSize: 15, fontWeight: FontWeight.w700),
           tabs: [
             Tab(
-              text: 'राजकीय योजनाएं',
+              text: 'उ.प्र सरकारी योजनाएं',
             ),
             Tab(
-              text: 'राष्ट्रीय योजनाएं',
+              text: 'राष्ट्रीय सरकारी योजनाएं',
             ),
           ],
         ),
       ),
       body: TabBarView(
-          controller: tabController, children: [StatesPlans(),NationalPlans()]),
+          controller: tabController, children: const [StatesPlans(),NationalPlans()]),
     );
   }
 }

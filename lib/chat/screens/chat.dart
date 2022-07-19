@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_details.dart';
 import '../widgets/auto_messages.dart';
@@ -23,6 +24,7 @@ class Chat extends StatefulWidget {
   final isFromChatScreen;
 
   static const routeName = '/chat';
+
   Chat({
     this.phoneNumber,
     this.userId,
@@ -55,8 +57,6 @@ class _ChatState extends State<Chat> {
   String docId = '';
   bool showInputMessageField = false;
   GlobalKey<AutoMessagesState> key = GlobalKey<AutoMessagesState>();
-
- 
 
   void changeSameScreen(docId) {
     setState(() {
@@ -121,17 +121,91 @@ class _ChatState extends State<Chat> {
     bool isAdmin = adminDetails['isAdmin'] as bool;
     String profileUrl = '';
     if (isAdmin) update(userid);
-    // print('Is ffrom same screen: $sameScreen');
+    // print('Is from same screen: $sameScreen');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isAdmin
-            ? username != ''
-                ? username
-                : phoneNumber
-            : widget.isTitleSet
-                ? widget.appBarTitle
-                : 'Pappu Pehalwan'),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const BackButton(
+                      color: Colors.white,
+                    ),
+                    Text(isAdmin
+                        ? username != ''
+                            ? username
+                            : phoneNumber
+                        : widget.isTitleSet
+                            ? widget.appBarTitle
+                            : 'Pappu Pehalwan'),
+                  ],
+                ),
+                if (isAdmin && widget.isFromChatScreen)
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (ctx) {
+                            return AlertDialog(
+                              actionsAlignment: MainAxisAlignment.center,
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('suggestions')
+                                        .doc(userid)
+                                        .collection('messages')
+                                        .doc(docId)
+                                        .update({'status': 2});
+                                    Navigator.of(ctx).pop();
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Complete',
+                                    style: GoogleFonts.openSans(
+                                        color: Colors.green,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('suggestions')
+                                        .doc(userid)
+                                        .collection('messages')
+                                        .doc(docId)
+                                        .update({'status': 3});
+                                    Navigator.of(ctx).pop();
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    "Reject",
+                                    style: GoogleFonts.openSans(
+                                        color: Colors.red,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              ],
+                            );
+                          });
+                    },
+                    child: Text(
+                      "End Chat",
+                      style: GoogleFonts.openSans(color: Colors.white),
+                    ),
+                  ),
+    ]
+            ),
+          ],
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -161,8 +235,6 @@ class _ChatState extends State<Chat> {
           // Messages(
           //   userid: userid,
           // ),
-          
-
 
           showInputMessageField
               ? NewMessageUser(

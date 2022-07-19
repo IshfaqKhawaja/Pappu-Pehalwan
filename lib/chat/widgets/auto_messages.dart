@@ -334,6 +334,11 @@ class AutoMessagesState extends State<AutoMessages> {
                         },
                         child: Row(
                           children: [
+                            const Icon(
+                              Icons.check,
+                              size: 20,
+                              color: Colors.green,
+                            ),
                             Text(
                               "हाँ",
                               style: GoogleFonts.openSans(
@@ -341,11 +346,6 @@ class AutoMessagesState extends State<AutoMessages> {
                                   fontWeight: FontWeight.w600,
                                   color: Colors.green),
                             ),
-                            const Icon(
-                              Icons.check,
-                              size: 20,
-                              color: Colors.green,
-                            )
                           ],
                         )),
                     Container(
@@ -368,11 +368,16 @@ class AutoMessagesState extends State<AutoMessages> {
                             fontSize: 13,
                           );
                           await Future.delayed(
-                              const Duration(milliseconds: 2500));
+                              const Duration(milliseconds: 3000));
                           Navigator.of(context).pop();
                         },
                         child: Row(
                           children: [
+                            const Icon(
+                              Icons.clear_rounded,
+                              size: 20,
+                              color: Colors.red,
+                            ),
                             Text(
                               "नहीं",
                               style: GoogleFonts.openSans(
@@ -380,11 +385,7 @@ class AutoMessagesState extends State<AutoMessages> {
                                   fontWeight: FontWeight.w600,
                                   color: Colors.red),
                             ),
-                            const Icon(
-                              Icons.clear_rounded,
-                              size: 20,
-                              color: Colors.red,
-                            )
+
                           ],
                         )),
                   ],
