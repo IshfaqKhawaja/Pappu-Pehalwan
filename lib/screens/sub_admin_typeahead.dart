@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'shikayat_service.dart';
-class AdminTypeAhead extends StatefulWidget {
-  const AdminTypeAhead({Key? key}) : super(key: key);
+class SubAdminTypeAhead extends StatefulWidget {
+  const SubAdminTypeAhead({Key? key}) : super(key: key);
 
   @override
-  State<AdminTypeAhead> createState() => _AdminTypeAheadState();
+  State<SubAdminTypeAhead> createState() => _SubAdminTypeAheadState();
 }
 
-class _AdminTypeAheadState extends State<AdminTypeAhead> {
+class _SubAdminTypeAheadState extends State<SubAdminTypeAhead> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _typeAheadController = TextEditingController();
   String? _selectedItem;

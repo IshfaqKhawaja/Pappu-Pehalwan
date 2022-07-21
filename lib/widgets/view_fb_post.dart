@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'play_video.dart';
 import 'show_annoncement_files.dart';
 import 'package:share_plus/share_plus.dart';
+
 class ViewFBPost extends StatefulWidget {
   final id;
   final title;
@@ -14,6 +15,7 @@ class ViewFBPost extends StatefulWidget {
   final description;
   final appbarTitle;
   final type;
+
   const ViewFBPost({
     Key? key,
     this.id,
@@ -32,11 +34,12 @@ class ViewFBPost extends StatefulWidget {
 
 class _ViewFBPostState extends State<ViewFBPost> {
   bool isLiked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.appbarTitle??'',
+        title: Text(widget.appbarTitle ?? '',
             style: GoogleFonts.openSans(
               color: Colors.white,
               fontSize: 20,
@@ -44,14 +47,21 @@ class _ViewFBPostState extends State<ViewFBPost> {
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
-            onPressed: () async  {
+            onPressed: () async {
               final box = context.findRenderObject() as RenderBox?;
+              final attachment = widget.type == 'video_inline'
+                  ? widget.media.containsKey('media')
+                      ? widget.media['media'].containsKey('source')
+                          ? widget.media['media']['source']
+                          : ''
+                      : ''
+                  : '';
 
               await Share.share(
-                    'https://play.google.com/store/apps/details?id=com.abscodinformatics.pappupehalwan',
-                    subject: 'Pappu Pehalwan App on PlayStore',
-                    sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
-);
+                '${widget.description}\n\n$attachment',
+                subject: '${widget.title}',
+                sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+              );
             },
           ),
           const SizedBox(
@@ -60,7 +70,9 @@ class _ViewFBPostState extends State<ViewFBPost> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(4).copyWith(top: 2,),
+        padding: const EdgeInsets.all(4).copyWith(
+          top: 2,
+        ),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,8 +92,7 @@ class _ViewFBPostState extends State<ViewFBPost> {
               if (widget.attachement.length == 0 &&
                   widget.media != null &&
                   // widget.media['type'] == "video_inline"
-              widget.type == 'video_inline'
-              )
+                  widget.type == 'video_inline')
                 PlayVideo(
                   type: 'network',
                   video: widget.media['media']['source'],
@@ -89,8 +100,7 @@ class _ViewFBPostState extends State<ViewFBPost> {
               if (widget.attachement.length == 0 &&
                   widget.media != null &&
                   // widget.media['type'] == "photo"
-              widget.type == 'photo'
-              )
+                  widget.type == 'photo')
                 CachedNetworkImage(
                   imageUrl: widget.media['media']['image']['src'],
                   fit: BoxFit.cover,

@@ -11,7 +11,7 @@ class BodyPart1Item extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final containerWidth = width * 0.7;
-    return Container(
+    return image == '' ? const SizedBox.shrink() : Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       padding: const EdgeInsets.only(bottom :6),
       decoration:  BoxDecoration(

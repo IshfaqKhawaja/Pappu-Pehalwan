@@ -22,15 +22,29 @@ class _ProfileState extends State<Profile> {
   PickedFile? imageChosen;
   bool savingData = false;
   String profileUrl = '';
+  final genders = ['Male, Female'];
+  bool isMale = true;
+  bool isFemale = false;
+  String gender = 'male';
 
   @override
   void initState() {
     super.initState();
     userDetails =
-        Provider.of<UserDetails>(context, listen: false).getUserDetails;
+        Provider
+            .of<UserDetails>(context, listen: false)
+            .getUserDetails;
     profileUrl = userDetails['profileUrl'] ?? '';
+    if (userDetails['gender'] != null && userDetails['gender'] == 'male') {
+      isMale = true;
+      isFemale = false;
+      gender = 'male';
+    } else {
+      isMale = false;
+      isFemale = true;
+      gender = 'female';
+    }
   }
-
   Widget makeTextField(context, title) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -119,9 +133,13 @@ class _ProfileState extends State<Profile> {
         var url = await ref.getDownloadURL();
         profile['profileUrl'] = url;
       }
+      profile['gender'] = gender;
+      print(profile);
+      var id = userDetails['userId'];
+      // print(id);
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(userDetails['userId'])
+          .doc(id)
           .update(profile);
       Provider.of<UserDetails>(context, listen: false).loadUserDetails();
       setState(() {
@@ -168,16 +186,63 @@ class _ProfileState extends State<Profile> {
             sizedBox,
             makeTextField(context, 'Name'),
             sizedBox,
+            makeTextField(context, 'Email'),
+            sizedBox,
             makeTextField(context, 'Occupation'),
             sizedBox,
             makeTextField(context, 'Age'),
             sizedBox,
-            makeTextField(context, 'Village/Town'),
+            makeTextField(context, 'Address'),
             sizedBox,
-            makeTextField(context, 'Gender'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text('Gender',style: GoogleFonts.openSans(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold
+                  ),),
+                  RadioListTile(
+                    title: Text('Male',
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
+                    ),),
+                      activeColor: Theme.of(context).primaryColor,
+                      enableFeedback: true,
+                      selected: isMale,
+                      toggleable: true,
+                      value: 'Male',
+                      groupValue: genders,
+                      onChanged: (value){
+                      setState((){
+                        isMale = true;
+                        isFemale = false;
+                        gender = 'male';
+                      });
+                      }),
+                  RadioListTile(
+                    title: Text('Female',
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
+                    ),),
+                      activeColor: Theme.of(context).primaryColor,
+                      value: 'Female',
+                      selected: isFemale,
+                      groupValue: genders,
+                      onChanged: (value){
+                      setState((){
+                        isMale = false;
+                        isFemale = true;
+                        gender = 'female';
+                      });
+                      }),
+                ],
+              ),
+            ),
             sizedBox,
-            // makeTextField(context, 'Verified/Unverified'),
-            // sizedBox,
             sizedBox,
             MaterialButton(
               color: Theme.of(context).primaryColor,
@@ -187,7 +252,7 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               onPressed: saveData,
               child: savingData
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : Text(
                       'SAVE',
                       style: GoogleFonts.openSans(

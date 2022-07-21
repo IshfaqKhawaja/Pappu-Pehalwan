@@ -39,7 +39,7 @@ class BottomBar extends StatelessWidget {
         BottomNavigationBarItem(
           // change name from SOS to about but functionality of sos is still there which we will change
           icon: Icon(
-            currentIndex == 0 ? null : Icons.account_circle,
+            currentIndex == 0 ? null : Icons.account_circle_outlined,
             color: const Color(0xffA9ADB6),
             size: currentIndex == 0 ? 25 : 20,
           ),

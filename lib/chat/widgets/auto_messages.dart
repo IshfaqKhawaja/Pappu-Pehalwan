@@ -368,7 +368,7 @@ class AutoMessagesState extends State<AutoMessages> {
                             fontSize: 13,
                           );
                           await Future.delayed(
-                              const Duration(milliseconds: 3000));
+                              const Duration(milliseconds: 2500));
                           Navigator.of(context).pop();
                         },
                         child: Row(

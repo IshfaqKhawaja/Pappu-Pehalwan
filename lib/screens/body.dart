@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pappupehalwan/screens/contact_us.dart';
 import 'package:pappupehalwan/screens/profile.dart';
+import 'package:pappupehalwan/widgets/add_users_categories.dart';
 import '../chat/screens/chat_screen.dart';
 import '../providers/load_data_from_facebook.dart';
 import '../providers/user_details.dart';
 import 'about.dart';
 import 'admin_messages.dart';
 import 'body_home.dart';
-import 'image_sos.dart';
 import 'load_posts.dart';
 import 'users.dart';
 import '../widgets/bottom_bar.dart';
@@ -46,38 +46,10 @@ class _BodyState extends State<Body> {
     if (index == 0) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => const About()
-          // userDetails['isAdmin'] ?
-          // ImageSOSAdmin() : ImagesSOS(
-          //         scaffoldKey: scaffoldKey,
-          //         username: userDetails['name'] ?? userDetails['phoneNumber'],
-          //         userId: userDetails['userId'],
-          //       ),
-          ));
-// =======
-//         builder: (_) => userDetails['isAdmin']
-//             ? ImageSOSAdmin()
-//             : ImagesSOS(
-//                 scaffoldKey: scaffoldKey,
-//                 username: userDetails['name'] ?? userDetails['phoneNumber'],
-//                 userId: userDetails['userId'],
-//               ),
-            // : About()
-        // ImagesSOS(
-        //         scaffoldKey: scaffoldKey,
-        //         username: userDetails['name'] ?? userDetails['phoneNumber'],
-        //         userId: userDetails['userId'],
-        //       ),
-      // ));
+      ));
     } else if (index == 4) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => const ContactUs()
-        // userDetails['isAdmin']
-        //     ? AudioSOSAdmin()
-        //     :  AudioSOS(
-        //         scaffoldKey: scaffoldKey,
-        //         username: userDetails['name'] ?? userDetails['phoneNumber'],
-        //         userId: userDetails['userId'],
-        //       ),
+          builder: (_) => const ContactUs()
       ));
     } else {
       setState(() {
@@ -92,33 +64,32 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     userDetails =
-        Provider.of<UserDetails>(context, listen: false).getUserDetails;
+        Provider
+            .of<UserDetails>(context, listen: false)
+            .getUserDetails;
     print(userDetails);
     screens = [
       const About(),
-      // ImagesSOS(
-      //   scaffoldKey: scaffoldKey,
-      // ),
       userDetails['isAdmin']
           ? AdminMessages()
           : ChatScreen(
-              scaffoldKey: scaffoldKey,
-            ),
+        scaffoldKey: scaffoldKey,
+      ),
       BodyHome(
         scaffoldKey: scaffoldKey,
       ),
       userDetails['isAdmin']
           ? Users() : Profile(),
-          // : Groups(
-          //     scaffoldKey: scaffoldKey,
-          //   ),
       BodyHome(),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return WillPopScope(
       onWillPop: () async {
@@ -152,23 +123,9 @@ class _BodyState extends State<Body> {
       child: Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
-          // title: const HomeAppBar(),
           title: const Text('पप्पू पहलवान'),
           backgroundColor: const Color(0xFF56514D),
           actions: [
-            // Padding(
-            //   padding: EdgeInsets.all(8.0),
-            //   child: DropdownButton(
-            //     onChanged: (Language? language){
-            //     },
-            //       underline: SizedBox(),
-            //       icon: Icon(Icons.language,color: Colors.white,),
-            //       items:languageList().map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
-            //           value: lang,
-            //           child: Text(lang.name)
-            //       )).toList(),
-            //   ),
-            // ),
             const CircleAvatar(
               backgroundColor: Colors.transparent,
               backgroundImage: AssetImage(
@@ -176,93 +133,92 @@ class _BodyState extends State<Body> {
               ),
               radius: 20,
             ),
-          
-          const SizedBox(
-            width: 10,
-          ),
-        ],
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: screens[currentIndex],
-      bottomNavigationBar: showBottomBar
-          ? BottomBar(
-              currentIndex: currentIndex,
-              changeIndex: changeIndex,
-              scaffoldKey: scaffoldKey,
-            )
-          : null,
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   child: const  Icon(
-      //     Icons.refresh,
-      //     color: Colors.white,
-      //   ),
-      // ),
-      drawer: DrawerWidget(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: userDetails['isAdmin'] && currentIndex == 2
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FloatingActionButton(
-                  heroTag: null,
-                  backgroundColor: Theme.of(context).primaryColor,
-                  onPressed: () async {
-                    // widget.rebuilt();
-                    // await Provider.of<LoadDataFromFacebook>(context,
-                    //         listen: false)
-                    //     .loadPosts();
-                    // widget.built();
-                    Navigator.of(context).push(
-                            MaterialPageRoute(builder: (ctx) => LoadPosts())).then((value) async{
-                              widget.rebuilt();
-                              await Provider.of<LoadDataFromFacebook>(context, listen: false).loadPostsFromFirebase();
-                              widget.built();
-                    });
-                    // ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   const SnackBar(
-                    //     content: Text('Done...'),
-                    //   ),
-                    // );
-                  },
-                  child: loading ? const SpinKitWave(
-                    color: Colors.white,
-                    size: 20,
-                  ) : const Icon(
-                    Icons.refresh,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                // FloatingActionButton(
-                //   heroTag: null,
-                //   backgroundColor: Theme.of(context).primaryColor,
-                //   onPressed: () {
-                //     Provider.of<LoadDataFromFacebook>(context, listen: false)
-                //         .pushDataToFirebase();
-                //     ScaffoldMessenger.of(context).showSnackBar(
-                //       const SnackBar(
-                //         content: Text('Data Saved ...'),
-                //       ),
-                //     );
-                //   },
-                //   child: const Icon(
-                //     Icons.save,
-                //     size: 30,
-                //     color: Colors.white,
-                //   ),
-                // ),
-                const SizedBox(
-                  height: 70,
-                ),
-              ],
-            )
-          : null,
+
+            const SizedBox(
+              width: 10,
+            ),
+          ],
+          centerTitle: true,
+          elevation: 0,
+        ),
+        body: screens[currentIndex],
+        bottomNavigationBar: showBottomBar
+            ? BottomBar(
+          currentIndex: currentIndex,
+          changeIndex: changeIndex,
+          scaffoldKey: scaffoldKey,
+        )
+            : null,
+        drawer: DrawerWidget(
+          scaffoldKey: scaffoldKey,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButton: userDetails['isAdmin'] && currentIndex == 2
+            ? Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: null,
+              backgroundColor: Theme
+                  .of(context)
+                  .primaryColor,
+              onPressed: () async {
+                Navigator.of(context)
+                    .push(
+                    MaterialPageRoute(builder: (ctx) => const LoadPosts()))
+                    .then((value) async {
+                  widget.rebuilt();
+                  await Provider.of<LoadDataFromFacebook>(
+                      context, listen: false).loadPostsFromFirebase();
+                  widget.built();
+                });
+              },
+              child: loading ? const SpinKitWave(
+                color: Colors.white,
+                size: 20,
+              ) : const Icon(
+                Icons.refresh,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const SizedBox(
+              height: 70,
+            ),
+          ],
+        )
+            : userDetails['isAdmin'] && currentIndex == 3
+            ? Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: null,
+                backgroundColor: Theme.of(context).primaryColor,
+                onPressed: () async{
+                  showDialog(
+                      context: context,
+                      builder: (ctx) {
+                        return const Dialog(
+                          child: AddUsersCategories(),
+                        );
+                      }
+                  );
+                },
+              child: const Icon(
+                Icons.add,
+                size: 30,
+                  color: Colors.white,
+              ),
+            ),
+            const SizedBox(
+              height: 70,
+            ),
+          ],
+        )
+        : null,
       ),
     );
   }

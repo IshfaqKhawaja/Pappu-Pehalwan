@@ -42,8 +42,6 @@ class _BodyPart1State extends State<BodyPart1> {
     featuredPosts =
         posts.where((element) => element['postType'] == 'FEATURED').toList();
     getDisplayPosts(start, stop);
-    Provider.of<LoadDataFromFacebook>(context, listen: false).getFeaturedPosts;
-    _controller.addListener(() {
       _controller.addListener(() {
         if (_controller.offset == _controller.position.maxScrollExtent) {
           Future.delayed(const Duration(milliseconds: 500), () {
@@ -54,11 +52,6 @@ class _BodyPart1State extends State<BodyPart1> {
             });
           });
         }
-      });
-      // setState(() {
-      //   currentIndex =
-      //       _controller.offset ~/ (MediaQuery.of(context).size.width * 0.69);
-      // });
     });
   }
 
@@ -70,13 +63,13 @@ class _BodyPart1State extends State<BodyPart1> {
 
   @override
   Widget build(BuildContext context) {
-    print(displayPosts.length);
+
     return Container(
-      // color: Colors.white,
       height: 285,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          if(featuredPosts.isNotEmpty)
           Padding(
             padding: const EdgeInsets.all(8.0).copyWith(top: 10),
             child: Text(
@@ -89,14 +82,12 @@ class _BodyPart1State extends State<BodyPart1> {
             ),
           ),
           Expanded(
+            flex: 2,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: displayPosts.length + 1,
                 controller: _controller,
                 itemBuilder: (ctx, index) {
-                  if (featuredPosts.isEmpty ){
-                    return const SizedBox.shrink();
-                  }
                   if (index == displayPosts.length &&
                       displayPosts.length != featuredPosts.length) {
                     return Container(
@@ -145,6 +136,8 @@ class _BodyPart1State extends State<BodyPart1> {
                           title: displayPosts[index].containsKey('message')
                               ? displayPosts[index]['message'].split('\n')[0]
                               : '',
+                          appbarTitle: 'Featured',
+                          description: displayPosts[index].containsKey('message') ? displayPosts[index]['message'] : '',
                           date: DateTime.parse(displayPosts[index]['date']),
                           attachement:
                               displayPosts[index].containsKey('subattachments')
@@ -153,90 +146,13 @@ class _BodyPart1State extends State<BodyPart1> {
                           media: displayPosts[index]['media'],
                           type: displayPosts[index].containsKey('type')
                               ? displayPosts[index]['type']
-                              : '',
-                        );
+                              : '');
                       });
                 }),
           ),
           const SizedBox(
             height: 10,
           ),
-          // SingleChildScrollView(
-          //   controller: _controller,
-          //   scrollDirection: Axis.horizontal,
-          //
-          //   child: Row(
-          //     children: List.generate(
-          //       featuredPosts.length,
-          //       (index) => OpenContainer(
-          //         // transitionDuration: const Duration(milliseconds: 1000),
-          //         transitionType: ContainerTransitionType.fade,
-          //         openColor: Theme.of(context).backgroundColor,
-          //         closedColor: Theme.of(context).backgroundColor,
-          //
-          //         closedBuilder: (_, __) {
-          //           return Row(
-          //             children: [
-          //               BodyPart1Item(
-          //                 image: featuredPosts[index].containsKey('media') &&
-          //                         featuredPosts[index]['media']
-          //                             .containsKey('media') &&
-          //                         featuredPosts[index]['media']['media']
-          //                             .containsKey('image') &&
-          //                         featuredPosts[index]['media']['media']['image']
-          //                             .containsKey('src')
-          //                     ? featuredPosts[index]['media']['media']['image']['src']
-          //                     : '',
-          //                 title: featuredPosts[index]['title'],
-          //               ),
-          //
-          //             ],
-          //           );
-          //         },
-          //         openBuilder: (_, __) {
-          //           String description = '';
-          //           final containsDescription =
-          //               (featuredPosts[index]['message'] as String)
-          //                   .contains('Description');
-          //           if (!containsDescription) {
-          //             description = '';
-          //           } else {
-          //             description = (featuredPosts[index]['message'] as String)
-          //                 .split('Description')[1]
-          //                 .replaceAll(':', '');
-          //           }
-          //           return ViewFBPost(
-          //             id: featuredPosts[index]['id'],
-          //             title: featuredPosts[index]['title'],
-          //             appbarTitle: 'Featured',
-          //             description: description,
-          //             date: DateTime.parse(featuredPosts[index]['date']),
-          //             attachement:
-          //                 featuredPosts[index].containsKey('subattachments')
-          //                     ? featuredPosts[index]['subattachments']
-          //                     : [],
-          //             media: featuredPosts[index]['media'],
-          //           );
-          //         },
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          //          const SizedBox(height: 10,),
-          //
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: List.generate(
-          //       featuredPosts.length,
-          //       (index) => Container(
-          //             margin: const EdgeInsets.only(right: 2),
-          //             child: CircleAvatar(
-          //               backgroundColor:
-          //                   index == currentIndex ? Theme.of(context).primaryColor : Colors.grey,
-          //               radius: index == currentIndex ? 5 : 4,
-          //             ),
-          //           )),
-          // ),
           const SizedBox(
             height: 10,
           ),

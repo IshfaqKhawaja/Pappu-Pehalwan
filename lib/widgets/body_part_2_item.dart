@@ -8,7 +8,13 @@ class BodyPart2Item extends StatefulWidget {
   final images;
   final title;
   final hpccPost;
-  const BodyPart2Item({Key? key, this.images, this.title, this.hpccPost,}) : super(key: key);
+
+  const BodyPart2Item({
+    Key? key,
+    this.images,
+    this.title,
+    this.hpccPost,
+  }) : super(key: key);
 
   @override
   State<BodyPart2Item> createState() => _BodyPart2ItemState();
@@ -18,7 +24,7 @@ class _BodyPart2ItemState extends State<BodyPart2Item> {
   Widget closedConatiner() {
     double width = 120;
     double height = 200;
-    return widget.images.length == 0
+    return widget.images.length == 0 || widget.images[0].length == 0
         ? const SizedBox.shrink()
         : Container(
             margin: const EdgeInsets.symmetric(
@@ -28,7 +34,7 @@ class _BodyPart2ItemState extends State<BodyPart2Item> {
             child: Stack(
               children: [
                 CachedNetworkImage(
-                  imageUrl: widget.images[0]['media']['image']['src'],
+                  imageUrl: widget.images[0]['media']['image']['src'] ?? '',
                   height: height,
                   width: width,
                   fit: BoxFit.cover,
@@ -57,34 +63,24 @@ class _BodyPart2ItemState extends State<BodyPart2Item> {
 
   @override
   Widget build(BuildContext context) {
-     String description = '';
-                    final containsDescription =
-                        (widget.hpccPost['message'] as String)
-                            .contains('Description');
-                    if (!containsDescription) {
-                      description = '';
-                    } else {
-                      description = (widget.hpccPost['message'] as String)
-                          .split('Description')[1]
-                          .replaceAll(':', '');
-                    }
+
     return OpenContainer(
       closedBuilder: (context, action) => closedConatiner(),
       closedColor: Theme.of(context).scaffoldBackgroundColor,
       openColor: Theme.of(context).scaffoldBackgroundColor,
       transitionType: ContainerTransitionType.values[1],
       openBuilder: (context, action) => ViewFBPost(
-                      id: widget.hpccPost['id'],
-                      title: widget.hpccPost['title'],
-                      appbarTitle: 'हर दिन अद्यतन',
-                      description: description,
-                      date: DateTime.parse(widget.hpccPost['date']),
-                      attachement:
-                         widget.hpccPost.containsKey('subattachments')
-                              ? widget.hpccPost['subattachments']
-                              : [],
-                      media: widget.hpccPost['media'],
-                    ),
+        id: widget.hpccPost['id'],
+        title: widget.hpccPost['title'],
+        appbarTitle: 'हर दिन अद्यतन',
+        description: widget.hpccPost['message'] ?? '',
+        date: DateTime.parse(widget.hpccPost['date']),
+        attachement: widget.hpccPost.containsKey('subattachments')
+            ? widget.hpccPost['subattachments']
+            : [],
+        media: widget.hpccPost['media'],
+        type: widget.hpccPost['type'],
+      ),
     );
   }
 }

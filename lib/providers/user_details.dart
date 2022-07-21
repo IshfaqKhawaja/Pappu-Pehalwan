@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 class UserDetails with ChangeNotifier {
   Map<String, dynamic> userDetails = {};
   Map<String, dynamic> get getUserDetails => userDetails;
-  void loadUserDetails() async {
+  Future<void> loadUserDetails() async {
     String userId = FirebaseAuth.instance.currentUser!.uid;
     var res =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();

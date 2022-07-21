@@ -134,9 +134,6 @@ class _ChatState extends State<Chat> {
               children: [
                 Row(
                   children: [
-                    const BackButton(
-                      color: Colors.white,
-                    ),
                     Text(isAdmin
                         ? username != ''
                             ? username

@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class About extends StatelessWidget {
-  const About({Key? key}) : super(key: key);
+  final isFromBottomBar;
+  const About({Key? key, this.isFromBottomBar = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('About'),
+      appBar: isFromBottomBar ? null : AppBar(
+        title: const Text('About'),
       ),
       body: Container(
         padding: const EdgeInsets.all(10.0).copyWith(top: 20),

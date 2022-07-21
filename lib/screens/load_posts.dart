@@ -28,6 +28,13 @@ class _LoadPostsState extends State<LoadPosts> {
   final controller = ScrollController();
   bool loaded = false;
   bool updating = false;
+  List userCategories = [];
+  
+  Future<List> loadUserCategories() async {
+    var res = await FirebaseFirestore.instance.collection('userCategories').get();
+    List data = res.docs.map((doc) => doc.data()['category']).toList();
+    return data;
+  }
 
   void changeData(index, key, value) {
     setState(() {
@@ -40,7 +47,6 @@ class _LoadPostsState extends State<LoadPosts> {
 
   Future<void> loadPostsFromFirebase() async {
     var res = await FirebaseFirestore.instance.collection('posts').get();
-    // print('Data loaded from Firebase');
     if (res.docs.isNotEmpty) {
       posts = res.docs[0].data()['posts'] ?? [];
     }
@@ -75,12 +81,12 @@ class _LoadPostsState extends State<LoadPosts> {
             'subattachments': subAttachments,
             'createdTime': post['created_time'],
             'type': attachments['type'] ?? '',
-            'userType': '',
+            'userType': [],
             'postType': postCategories[random.nextInt(3)],
           };
           var index = posts.indexWhere(((element) => element['id'] == id));
           if (index != -1) {
-            tempPost['userType'] = posts[index]['userType'] ?? '';
+            tempPost['userType'] = posts[index]['userType'] ?? [];
             tempPost['postType'] = posts[index]['postType'] ?? '';
             posts[index] = tempPost;
           } else {
@@ -114,6 +120,9 @@ class _LoadPostsState extends State<LoadPosts> {
       } else {
         Fluttertoast.showToast(
             msg: '${res.body}', toastLength: Toast.LENGTH_LONG);
+        setState((){
+          loaded = true;
+        });
       }
     } catch (e) {
       Fluttertoast.showToast(
@@ -130,11 +139,6 @@ class _LoadPostsState extends State<LoadPosts> {
   @override
   void initState() {
     loadPosts();
-    // controller.addListener(() {
-    //   if (controller.position.maxScrollExtent == controller.offset) {
-    //     loadAllPosts(start, start + total);
-    //   }
-    // });
 
     super.initState();
   }
@@ -202,6 +206,8 @@ class _LoadPostsState extends State<LoadPosts> {
                     post: posts[index],
                     index: index,
                     changeData: changeData,
+                    userCategories: userCategories,
+                    loadUserCategories: loadUserCategories,
                   );
                 },
               ));
