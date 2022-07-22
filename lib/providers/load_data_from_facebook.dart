@@ -9,12 +9,21 @@ class LoadDataFromFacebook with ChangeNotifier {
   List stories = [];
   List featuredPosts = [];
   List hpccPosts = [];
+  List<String> nagarNigamServices = [];
   String fbKey = '';
+
   List get getPosts => posts;
+
   List get getStories => stories;
+
   List get getFeaturedPosts => featuredPosts;
+
   List get getHpccPosts => hpccPosts;
+
+  List<String> get getNagarNigamServices => nagarNigamServices;
+
   String get getFbKey => fbKey;
+
   Future<void> loadPosts() async {
     posts = [];
     featuredPosts = [];
@@ -22,7 +31,7 @@ class LoadDataFromFacebook with ChangeNotifier {
     hpccPosts = [];
     int limit = 100;
     var accessToken = fbKey;
-        // 'EAAHAavFovc4BAITfd4LTeU8pHezZB12OwtvzxZAZBA5aNeqKibSQAYTOgONNJGmP46n20ek3HVF6ZCO3AZCEzRsAkFYebgFYtbZAwZAYUgbq3aUR4udSqxwzWzb0mdhLgADZAAtNqVjkEzkTZBSVnwyrB02o9jMeO26fTGi7IKPPBSw9Q5ZCqUhvtz';
+    // 'EAAHAavFovc4BAITfd4LTeU8pHezZB12OwtvzxZAZBA5aNeqKibSQAYTOgONNJGmP46n20ek3HVF6ZCO3AZCEzRsAkFYebgFYtbZAwZAYUgbq3aUR4udSqxwzWzb0mdhLgADZAAtNqVjkEzkTZBSVnwyrB02o9jMeO26fTGi7IKPPBSw9Q5ZCqUhvtz';
     var urlPart = '';
     var url = '';
     print(accessToken);
@@ -35,7 +44,6 @@ class LoadDataFromFacebook with ChangeNotifier {
 
       if (tempPosts != null && tempPosts.isNotEmpty) {
         print(tempPosts.length);
-
 
         for (var post in tempPosts) {
           var id = post['id'];
@@ -127,7 +135,7 @@ class LoadDataFromFacebook with ChangeNotifier {
     var url = '';
     urlPart = 'https://graph.facebook.com/v13.0/';
     url =
-    "${urlPart}106458985426806/feed?access_token=$accessToken&limit=$limit";
+        "${urlPart}106458985426806/feed?access_token=$accessToken&limit=$limit";
     try {
       var res = await http.get(Uri.parse(url));
       final tempPosts = jsonDecode(res.body)['data'];
@@ -170,6 +178,7 @@ class LoadDataFromFacebook with ChangeNotifier {
       print('The error in load posts from facebook $e');
     }
   }
+
   void pushDataToFirebase() {
     FirebaseFirestore.instance.collection('TempData').doc('Posts').set({
       'posts': posts,
@@ -195,17 +204,40 @@ class LoadDataFromFacebook with ChangeNotifier {
     notifyListeners();
   }
 
-  void loadFacebookKey() async{
+  void loadFacebookKey() async {
     var res = await FirebaseFirestore.instance.collection('key').get();
-    if(res.docs.isNotEmpty){
-      fbKey = res.docs[0].data()['key'];
-    }
+    fbKey = res.docs[0].data()['key'];
     notifyListeners();
   }
 
-  Future<void> loadPostsFromFirebase() async{
-    var res = await FirebaseFirestore.instance.collection('posts').doc('posts').get();
+  Future<void> loadPostsFromFirebase({userDetails = null}) async {
+    List userCategory = [];
+    String shikayat = '';
+    if (userDetails != null) {
+      userCategory = userDetails.containsKey('userCategories')
+          ? userDetails['userCategories']
+          : [];
+      shikayat =
+          userDetails.containsKey('shikayat') ? userDetails['shikayat'] : '';
+    }
+    var res =
+        await FirebaseFirestore.instance.collection('posts').doc('posts').get();
     posts = res.data()!['posts'] ?? [];
+    if (!userDetails['isAdmin'] &&
+        !(userDetails.containsKey('isSubAdmin')
+            ? userDetails['isSubAdmin']
+            : false)) {
+      posts.retainWhere((post) {
+        if (post.containsKey('userType')) {
+          if (post['userType'].isEmpty) {
+            return true;
+          }
+          return (post['userType'] as List)
+              .any((element) => userCategory.contains(element));
+        }
+        return false;
+      });
+    }
     print(posts.length);
     notifyListeners();
   }

@@ -1,415 +1,148 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import '../plans_content/state_plans_content/digrit_kit_yojana.dart';
-import '../plans_content/state_plans_content/kanya_sumangala_yojana.dart';
-import '../plans_content/state_plans_content/krashak_yojana.dart';
-import '../plans_content/state_plans_content/kukut_palan_yojana.dart';
-import '../plans_content/state_plans_content/majdoor_bharta_yojana.dart';
-import '../plans_content/state_plans_content/vidhwa_pention%20yojana.dart';
-import '../plans_content/state_plans_content/viklang_pention_yojana.dart';
-import '../plans_content/state_plans_content/viklang_sadhi_yojana.dart';
-import '../plans_content/state_plans_content/vishwakarma_yojana.dart';
-import '../plans_content/state_plans_content/vradh_pention_yojana.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pappupehalwan/providers/user_details.dart';
+import 'package:provider/provider.dart';
+import '../widgets/yogana_container.dart';
 import '../constant.dart';
 class StatesPlans extends StatefulWidget {
-  const StatesPlans({Key? key}) : super(key: key);
+  final type;
+  const StatesPlans({Key? key, this.type,}) : super(key: key);
 
   @override
   State<StatesPlans> createState() => _StatesPlansState();
 }
 
 class _StatesPlansState extends State<StatesPlans> {
+  String type = 'state';
+  Map userDetails = {};
+  bool isLoading  = false;
+  @override
+  void initState(){
+    super.initState();
+    type = widget.type == 0 ? 'state' : 'national';
+    userDetails = Provider.of<UserDetails>(context, listen : false).getUserDetails;
+  }
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=>const ViklangPentionYojana()));
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width,
-            height: 65,
-            color: const Color(0xffD9D9D9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/viklang_pention.png'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('yogana').where('type',isEqualTo:type).snapshots(),
+      builder: (ctx, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshots) {
+        if (snapshots.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator(),);
+        }
+        final docs = snapshots.data!.docs;
+        if(docs.isEmpty){
+          return const Center(child: Text('No Data '),);
+        }
+        return ListView.builder(
+          itemCount: docs.length,
+          itemBuilder: (_, index) {
+            return InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    YoganaContainer(
+                      title: docs[index]['title'],
+                      description: docs[index]['description'],
+                      url: docs[index]['url'],
+
+
+                    )));
+              },
+              child: Container(
+                margin: const EdgeInsets.only(top: 10),
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                height: 65,
+                color: const Color(0xffD9D9D9),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text("यू.पी विकलांग (दिव्यांग) पेंशन योजना"),
-                    Row(
-                      children: [
-                        Text("यूपी विकलांग पेंशन योजना का लाभ लेने के लिए आप.....",style: plansContentTextStyle,),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
-                          ],
-                        )
-                      ],
+
+                    if(docs[index]['url'] != '')
+                      Image.network(docs[index]['url']),
+                    const SizedBox(
+                      width: 20,
                     ),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(docs[index]['title'],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.openSans(
+                              fontSize: 14
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                docs[index]['description'].toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: plansContentTextStyle,),
+                              // const SizedBox(
+                              //   width: 4,
+                              // ),
+                              // Row(
+                              //   children: const [
+                              //     Icon(Icons.arrow_forward_ios, size: 20,
+                              //       color: Color(0xff146AA7),),
+                              //   ],
+                              // )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    if(userDetails['isAdmin'])
+
+                    IconButton(onPressed: () async{
+                      setState((){
+                        isLoading = true;
+                      });
+                      await Future.delayed(const Duration(milliseconds: 1000));
+                      try {
+                        if (docs[index]['url'] != '') {
+                          await FirebaseStorage.instance.refFromURL(
+                              docs[index]['url']).delete();
+                        }
+                        await FirebaseFirestore.instance.collection('yogana')
+                            .doc(docs[index].id)
+                            .delete();
+                        Fluttertoast.showToast(msg: 'Deleted Successfully');
+                        setState((){
+                          isLoading = false;
+                        });
+                      }
+                      catch(e){
+                        print(e);
+                        setState((){
+                          isLoading = false;
+                        });
+                      }
+
+                    }, icon: isLoading ?
+                    Container(
+                        height: 20,
+                        width: 20,
+                        child: const CircularProgressIndicator())
+                        :const Icon(Icons.delete, color: Colors.red,),),
                   ],
                 ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=> const KrashakYojana()));
+              ),
+            );
           },
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width,
-            height: 65,
-            color: const Color(0xffD9D9D9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/majdoori_durghatna.png'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("मुख्यमंत्री कृषक दुर्घटना कल्याण योजना"),
-                    Row(
-                      children: [
-                        Text("मुख्यमंत्री कृषक दुर्घटना कल्याण योजना के अंतर्गत आप.....",style: plansContentTextStyle,),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=> const VradhaPentionYojana()));
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width,
-            height: 65,
-            color: const Color(0xffD9D9D9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/vradha_pention.png'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("उत्तर प्रदेश वृद्धा पेंशन योजना"),
-                    Row(
-                      children: [
-                        Text("उत्तर प्रदेश वृद्धा पेंशन योजना 2021 के लिए ऑनलाइन.....",style: plansContentTextStyle,),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=> const VishwakarmaYojana()));
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width,
-            height: 65,
-            color: const Color(0xffD9D9D9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/vishwakarma_samman.png'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("उत्तर प्रदेश विश्वकर्मा श्रम सम्मान योजना"),
-                    Row(
-                      children: [
-                        Text("उत्तर प्रदेश के मुख्यमंत्री श्री योगी आदित्यनाथ ने आप की.....",style: plansContentTextStyle,),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=>const KukutPalanYojana()));
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width,
-            height: 65,
-            color: const Color(0xffD9D9D9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/kukut_palan.png'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("यू.पी कुक्कुट पालन कर्ज योजना"),
-                    Row(
-                      children: [
-                        Text("उत्तर प्रदेश सरकार ने राज्य में लोगों को स्वरोजगार स्थापित...",style: plansContentTextStyle,),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=> const MajdoorBhartaYojana()));
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width,
-            height: 65,
-            color: const Color(0xffD9D9D9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/madjoori_bharta.png'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("यू.पी मजदूर भत्ता योजना फॉर्म"),
-                    Row(
-                      children: [
-                        Text("यू.पी मजदूर भत्ता योजना फॉर्म के द्वारा पटरी दुकानदार.....",style: plansContentTextStyle,),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=>const KanyaSumangalaYojana()));
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width,
-            height: 65,
-            color: const Color(0xffD9D9D9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/kanya_sumangala.png'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("यू.पी मुख्यमंत्री कन्या सुमंगला योजना"),
-                    Row(
-                      children: [
-                        Text("यू.पी मुख्यमंत्री कन्या सुमंगला योजनाका उद्देश्य राज्य के.....",style: plansContentTextStyle,),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=>const ViklangSadhiYojana()));
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width,
-            height: 65,
-            color: const Color(0xffD9D9D9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/viklang_sadhi.png'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("यू.पी विकलांग शादी अनुदान योजना"),
-                    Row(
-                      children: [
-                        Text("दिव्यांग शादी विवाह प्रोत्साहन योजना को प्रदेश के सहयोग...",style: plansContentTextStyle,),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=>const DigritKitYojana()));
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width,
-            height: 65,
-            color: const Color(0xffD9D9D9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/dignity_kit.png'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("यू.पी डिग्निटी किट योजना"),
-                    Row(
-                      children: [
-                        Text("यूपी सरकार, राज्य आपदा प्रबंधन प्राधिकरण के सहयोग.....",style: plansContentTextStyle,),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        InkWell(
-          onTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=>const VidhwaPentionYojana()));
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: MediaQuery.of(context).size.width,
-            height: 65,
-            color: const Color(0xffD9D9D9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/vidwa_pention.png'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("यू.पी विधवा पेंशन योजना"),
-                    Row(
-                      children: [
-                        Text("उत्तर प्रदेश सरकार ने यह योजना निराश्रित विधवा महिला...",style: plansContentTextStyle,),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.arrow_forward_ios,size: 20,color: Color(0xff146AA7),),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+        );
+      }
     );
   }
 }

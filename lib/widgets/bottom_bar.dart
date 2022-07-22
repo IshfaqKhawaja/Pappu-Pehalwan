@@ -75,7 +75,7 @@ class BottomBar extends StatelessWidget {
             color: const Color(0xffA9ADB6),
             size: currentIndex == 4 ? 25 : 20,
           ),
-          label: 'CONTACT US',
+          label: 'CONTACT',
         ),
       ],
     );

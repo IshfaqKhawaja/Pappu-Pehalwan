@@ -71,7 +71,7 @@ class _BodyState extends State<Body> {
     screens = [
       const About(),
       userDetails['isAdmin']
-          ? AdminMessages()
+          ? const AdminMessages()
           : ChatScreen(
         scaffoldKey: scaffoldKey,
       ),
@@ -79,8 +79,8 @@ class _BodyState extends State<Body> {
         scaffoldKey: scaffoldKey,
       ),
       userDetails['isAdmin']
-          ? Users() : Profile(),
-      BodyHome(),
+          ? const Users() : const Profile(),
+      const BodyHome(),
     ];
   }
 

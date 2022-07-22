@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pappupehalwan/providers/load_data_from_facebook.dart';
 import 'package:pappupehalwan/providers/user_details.dart';
 import 'package:provider/provider.dart';
 import '../widgets/admin__message_chat.dart';
@@ -165,7 +166,7 @@ class ShowDialogWidget extends StatefulWidget {
 
 class _ShowDialogWidgetState extends State<ShowDialogWidget> {
   String? value;
-  final nagarNigamServicesList = ['सफाई', 'बिजली विभाग'];
+  List<String> nagarNigamServicesList = ['सफाई', 'बिजली विभाग'];
   String selectedCategory = 'शिकायत';
   String date = '';
 
@@ -177,6 +178,15 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
           style:
               GoogleFonts.openSans(fontWeight: FontWeight.w700, fontSize: 12),
         ));
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    List<String> temp = Provider.of<LoadDataFromFacebook>(context,listen: false).getNagarNigamServices;
+    if(temp.isNotEmpty){
+      nagarNigamServicesList = temp;
+    }
   }
 
   @override

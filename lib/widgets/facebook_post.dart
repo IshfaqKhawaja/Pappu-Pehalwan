@@ -297,6 +297,21 @@ class _UserTypeState extends State<UserType> {
           const SizedBox(
             height: 6,
           ),
+          Container(
+            width: 200,
+            height: 45,
+            child: TextField(
+              decoration: const InputDecoration(
+                hintText: 'Search',
+                border: OutlineInputBorder()
+              ),
+              onChanged: (value){
+                setState((){
+                  userCategories = (widget.userCategories as List).where((element) => element.toLowerCase().contains(value.toLowerCase())).toList();
+                });
+              },
+            ),
+          ),
           Wrap(
             children: [
               ...userCategories.map((e) => InkWell(

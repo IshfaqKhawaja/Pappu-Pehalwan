@@ -197,48 +197,73 @@ class _ProfileState extends State<Profile> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Gender',style: GoogleFonts.openSans(
                     color: Theme.of(context).primaryColor,
                     fontSize: 18,
                     fontWeight: FontWeight.bold
                   ),),
-                  RadioListTile(
-                    title: Text('Male',
-                    style: GoogleFonts.openSans(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold
-                    ),),
-                      activeColor: Theme.of(context).primaryColor,
-                      enableFeedback: true,
-                      selected: isMale,
-                      toggleable: true,
-                      value: 'Male',
-                      groupValue: genders,
-                      onChanged: (value){
-                      setState((){
-                        isMale = true;
-                        isFemale = false;
-                        gender = 'male';
-                      });
-                      }),
-                  RadioListTile(
-                    title: Text('Female',
-                    style: GoogleFonts.openSans(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold
-                    ),),
-                      activeColor: Theme.of(context).primaryColor,
-                      value: 'Female',
-                      selected: isFemale,
-                      groupValue: genders,
-                      onChanged: (value){
-                      setState((){
-                        isMale = false;
-                        isFemale = true;
-                        gender = 'female';
-                      });
-                      }),
+                  Column(
+                    children: [
+                      ListTile(
+                        title: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 8,
+                              backgroundColor: isMale ? Theme.of(context).primaryColor : Colors.grey,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Male',
+                              style: GoogleFonts.openSans(
+                                color: isMale ? Theme.of(context).primaryColor : Colors.grey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                              ),
+                            )
+                          ],
+                        ),
+                        onTap: (){
+                          setState((){
+                            isMale = true;
+                            isFemale = false;
+                            gender = 'male';
+                          });
+                        },
+                      ),
+                      ListTile(
+                        title: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 8,
+                              backgroundColor: isFemale ? Theme.of(context).primaryColor : Colors.grey,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Female',
+                              style: GoogleFonts.openSans(
+                                color: isFemale ? Theme.of(context).primaryColor : Colors.grey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                              ),
+                            )
+                          ],
+                        ),
+                        onTap: (){
+                          setState((){
+                            isMale = false;
+                            isFemale = true;
+                            gender = 'female';
+                          });
+                        },
+                      )
+                    ],
+                  )
                 ],
               ),
             ),

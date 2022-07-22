@@ -204,7 +204,7 @@ class _EnterDetailsState extends State<EnterDetails> {
                   Container(
                     width: width * 0.8,
                     child: Text(
-                      'I agree to share my name, email, phone number, interests,demographic details, etc. with the Jiwan Setu App & integrated third party services for processing, to understand my app usage and receive personalized communication from Jiwan Setu. I understand this usage will be based on the Privacy policy.',
+                      'I agree to share my name, email, phone number, interests,demographic details, etc. with the Pappu Pehalwan App & integrated third party services for processing, to understand my app usage and receive personalized communication from Pappu Pehalwan. I understand this usage will be based on the Privacy policy.',
                       textAlign: TextAlign.justify,
                       style: style.copyWith(
                         fontSize: 12,
@@ -248,7 +248,7 @@ class _EnterDetailsState extends State<EnterDetails> {
                             });
                             await widget.loadData();
                             Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (_) => Body()),
+                                MaterialPageRoute(builder: (_) => const Body()),
                                 (route) => false);
                           }
                         } catch (e) {

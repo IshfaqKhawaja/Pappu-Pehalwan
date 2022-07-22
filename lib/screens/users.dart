@@ -30,7 +30,7 @@ class _UsersState extends State<Users> {
   Future<List> loadUserCategories() async {
     userCategories = [];
     var res =
-        await FirebaseFirestore.instance.collection('userCategories').get();
+    await FirebaseFirestore.instance.collection('userCategories').get();
     if (res.docs.isNotEmpty) {
       for (var i in res.docs) {
         userCategories.add(i['category']);
@@ -43,11 +43,13 @@ class _UsersState extends State<Users> {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => UserFilters(
+        builder: (context) =>
+            UserFilters(
               applyFilter: applyFilter,
             ));
   }
- @override
+
+  @override
   void initState() {
     super.initState();
   }
@@ -55,7 +57,9 @@ class _UsersState extends State<Users> {
   @override
   Widget build(BuildContext context) {
     final userDetails =
-        Provider.of<UserDetails>(context, listen: false).getUserDetails;
+        Provider
+            .of<UserDetails>(context, listen: false)
+            .getUserDetails;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -121,11 +125,14 @@ class _UsersState extends State<Users> {
               final user = users[index].data()! as Map<String, dynamic>;
               return Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 margin: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Theme.of(context).primaryColor.withOpacity(0.2),
+                  color: Theme
+                      .of(context)
+                      .primaryColor
+                      .withOpacity(0.2),
                 ),
                 child: ListTile(
                   onTap: () async {
@@ -158,91 +165,102 @@ class _UsersState extends State<Users> {
                       const SizedBox(
                         height: 5,
                       ),
-                      if(user.containsKey('phoneNumber') && user['phoneNumber'] != '')
-                      Text(
-                        user['phoneNumber'],
-                        style: GoogleFonts.openSans(
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                          fontSize: 10,
+                      if(user.containsKey('phoneNumber') &&
+                          user['phoneNumber'] != '')
+                        Text(
+                          user['phoneNumber'],
+                          style: GoogleFonts.openSans(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            fontSize: 10,
+                          ),
                         ),
-                      ),
                       if(user.containsKey('email') && user['email'] != '')
-                      Text(
-                        user['email'],
-                        style: GoogleFonts.openSans(
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                          fontSize: 10,
+                        Text(
+                          user['email'],
+                          style: GoogleFonts.openSans(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            fontSize: 10,
+                          ),
                         ),
-                      ),
+                      if(user.containsKey('shikayat') &&
+                          user['shikayat'] != '')
+                        Text(
+                          '${user['shikayat'] ?? ''}',
+                          style: GoogleFonts.openSans(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                              fontSize: 10
+                          ),
+                        )
                     ],
                   ),
                   trailing: userDetails['isAdmin'] == true
                       ? ToggleSwitch(
-                          minWidth: 60.0,
-                          initialLabelIndex: user['isAdmin']
-                              ? 0
-                              : user.containsKey('isSubAdmin') &&
-                                      user['isSubAdmin']
-                                  ? 1
-                                  : 2,
-                          cornerRadius: 10.0,
-                          activeFgColor: Colors.white,
-                          inactiveBgColor: Colors.grey,
-                          inactiveFgColor: Colors.white,
-                          totalSwitches: 3,
-                          labels: const ['Admin', 'SubAdmin', 'User'],
-                          customTextStyles: const [
-                            TextStyle(
-                              fontSize: 8,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            TextStyle(
-                              fontSize: 8,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            TextStyle(
-                              fontSize: 8,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ],
-                          onToggle: (index) async {
-                            if (index == 1) {
-                              await showDialog(
-                                  context: context,
-                                  builder: (ctx) =>
-                                      const SubAdminTypeAhead()).then((value) {
-                                if (value != null) {
-                                  FirebaseFirestore.instance
-                                      .collection('users')
-                                      .doc(user['userId'])
-                                      .update({
-                                    'isAdmin': false,
-                                    'isSubAdmin': true,
-                                    'shikayat': value,
-                                  });
-                                }
-                              });
-                            } else {
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(user['userId'])
-                                  .update({
-                                'isAdmin': index == 0 ? true : false,
-                                'isSubAdmin': false,
-                              });
-                            }
-                          },
-                          activeBgColors: const [
-                            [Colors.blue],
-                            [Colors.orange],
-                            [Colors.pink]
-                          ],
-                        )
+                    minWidth: 60.0,
+                    initialLabelIndex: user['isAdmin']
+                        ? 0
+                        : user.containsKey('isSubAdmin') &&
+                        user['isSubAdmin']
+                        ? 1
+                        : 2,
+                    cornerRadius: 10.0,
+                    activeFgColor: Colors.white,
+                    inactiveBgColor: Colors.grey,
+                    inactiveFgColor: Colors.white,
+                    totalSwitches: 3,
+                    labels: const ['Admin', 'SubAdmin', 'User'],
+                    customTextStyles: const [
+                      TextStyle(
+                        fontSize: 8,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      TextStyle(
+                        fontSize: 8,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      TextStyle(
+                        fontSize: 8,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                    onToggle: (index) async {
+                      if (index == 1) {
+                        await showDialog(
+                            context: context,
+                            builder: (ctx) =>
+                            const SubAdminTypeAhead()).then((value) {
+                          if (value != null) {
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user['userId'])
+                                .update({
+                              'isAdmin': false,
+                              'isSubAdmin': true,
+                              'shikayat': value,
+                            });
+                          }
+                        });
+                      } else {
+                        FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(user['userId'])
+                            .update({
+                          'isAdmin': index == 0 ? true : false,
+                          'isSubAdmin': false,
+                        });
+                      }
+                    },
+                    activeBgColors: const [
+                      [Colors.blue],
+                      [Colors.orange],
+                      [Colors.pink]
+                    ],
+                  )
                       : null,
                 ),
               );
@@ -269,7 +287,7 @@ class _UserDetailState extends State<UserDetail> {
   var userDetail = {};
   bool loaded = false;
   var userCategory = []; // User Category of Particular User
-  var userCategories = [];
+  var userCategories = []; //All User Categories
 
   void getUserDetails() async {
     try {
@@ -294,9 +312,7 @@ class _UserDetailState extends State<UserDetail> {
   void initState() {
     super.initState();
     getUserDetails();
-    userCategories = (widget.userCategories as List)
-        .where((element) => !userCategory.contains(element))
-        .toList();
+    userCategories = (widget.userCategories as List);
   }
 
   @override
@@ -312,101 +328,122 @@ class _UserDetailState extends State<UserDetail> {
       height: loaded ? null : 200,
       child: loaded
           ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text('User Categories Present are'),
-                    Wrap(
-                      children: [
-                        ...userCategory
-                            .map((e) => Container(
-                                  padding: const EdgeInsets.all(8),
-                                  margin: const EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        e,
-                                        style: GoogleFonts.openSans(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      IconButton(
-                                          onPressed: () {
-                                            userCategory.remove(e);
-                                            setState(() {});
-                                          },
-                                          icon: const Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
-                                          ))
-                                    ],
-                                  ),
-                                ))
-                            .toList(),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      height: 3,
-                      color: Colors.black,
-                    ),
-                    const SizedBox(
-                      height: 6,
-                    ),
-                    const Text('Tap to add User Category'),
-                    Wrap(
-                      children: [
-                        ...userCategories
-                            .map((e) => InkWell(
-                                onTap: () {
-                                  if (!userCategory.contains(e)) {
-                                    userCategory.add(e);
-                                  }
-                                  setState(() {});
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(8.0),
-                                  margin: const EdgeInsets.all(2.0),
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Text(
-                                    e,
-                                    style: GoogleFonts.openSans(
-                                        color: Colors.white),
-                                  ),
-                                )))
-                            .toList(),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(widget.userId)
-                              .update({'userCategories': userCategory});
-                          Navigator.of(context).pop();
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('User Categories Present are'),
+              Wrap(
+                children: [
+                  ...userCategory
+                      .map((e) =>
+                      InkWell(
+                        onTap: () {
+                          userCategory.remove(e);
+                          setState(() {});
                         },
-                        child: const Text('Save')),
-                  ],
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          margin: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              color: Theme
+                                  .of(context)
+                                  .primaryColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text(
+                            e,
+                            style: GoogleFonts.openSans(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ))
+                      .toList(),
+                ],
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Container(
+                height: 3,
+                color: Colors.black,
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              const Text('Tap to add User Category'),
+              const SizedBox(
+                height: 6,
+              ),
+              Container(
+                width: 200,
+                height: 45,
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Search', border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      userCategories = (widget.userCategories as List)
+                          .where((element) =>
+                          element.toLowerCase().contains(value.toLowerCase()))
+                          .toList();
+                    });
+                  },
                 ),
               ),
-            )
+              const SizedBox(
+                height: 6,
+              ),
+              Wrap(
+                children: [
+                  ...userCategories
+                      .map((e) =>
+                      InkWell(
+                          onTap: () {
+                            if (!userCategory.contains(e)) {
+                              userCategory.add(e);
+                            }
+                            setState(() {});
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            margin: const EdgeInsets.all(2.0),
+                            decoration: BoxDecoration(
+                                color: Theme
+                                    .of(context)
+                                    .primaryColor,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text(
+                              e,
+                              style: GoogleFonts.openSans(
+                                  color: Colors.white),
+                            ),
+                          )))
+                      .toList(),
+                ],
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              TextButton(
+                  onPressed: () {
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(widget.userId)
+                        .update({'userCategories': userCategory});
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Save')),
+            ],
+          ),
+        ),
+      )
           : const Center(
-              child: CircularProgressIndicator(),
-            ),
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
@@ -444,7 +481,10 @@ class _UserFiltersState extends State<UserFilters> {
       child: Text(
         title.trimLeft(),
         style: TextStyle(
-            fontSize: MediaQuery.of(context).size.height * 0.02,
+            fontSize: MediaQuery
+                .of(context)
+                .size
+                .height * 0.02,
             color: Colors.black),
       ),
     );
@@ -458,17 +498,35 @@ class _UserFiltersState extends State<UserFilters> {
       //we can return any widget you like here
       //to be displayed on the Overlay
       return Positioned(
-          right: MediaQuery.of(context).size.width * 0.0,
-          top: MediaQuery.of(context).size.height * 0.0,
+          right: MediaQuery
+              .of(context)
+              .size
+              .width * 0.0,
+          top: MediaQuery
+              .of(context)
+              .size
+              .height * 0.0,
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.height * 0.6,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.8,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.6,
             padding: const EdgeInsets.all(8),
             child: Stack(
               children: [
                 Positioned(
-                    top: MediaQuery.of(context).size.height * 0.2,
-                    right: MediaQuery.of(context).size.width * 0.0,
+                    top: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.2,
+                    right: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 0.0,
                     child: Material(
                       color: Colors.white.withOpacity(0.7),
                       child: Padding(
@@ -560,16 +618,16 @@ class _UserFiltersState extends State<UserFilters> {
                     border: InputBorder.none,
                     hintText: 'Value',
                     hintStyle:
-                        GoogleFonts.openSans(color: Colors.grey, fontSize: 14)),
+                    GoogleFonts.openSans(color: Colors.grey, fontSize: 14)),
                 onChanged: (value) {
                   setState(() {
                     this.value = value;
                   });
                 },
                 onTap: () {
-                 try{
-                   overlayEntry!.remove();
-                 } catch (e) {}
+                  try {
+                    overlayEntry!.remove();
+                  } catch (e) {}
                 },
                 style: GoogleFonts.openSans(
                     fontSize: 14,

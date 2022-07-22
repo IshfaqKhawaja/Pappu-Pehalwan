@@ -25,14 +25,16 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> loadData() async {
     try {
       // await Provider.of<LoadDataFromFacebook>(context, listen: false).loadPosts();
-
-      Provider.of<UserDetails>(context, listen: false).loadUserDetails();
+await Provider.of<UserDetails>(context,listen: false).loadUserDetails();
+      await  Provider.of<UserDetails>(context, listen: false).loadUserDetails();
       Provider.of<LoadDataFromFacebook>(context, listen: false)
           .loadFacebookKey();
-      // await Provider.of<LoadDataFromFacebook>(context, listen: false)
-      //     .loadDataFromFirebase();
-      await Provider.of<LoadDataFromFacebook>(context, listen: false)
-          .loadPostsFromFirebase();
+      final userDetails =  Provider.of<UserDetails>(context, listen: false).getUserDetails;
+
+await Provider.of<LoadDataFromFacebook>(context, listen: false)
+          .loadPostsFromFirebase(
+        userDetails: userDetails,
+      );
       await Future.delayed(const Duration(milliseconds: 2400));
       setState(() {
         isLoading = false;
