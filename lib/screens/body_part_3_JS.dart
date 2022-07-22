@@ -18,7 +18,7 @@ class _BodyPart3JSState extends State<BodyPart3JS> {
   @override
   void initState() {
     super.initState();
-    hpccPosts  = Provider.of<LoadDataFromFacebook>(context, listen: false).getHpccPosts;
+    // hpccPosts  = Provider.of<LoadDataFromFacebook>(context, listen: false).getHpccPosts;
   }
   @override
   Widget build(BuildContext context) {

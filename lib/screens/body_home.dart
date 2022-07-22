@@ -45,12 +45,6 @@ class _StateBodyHome extends State<BodyHome> {
               ),
               BodyPart1(),
 
-              Divider(
-                color: Theme.of(context).primaryColor,
-                thickness: 1,
-              ),
-
-              BodyPart2(),
 
               Divider(
                 color: Theme.of(context).primaryColor,

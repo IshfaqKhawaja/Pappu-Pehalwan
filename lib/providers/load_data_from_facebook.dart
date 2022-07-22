@@ -8,7 +8,6 @@ class LoadDataFromFacebook with ChangeNotifier {
   List posts = [];
   List stories = [];
   List featuredPosts = [];
-  List hpccPosts = [];
   List<String> nagarNigamServices = [];
   String fbKey = '';
 
@@ -18,8 +17,6 @@ class LoadDataFromFacebook with ChangeNotifier {
 
   List get getFeaturedPosts => featuredPosts;
 
-  List get getHpccPosts => hpccPosts;
-
   List<String> get getNagarNigamServices => nagarNigamServices;
 
   String get getFbKey => fbKey;
@@ -28,7 +25,6 @@ class LoadDataFromFacebook with ChangeNotifier {
     posts = [];
     featuredPosts = [];
     stories = [];
-    hpccPosts = [];
     int limit = 100;
     var accessToken = fbKey;
     // 'EAAHAavFovc4BAITfd4LTeU8pHezZB12OwtvzxZAZBA5aNeqKibSQAYTOgONNJGmP46n20ek3HVF6ZCO3AZCEzRsAkFYebgFYtbZAwZAYUgbq3aUR4udSqxwzWzb0mdhLgADZAAtNqVjkEzkTZBSVnwyrB02o9jMeO26fTGi7IKPPBSw9Q5ZCqUhvtz';
@@ -97,8 +93,6 @@ class LoadDataFromFacebook with ChangeNotifier {
             stories.add(tempPost);
           } else if (type == 'FEATURED') {
             featuredPosts.add(tempPost);
-          } else if (type == 'HPCC') {
-            hpccPosts.add(tempPost);
           }
         }
         posts.sort(
@@ -107,10 +101,6 @@ class LoadDataFromFacebook with ChangeNotifier {
         );
 
         stories.sort(
-          (a, b) =>
-              DateTime.parse(b['date']).compareTo(DateTime.parse(a['date'])),
-        );
-        hpccPosts.sort(
           (a, b) =>
               DateTime.parse(b['date']).compareTo(DateTime.parse(a['date'])),
         );
@@ -184,7 +174,6 @@ class LoadDataFromFacebook with ChangeNotifier {
       'posts': posts,
       'stories': stories,
       'featuredPosts': featuredPosts,
-      'hpccPosts': hpccPosts,
     });
   }
 
@@ -192,7 +181,6 @@ class LoadDataFromFacebook with ChangeNotifier {
     posts = [];
     stories = [];
     featuredPosts = [];
-    hpccPosts = [];
     var res = await FirebaseFirestore.instance
         .collection('TempData')
         .doc('Posts')
@@ -200,7 +188,6 @@ class LoadDataFromFacebook with ChangeNotifier {
     posts = res.data()!['posts'] ?? [];
     stories = res.data()!['stories'] ?? [];
     featuredPosts = res.data()!['featuredPosts'] ?? [];
-    hpccPosts = res.data()!['hpccPosts'] ?? [];
     notifyListeners();
   }
 
