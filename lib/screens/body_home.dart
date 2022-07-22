@@ -44,6 +44,7 @@ class _StateBodyHome extends State<BodyHome> {
                 height: 10,
               ),
               BodyPart1(),
+              BodyPart2(),
 
 
               Divider(

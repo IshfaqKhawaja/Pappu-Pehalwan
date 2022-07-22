@@ -11,7 +11,7 @@ class BodyPart2 extends StatefulWidget {
 }
 
 class _BodyPart2State extends State<BodyPart2> {
-  List hpccPosts = [];
+  List stories = [];
   List posts = [];
   List displayPosts = [];
   int start = 0;
@@ -21,10 +21,10 @@ class _BodyPart2State extends State<BodyPart2> {
 
   void getDisplayPosts(int start, int stop) {
     setState(() {
-      if (stop < hpccPosts.length && start < hpccPosts.length) {
-        displayPosts.addAll(hpccPosts.sublist(start, stop));
-      } else if (stop >= hpccPosts.length && start < hpccPosts.length) {
-        displayPosts.addAll(hpccPosts.sublist(start));
+      if (stop < stories.length && start < stories.length) {
+        displayPosts.addAll(stories.sublist(start, stop));
+      } else if (stop >= stories.length && start < stories.length) {
+        displayPosts.addAll(stories.sublist(start));
       }
     });
   }
@@ -33,8 +33,7 @@ class _BodyPart2State extends State<BodyPart2> {
   void initState() {
     super.initState();
     posts = Provider.of<LoadDataFromFacebook>(context, listen: false).getPosts;
-    hpccPosts =
-        posts.where((element) => element['postType'] == 'HPCC').toList();
+    stories = posts.where((element) => element['postType'] == 'STORY').toList();
     getDisplayPosts(start, stop);
     _controller.addListener(() {
       if (_controller.offset == _controller.position.maxScrollExtent) {
@@ -57,6 +56,7 @@ class _BodyPart2State extends State<BodyPart2> {
 
   @override
   Widget build(BuildContext context) {
+    print(stories.length);
     final width = MediaQuery.of(context).size.width;
     return Container(
       height: 250,
@@ -71,14 +71,13 @@ class _BodyPart2State extends State<BodyPart2> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if(hpccPosts.isNotEmpty)
+          if (stories.isNotEmpty)
             Text(
               'भारतीय जनता पार्टी',
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w800,
-                color: Colors.black.withOpacity(0.7)
-              ),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black.withOpacity(0.7)),
             ),
           const SizedBox(
             height: 20,
@@ -90,7 +89,7 @@ class _BodyPart2State extends State<BodyPart2> {
                   controller: _controller,
                   itemBuilder: (_, index) {
                     if (index == displayPosts.length &&
-                        displayPosts.length != hpccPosts.length) {
+                        displayPosts.length != stories.length) {
                       return Container(
                         width: MediaQuery.of(context).size.width * 0.13,
                         child: const Center(
@@ -98,11 +97,12 @@ class _BodyPart2State extends State<BodyPart2> {
                         ),
                       );
                     }
-                    return index == hpccPosts.length
+                    return index == stories.length
                         ? const SizedBox.shrink()
                         : BodyPart2Item(
                             images:
-                                displayPosts[index]['subattachments'].length != 0
+                                displayPosts[index]['subattachments'].length !=
+                                        0
                                     ? displayPosts[index]['subattachments']
                                     : displayPosts[index]['media'] != 0
                                         ? [displayPosts[index]['media']]

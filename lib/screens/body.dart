@@ -169,7 +169,9 @@ class _BodyState extends State<Body> {
                     .then((value) async {
                   widget.rebuilt();
                   await Provider.of<LoadDataFromFacebook>(
-                      context, listen: false).loadPostsFromFirebase();
+                      context, listen: false).loadPostsFromFirebase(
+                        userDetails: userDetails,
+                      );
                   widget.built();
                 });
               },

@@ -32,7 +32,7 @@ class _BodyPart3State extends State<BodyPart3> {
     setState(() {
       if (stop < posts.length && start < posts.length) {
         displayPosts.addAll(posts.sublist(start, stop));
-      } else if (stop > posts.length && start < posts.length) {
+      } else if (stop >= posts.length && start < posts.length) {
         displayPosts.addAll(posts.sublist(start));
       }
       loadingPosts = false;
@@ -58,6 +58,8 @@ class _BodyPart3State extends State<BodyPart3> {
 
   @override
   Widget build(BuildContext context) {
+    print(displayPosts.length);
+    print("Posts ${posts.length}");
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
