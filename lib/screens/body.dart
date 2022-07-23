@@ -70,7 +70,7 @@ class _BodyState extends State<Body> {
     print(userDetails);
     screens = [
       const About(),
-      userDetails['isAdmin']
+      userDetails['isAdmin'] || (userDetails.containsKey('isSubAdmin') && userDetails['isSubAdmin'])
           ? const AdminMessages()
           : ChatScreen(
         scaffoldKey: scaffoldKey,

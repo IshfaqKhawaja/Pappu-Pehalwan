@@ -56,7 +56,7 @@ class _LoadPostsState extends State<LoadPosts> {
   Future<void> loadAllPosts(int start, int end) async {
     try {
       await loadPostsFromFirebase();
-      List postCategories = ['FEATURED', 'POST', 'STORY'];
+      // List postCategories = ['FEATURED', 'POST', 'STORY'];
       Random random = Random();
       if (tempPosts.isNotEmpty) {
         for (var post in tempPosts) {
@@ -82,7 +82,7 @@ class _LoadPostsState extends State<LoadPosts> {
             'createdTime': post['created_time'],
             'type': attachments['type'] ?? '',
             'userType': [],
-            'postType': postCategories[random.nextInt(3)],
+            'postType': 'POST' //postCategories[random.nextInt(3)],
           };
           var index = posts.indexWhere(((element) => element['id'] == id));
           if (index != -1) {
@@ -105,11 +105,12 @@ class _LoadPostsState extends State<LoadPosts> {
   }
 
   Future<void> loadPosts() async {
+    String pageNumber = '106458985426806';
     accessToken =
         Provider.of<LoadDataFromFacebook>(context, listen: false).getFbKey;
     int limit = 100;
     url =
-        "${urlPart}106458985426806/feed?fields=attachments{media,type,subattachments},message,created_time&access_token=$accessToken&limit=$limit";
+        "${urlPart}$pageNumber/feed?fields=attachments{media,type,subattachments},message,created_time&access_token=$accessToken&limit=$limit";
     var res;
     try {
       res = await http.get(Uri.parse(url));
@@ -145,7 +146,7 @@ class _LoadPostsState extends State<LoadPosts> {
 
   @override
   Widget build(BuildContext context) {
-    print(posts.length);
+    // print(posts.length);
     return Scaffold(
         appBar: AppBar(
           title: Text(

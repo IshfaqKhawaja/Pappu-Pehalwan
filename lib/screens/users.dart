@@ -184,10 +184,10 @@ class _UsersState extends State<Users> {
                             fontSize: 10,
                           ),
                         ),
-                      if(user.containsKey('shikayat') &&
-                          user['shikayat'] != '')
+                      if(user.containsKey('nagarNigamServices') &&
+                          user['nagarNigamServices'] != '')
                         Text(
-                          '${user['shikayat'] ?? ''}',
+                          '${user['nagarNigamServices'] ?? ''}',
                           style: GoogleFonts.openSans(
                               fontWeight: FontWeight.w400,
                               color: Colors.black,
@@ -241,7 +241,7 @@ class _UsersState extends State<Users> {
                                 .update({
                               'isAdmin': false,
                               'isSubAdmin': true,
-                              'shikayat': value,
+                              'nagarNigamServices': value,
                             });
                           }
                         });
@@ -378,7 +378,7 @@ class _UserDetailState extends State<UserDetail> {
                 height: 6,
               ),
               Container(
-                width: 200,
+                width: double.infinity,
                 height: 45,
                 child: TextField(
                   decoration: const InputDecoration(
@@ -683,7 +683,7 @@ class _UserFiltersState extends State<UserFilters> {
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 248, 11, 82),
+                        color: const Color.fromARGB(255, 248, 11, 82),
                         borderRadius: BorderRadius.circular(10)),
                     child: Center(
                       child: Text(

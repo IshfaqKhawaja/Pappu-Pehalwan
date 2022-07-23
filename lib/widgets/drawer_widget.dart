@@ -105,7 +105,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         color: Theme.of(context).primaryColor,
                       ),
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context){
                           return ChatScreen(
                             isAdmin: false,
                             isComplaint: false,

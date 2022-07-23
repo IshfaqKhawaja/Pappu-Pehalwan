@@ -58,14 +58,15 @@ class _BodyPart3State extends State<BodyPart3> {
 
   @override
   Widget build(BuildContext context) {
-    print(displayPosts.length);
-    print("Posts ${posts.length}");
+    // print(displayPosts.length);
+    // print("Posts ${posts.length}");
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          if(posts.isNotEmpty)
           Text(
             'पप्पू पहलवान',
             style: GoogleFonts.openSans(

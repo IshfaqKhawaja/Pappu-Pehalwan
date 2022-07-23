@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-import 'shikayat_service.dart';
+import 'nagar_nigam_services.dart';
 class SubAdminTypeAhead extends StatefulWidget {
   const SubAdminTypeAhead({Key? key}) : super(key: key);
 
@@ -39,7 +39,7 @@ class _SubAdminTypeAheadState extends State<SubAdminTypeAhead> {
               );
               },
               suggestionsCallback: (pattern) {
-              return ShikayatService.getSuggestions(pattern);
+              return nagarNigamService.getSuggestions(pattern);
               },
             transitionBuilder: (context, suggestionBox, controller){
               return suggestionBox;

@@ -71,7 +71,7 @@ class _BodyPart2ItemState extends State<BodyPart2Item> {
       transitionType: ContainerTransitionType.values[1],
       openBuilder: (context, action) => ViewFBPost(
         id: widget.hpccPost['id'],
-        title: widget.hpccPost['title'],
+        title: widget.hpccPost['message'].split('\n')[0] ?? '',
         appbarTitle: 'हर दिन अद्यतन',
         description: widget.hpccPost['message'] ?? '',
         date: DateTime.parse(widget.hpccPost['date']),
@@ -80,6 +80,7 @@ class _BodyPart2ItemState extends State<BodyPart2Item> {
             : [],
         media: widget.hpccPost['media'],
         type: widget.hpccPost['type'],
+        post: widget.hpccPost,
       ),
     );
   }

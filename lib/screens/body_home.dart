@@ -43,15 +43,20 @@ class _StateBodyHome extends State<BodyHome> {
               const SizedBox(
                 height: 10,
               ),
-              BodyPart1(),
-              BodyPart2(),
-
-
+              const BodyPart1(),
               Divider(
                 color: Theme.of(context).primaryColor,
                 thickness: 1,
               ),
-              BodyPart3(),
+              const SizedBox(
+                height: 10,
+              ),
+              const BodyPart2(),
+              Divider(
+                color: Theme.of(context).primaryColor,
+                thickness: 1,
+              ),
+              const BodyPart3(),
             ],
           ),
         ),

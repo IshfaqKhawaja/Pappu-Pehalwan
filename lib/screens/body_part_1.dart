@@ -137,7 +137,9 @@ class _BodyPart1State extends State<BodyPart1> {
                               ? displayPosts[index]['message'].split('\n')[0]
                               : '',
                           appbarTitle: 'Featured',
-                          description: displayPosts[index].containsKey('message') ? displayPosts[index]['message'] : '',
+                          description:
+                          displayPosts[index].containsKey('message')
+                              ? displayPosts[index]['message'] : '',
                           date: DateTime.parse(displayPosts[index]['date']),
                           attachement:
                               displayPosts[index].containsKey('subattachments')

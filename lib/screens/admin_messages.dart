@@ -21,13 +21,15 @@ class _AdminMessagesState extends State<AdminMessages> {
   String date = '';
   bool filtered = false;
   String nagarNigamServices = '';
+  String name = '';
 
-  void applyFilter(category, date, nagarNigamServices) {
+  void applyFilter(category, date, nagarNigamServices, name) {
     setState(() {
       selectedCategory = category ?? '';
       this.date = date ?? '';
       this.nagarNigamServices = nagarNigamServices ?? '';
       filtered = true;
+      this.name = name ?? '';
     });
   }
 
@@ -64,7 +66,9 @@ class _AdminMessagesState extends State<AdminMessages> {
                 ),
               ),
             ),
-            if(userDetails['isAdmin'] || userDetails.containsKey('isSubAdmin') && userDetails['isSubAdmin'])
+            if(userDetails['isAdmin'] ||
+                userDetails.containsKey('isSubAdmin') &&
+                    userDetails['isSubAdmin'])
             InkWell(
               onTap: () {
                 messagesFilter(userDetails);
@@ -87,26 +91,76 @@ class _AdminMessagesState extends State<AdminMessages> {
             );
           }
           var docs = userSnapShot.data!.docs;
-          if(userDetails.containsKey('isSubAdmin') && userDetails['isSubAdmin'] && userDetails.containsKey('nagarNigamServices')){
-           docs.retainWhere((element) => element['nagarNigamServices'] == userDetails['nagarNigamServices']);
+          if(userDetails.containsKey('isSubAdmin') &&
+              userDetails['isSubAdmin'] &&
+              userDetails.containsKey('nagarNigamServices')){
+           docs.retainWhere((element) =>
+           element['nagarNigamServices'] == userDetails['nagarNigamServices']);
           }
 
           if (filtered) {
-            if (date != '' && nagarNigamServices != '') {
+            if (date != '' && nagarNigamServices != '' && name != '') {
               docs = docs.where((element) {
                 try {
                   var t1 = element['createdAt'];
                   var t2 = element['nagarNigamServices'];
+                  var t3 = element['username'];
 
                   return (element['createdAt'] as Timestamp)
                           .toDate()
                           .isAfter(DateTime.parse(date)) &&
+                      element['nagarNigamServices'] == nagarNigamServices &&
+                      element['username']
+                          .toString()
+                          .toLowerCase()
+                          .contains(name.toLowerCase());
+                } catch (e) {
+                  return false;
+                }
+              }).toList();
+            } else if (date != '' && nagarNigamServices != '') {
+              docs = docs.where((element) {
+                try {
+                  var t1 = element['createdAt'];
+                  return (element['createdAt'] as Timestamp)
+                      .toDate()
+                      .isAfter(DateTime.parse(date)) &&
                       element['nagarNigamServices'] == nagarNigamServices;
                 } catch (e) {
                   return false;
                 }
               }).toList();
-            } else if (date != '') {
+            } else if (date != '' && name != ''){
+              docs = docs.where((element) {
+                try {
+                  var t1 = element['createdAt'];
+                  var t3 = element['username'];
+                  return (element['createdAt'] as Timestamp)
+                      .toDate()
+                      .isAfter(DateTime.parse(date)) &&
+                element['username']
+                      .toString()
+                      .toLowerCase()
+                      .contains(name.toLowerCase());
+                } catch (e) {
+                  return false;
+                }
+              }).toList();
+            }
+            else if (nagarNigamServices != '' && name != '') {
+              docs = docs.where((element) {
+                try {
+                  var t2 = element['nagarNigamServices'];
+                  var t3 = element['username'];
+                  return element['nagarNigamServices'] == nagarNigamServices && element['username']
+                      .toString()
+                    .toLowerCase()
+                    .contains(name.toLowerCase());
+                } catch (e) {
+                  return false;
+                }
+              }).toList();
+            } else if (date != ''){
               docs = docs.where((element) {
                 try {
                   var t1 = element['createdAt'];
@@ -117,11 +171,23 @@ class _AdminMessagesState extends State<AdminMessages> {
                   return false;
                 }
               }).toList();
-            } else if (nagarNigamServices != '') {
+            }else if (nagarNigamServices != ''){
               docs = docs.where((element) {
-                try {
+                try{
                   var t2 = element['nagarNigamServices'];
                   return element['nagarNigamServices'] == nagarNigamServices;
+                } catch (e) {
+                  return false;
+                }
+              }).toList();
+            } else if (name != '') {
+              docs = docs.where((element) {
+                try {
+                  var t3 = element['username'];
+                  return element['username']
+                      .toString()
+                      .toLowerCase()
+                      .contains(name.toLowerCase());
                 } catch (e) {
                   return false;
                 }
@@ -169,6 +235,7 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
   List<String> nagarNigamServicesList = ['सफाई', 'बिजली विभाग'];
   String selectedCategory = 'शिकायत';
   String date = '';
+  String name = '';
 
   DropdownMenuItem<String> buildMenuItem(String nagarNigamServicesList) {
     return DropdownMenuItem(
@@ -200,12 +267,47 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
           var height = MediaQuery.of(context).size.height;
           var width = MediaQuery.of(context).size.width;
           return Container(
-            height: height * 0.35,
+            // height: height * 0.35,
             width: width * 0.88,
             padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(
+                    left: 10
+                  ),
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 0.5
+                    ),
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Name',
+                      hintStyle: GoogleFonts.openSans(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xffA69696)
+                      )
+                    ),
+                    onChanged: (value) {
+                      setState((){
+                        name = value;
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Container(
                   padding: const EdgeInsets.only(left: 10),
                   alignment: Alignment.centerLeft,
@@ -284,7 +386,7 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
                 ),
                 InkWell(
                   onTap: () {
-                    widget.applyFilter(selectedCategory, date, value);
+                    widget.applyFilter(selectedCategory, date, value,name);
                     Navigator.pop(context);
                   },
                   child: Container(

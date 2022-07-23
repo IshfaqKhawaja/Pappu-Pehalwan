@@ -10,8 +10,12 @@ import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   final isFromLogout;
+  final isUpdationRequired;
 
-  const SplashScreen({Key? key, this.isFromLogout = false}) : super(key: key);
+  const SplashScreen({Key? key,
+    this.isFromLogout = false,
+    this.isUpdationRequired = false
+  }) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -24,8 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> loadData() async {
     try {
-      // await Provider.of<LoadDataFromFacebook>(context, listen: false).loadPosts();
-await Provider.of<UserDetails>(context,listen: false).loadUserDetails();
       await  Provider.of<UserDetails>(context, listen: false).loadUserDetails();
       Provider.of<LoadDataFromFacebook>(context, listen: false)
           .loadFacebookKey();
@@ -88,6 +90,12 @@ await Provider.of<LoadDataFromFacebook>(context, listen: false)
         ? Login(
             loadData: loadData,
           )
+    : isLoading && widget.isUpdationRequired
+        ? const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    )
         : isLoading
             ? Scaffold(
                 body: Center(

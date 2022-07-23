@@ -298,7 +298,7 @@ class _UserTypeState extends State<UserType> {
             height: 6,
           ),
           Container(
-            width: 200,
+            width: double.infinity,
             height: 45,
             child: TextField(
               decoration: const InputDecoration(
@@ -307,7 +307,11 @@ class _UserTypeState extends State<UserType> {
               ),
               onChanged: (value){
                 setState((){
-                  userCategories = (widget.userCategories as List).where((element) => element.toLowerCase().contains(value.toLowerCase())).toList();
+                  userCategories = (widget.userCategories as List)
+                      .where((element) => element
+                      .toLowerCase()
+                      .contains(value.toLowerCase()))
+                      .toList();
                 });
               },
             ),
@@ -326,7 +330,7 @@ class _UserTypeState extends State<UserType> {
                   padding: const EdgeInsets.all(8),
                   margin: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: Colors.grey,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(e,style: GoogleFonts.openSans(

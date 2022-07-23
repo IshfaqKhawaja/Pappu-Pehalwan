@@ -199,13 +199,13 @@ class LoadDataFromFacebook with ChangeNotifier {
 
   Future<void> loadPostsFromFirebase({userDetails = null}) async {
     List userCategory = [];
-    String shikayat = '';
+    String nagarNigamServices = '';
     if (userDetails != null) {
       userCategory = userDetails.containsKey('userCategories')
           ? userDetails['userCategories']
           : [];
-      shikayat =
-          userDetails.containsKey('shikayat') ? userDetails['shikayat'] : '';
+      nagarNigamServices =
+          userDetails.containsKey('nagarNigamServices') ? userDetails['nagarNigamServices'] : '';
     }
     var res =
         await FirebaseFirestore.instance.collection('posts').doc('posts').get();
