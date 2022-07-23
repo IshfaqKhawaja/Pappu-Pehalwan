@@ -140,7 +140,8 @@ class _BodyPart3State extends State<BodyPart3> {
                                         : [],
                                 media: posts[index]['media'],
                                 type: posts[index]['type'],
-                              ));
+                            post: displayPosts[index],
+                          ));
                 })
               ],
             ),

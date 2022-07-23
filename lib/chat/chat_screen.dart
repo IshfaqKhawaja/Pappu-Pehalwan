@@ -292,7 +292,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Image.asset(
                       'assets/images/icon.jpg',
                       height: 110,
-                      width: 145,
+                      width: 110,
                       fit: BoxFit.fill,
                     ),
                   ),

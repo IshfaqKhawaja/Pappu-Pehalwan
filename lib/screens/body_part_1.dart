@@ -132,6 +132,7 @@ class _BodyPart1State extends State<BodyPart1> {
                       },
                       openBuilder: (_, __) {
                         return ViewFBPost(
+                          post: displayPosts[index],
                           id: displayPosts[index]['id'],
                           title: displayPosts[index].containsKey('message')
                               ? displayPosts[index]['message'].split('\n')[0]
@@ -149,6 +150,7 @@ class _BodyPart1State extends State<BodyPart1> {
                           type: displayPosts[index].containsKey('type')
                               ? displayPosts[index]['type']
                               : '');
+
                       });
                 }),
           ),

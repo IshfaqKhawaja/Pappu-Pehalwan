@@ -138,102 +138,102 @@ class _ViewFBPostState extends State<ViewFBPost> {
           const SizedBox(
             width: 10,
           ),
-          if (userDetails['isAdmin'])
-            IconButton(
-                onPressed: () async {
-                  userCategories = await loadUserCategories();
-                  showDialog(
-                      context: context,
-                      builder: (ctx) {
-                        return Dialog(
-                          child: WillPopScope(
-                            onWillPop: () async {
-                              Navigator.of(context).pop({});
-                              return true;
-                            },
-                              child: SingleChildScrollView(
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Post Type : ',
-                                            style: GoogleFonts.openSans(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                              child: DropDownWidget(
-                                                changePostType: changePostType,
-                                                postType: postType,
-                                              )
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        'User Type : ',
-                                        style: GoogleFonts.openSans(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      UserType(
-                                        userCategories: userCategories,
-                                        postUserCategories: widget.post['userType'],
-                                        deletePost : deletePost,
-                                        updateData: updateData,
-                                        post:widget.post,
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                          ),
-                        );
-                      }).then((value) {
-                    if (value.containsKey('updated') && value['updated']) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (ctx) => const SplashScreen(
-                                    isUpdationRequired: true,
-                                    isFromLogout: false,
-                                  )),
-                          (route) => false);
-                    }
-                  });
-                  //});
-                  // showDialog(
-                  // context: context,
-                  // builder: (ctx) {
-                  // return DialogWidget(
-                  // post: widget.post,
-                  //);
-                  // })
-                },
-                icon: const Icon(
-                  Icons.edit,
-                  color: Colors.white,
-                )),
+          // if (userDetails['isAdmin'])
+          //   IconButton(
+          //       onPressed: () async {
+          //         userCategories = await loadUserCategories();
+          //         showDialog(
+          //             context: context,
+          //             builder: (ctx) {
+          //               return Dialog(
+          //                 child: WillPopScope(
+          //                   onWillPop: () async {
+          //                     Navigator.of(context).pop({});
+          //                     return true;
+          //                   },
+          //                     child: SingleChildScrollView(
+          //                       child: Padding(
+          //                           padding: const EdgeInsets.all(8.0),
+          //                         child: Column(
+          //                           crossAxisAlignment: CrossAxisAlignment.start,
+          //                           mainAxisSize: MainAxisSize.min,
+          //                           children: [
+          //                             Row(
+          //                               children: [
+          //                                 Text(
+          //                                   'Post Type : ',
+          //                                   style: GoogleFonts.openSans(
+          //                                     color: Colors.black,
+          //                                     fontWeight: FontWeight.bold,
+          //                                   ),
+          //                                 ),
+          //                                 const SizedBox(
+          //                                   width: 10,
+          //                                 ),
+          //                                 Expanded(
+          //                                     child: DropDownWidget(
+          //                                       changePostType: changePostType,
+          //                                       postType: postType,
+          //                                     )
+          //                                 )
+          //                               ],
+          //                             ),
+          //                             const SizedBox(
+          //                               height: 10,
+          //                             ),
+          //                             Text(
+          //                               'User Type : ',
+          //                               style: GoogleFonts.openSans(
+          //                                 color: Colors.black,
+          //                                 fontWeight: FontWeight.bold,
+          //                               ),
+          //                             ),
+          //                             const SizedBox(
+          //                               width: 10,
+          //                             ),
+          //                             UserType(
+          //                               userCategories: userCategories,
+          //                               postUserCategories: widget.post['userType'],
+          //                               deletePost : deletePost,
+          //                               updateData: updateData,
+          //                               post:widget.post,
+          //                             ),
+          //                             const SizedBox(
+          //                               height: 10,
+          //                             ),
+          //                             const SizedBox(
+          //                               height: 20,
+          //                             )
+          //                           ],
+          //                         ),
+          //                       ),
+          //                     ),
+          //                 ),
+          //               );
+          //             }).then((value) {
+          //           if (value.containsKey('updated') && value['updated']) {
+          //             Navigator.of(context).pushAndRemoveUntil(
+          //                 MaterialPageRoute(
+          //                     builder: (ctx) => const SplashScreen(
+          //                           isUpdationRequired: true,
+          //                           isFromLogout: false,
+          //                         )),
+          //                 (route) => false);
+          //           }
+          //         });
+          //         //});
+          //         // showDialog(
+          //         // context: context,
+          //         // builder: (ctx) {
+          //         // return DialogWidget(
+          //         // post: widget.post,
+          //         //);
+          //         // })
+          //       },
+          //       icon: const Icon(
+          //         Icons.edit,
+          //         color: Colors.white,
+          //       )),
           const SizedBox(
             width: 10,
           )
@@ -569,7 +569,8 @@ class _UserTypeState extends State<UserType> {
                       ));
                     }
                   },
-                  child: isDeleting ? Container(
+                  child: isDeleting
+                      ? Container(
                     height: 25,
                     width: 25,
                     child: const CircularProgressIndicator(
