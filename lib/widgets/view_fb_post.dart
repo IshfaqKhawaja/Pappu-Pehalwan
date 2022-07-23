@@ -138,102 +138,102 @@ class _ViewFBPostState extends State<ViewFBPost> {
           const SizedBox(
             width: 10,
           ),
-          // if (userDetails['isAdmin'])
-          //   IconButton(
-          //       onPressed: () async {
-          //         userCategories = await loadUserCategories();
-          //         showDialog(
-          //             context: context,
-          //             builder: (ctx) {
-          //               return Dialog(
-          //                 child: WillPopScope(
-          //                   onWillPop: () async {
-          //                     Navigator.of(context).pop({});
-          //                     return true;
-          //                   },
-          //                     child: SingleChildScrollView(
-          //                       child: Padding(
-          //                           padding: const EdgeInsets.all(8.0),
-          //                         child: Column(
-          //                           crossAxisAlignment: CrossAxisAlignment.start,
-          //                           mainAxisSize: MainAxisSize.min,
-          //                           children: [
-          //                             Row(
-          //                               children: [
-          //                                 Text(
-          //                                   'Post Type : ',
-          //                                   style: GoogleFonts.openSans(
-          //                                     color: Colors.black,
-          //                                     fontWeight: FontWeight.bold,
-          //                                   ),
-          //                                 ),
-          //                                 const SizedBox(
-          //                                   width: 10,
-          //                                 ),
-          //                                 Expanded(
-          //                                     child: DropDownWidget(
-          //                                       changePostType: changePostType,
-          //                                       postType: postType,
-          //                                     )
-          //                                 )
-          //                               ],
-          //                             ),
-          //                             const SizedBox(
-          //                               height: 10,
-          //                             ),
-          //                             Text(
-          //                               'User Type : ',
-          //                               style: GoogleFonts.openSans(
-          //                                 color: Colors.black,
-          //                                 fontWeight: FontWeight.bold,
-          //                               ),
-          //                             ),
-          //                             const SizedBox(
-          //                               width: 10,
-          //                             ),
-          //                             UserType(
-          //                               userCategories: userCategories,
-          //                               postUserCategories: widget.post['userType'],
-          //                               deletePost : deletePost,
-          //                               updateData: updateData,
-          //                               post:widget.post,
-          //                             ),
-          //                             const SizedBox(
-          //                               height: 10,
-          //                             ),
-          //                             const SizedBox(
-          //                               height: 20,
-          //                             )
-          //                           ],
-          //                         ),
-          //                       ),
-          //                     ),
-          //                 ),
-          //               );
-          //             }).then((value) {
-          //           if (value.containsKey('updated') && value['updated']) {
-          //             Navigator.of(context).pushAndRemoveUntil(
-          //                 MaterialPageRoute(
-          //                     builder: (ctx) => const SplashScreen(
-          //                           isUpdationRequired: true,
-          //                           isFromLogout: false,
-          //                         )),
-          //                 (route) => false);
-          //           }
-          //         });
-          //         //});
-          //         // showDialog(
-          //         // context: context,
-          //         // builder: (ctx) {
-          //         // return DialogWidget(
-          //         // post: widget.post,
-          //         //);
-          //         // })
-          //       },
-          //       icon: const Icon(
-          //         Icons.edit,
-          //         color: Colors.white,
-          //       )),
+          if (userDetails['isAdmin'])
+            IconButton(
+                onPressed: () async {
+                  userCategories = await loadUserCategories();
+                  showDialog(
+                      context: context,
+                      builder: (ctx) {
+                        return Dialog(
+                          child: WillPopScope(
+                            onWillPop: () async {
+                              Navigator.of(context).pop({});
+                              return true;
+                            },
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Post Type : ',
+                                          style: GoogleFonts.openSans(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                            child: DropDownWidget(
+                                          changePostType: changePostType,
+                                          postType: postType,
+                                        ))
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'User Type : ',
+                                      style: GoogleFonts.openSans(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    UserType(
+                                      userCategories: userCategories,
+                                      postUserCategories:
+                                          widget.post['userType'],
+                                      deletePost: deletePost,
+                                      updateData: updateData,
+                                      post: widget.post,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).then((value) {
+                    if (value.containsKey('updated') && value['updated']) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (ctx) => const SplashScreen(
+                                    isUpdationRequired: true,
+                                    isFromLogout: false,
+                                  )),
+                          (route) => false);
+                    }
+                  });
+                  //});
+                  // showDialog(
+                  // context: context,
+                  // builder: (ctx) {
+                  // return DialogWidget(
+                  // post: widget.post,
+                  //);
+                  // })
+                },
+                icon: const Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                )),
           const SizedBox(
             width: 10,
           )
@@ -344,11 +344,8 @@ class _ViewFBPostState extends State<ViewFBPost> {
 class DropDownWidget extends StatefulWidget {
   final postType;
   final changePostType;
-  const DropDownWidget({
-    Key? key,
-    this.postType,
-    this.changePostType
-  }) : super(key: key);
+  const DropDownWidget({Key? key, this.postType, this.changePostType,})
+      : super(key: key);
 
   @override
   State<DropDownWidget> createState() => _DropDownWidgetState();
@@ -357,37 +354,39 @@ class DropDownWidget extends StatefulWidget {
 class _DropDownWidgetState extends State<DropDownWidget> {
   var postType = '';
   @override
-  void iniState(){
-    if(widget.postType == '') {
+  void initState() {
+    if (widget.postType == '') {
       postType = 'FEATURED';
     } else {
       postType = widget.postType ?? "FEATURED";
     }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
+   
     return DropdownButton(
-        items: const [
-          DropdownMenuItem(
-              child: Text('FEATURED'),
-            value: 'FEATURED',
-          ),
-          DropdownMenuItem(
-              child: Text('STORY'),
-            value: 'STORY',
-          ),
-          DropdownMenuItem(
-              child: Text('POST'),
-             value: 'POST',
-          )
-        ],
-        onChanged: (value) {
-          setState((){
-            postType = value.toString();
-            widget.changePostType(postType);
-          });
-        },
+      items: const [
+        DropdownMenuItem(
+          child: Text('FEATURED'),
+          value: 'FEATURED',
+        ),
+        DropdownMenuItem(
+          child: Text('STORY'),
+          value: 'STORY',
+        ),
+        DropdownMenuItem(
+          child: Text('POST'),
+          value: 'POST',
+        )
+      ],
+      onChanged: (value) {
+        setState(() {
+          postType = value.toString();
+          widget.changePostType(postType);
+        });
+      },
       value: postType,
     );
   }
@@ -399,13 +398,14 @@ class UserType extends StatefulWidget {
   final updateData;
   final post;
   final deletePost;
-  const UserType({Key? key,
-    this.userCategories,
-    this.postUserCategories,
-    this.updateData,
-    this.post,
-    this.deletePost
-  }) : super(key: key);
+  const UserType(
+      {Key? key,
+      this.userCategories,
+      this.postUserCategories,
+      this.updateData,
+      this.post,
+      this.deletePost})
+      : super(key: key);
 
   @override
   State<UserType> createState() => _UserTypeState();
@@ -419,25 +419,26 @@ class _UserTypeState extends State<UserType> {
 
   @override
   void initState() {
-    if(widget.postUserCategories == null) {
+    if (widget.postUserCategories == null) {
       postUserCategories = [];
     } else {
       postUserCategories = widget.postUserCategories;
     }
-    if(widget.userCategories == null){
+    if (widget.userCategories == null) {
       userCategories = [];
-    }else {
+    } else {
       userCategories = widget.userCategories;
     }
     super.initState();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     userCategories = [];
     postUserCategories = [];
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -448,12 +449,10 @@ class _UserTypeState extends State<UserType> {
         children: [
           Wrap(
             children: [
-              ...postUserCategories
-              .map(
-                  (e) => InkWell(
-                    onTap: (){
+              ...postUserCategories.map((e) => InkWell(
+                    onTap: () {
                       postUserCategories.remove(e);
-                      setState((){});
+                      setState(() {});
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8),
@@ -464,13 +463,10 @@ class _UserTypeState extends State<UserType> {
                       ),
                       child: Text(
                         e,
-                        style: GoogleFonts.openSans(
-                          color: Colors.white
-                        ),
+                        style: GoogleFonts.openSans(color: Colors.white),
                       ),
                     ),
-                  )
-              )
+                  ))
             ],
           ),
           const SizedBox(
@@ -492,10 +488,10 @@ class _UserTypeState extends State<UserType> {
                 border: OutlineInputBorder(),
               ),
               onChanged: (value) {
-                setState((){
+                setState(() {
                   userCategories = (widget.userCategories as List)
                       .where((element) =>
-                      element.toLowerCase().contains(value.toLowerCase()))
+                          element.toLowerCase().contains(value.toLowerCase()))
                       .toList();
                 });
               },
@@ -504,28 +500,26 @@ class _UserTypeState extends State<UserType> {
           Wrap(
             children: [
               ...userCategories
-              .map((e) => InkWell(
-                onTap: (){
-                  if(!postUserCategories.contains(e)){
-                    postUserCategories.add(e);
-                  }
-                  setState((){});
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  margin: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: Text(
-                    e,
-                    style: GoogleFonts.openSans(
-                      color: Colors.white
-                    ),
-                  ),
-                ),
-              )).toList(),
+                  .map((e) => InkWell(
+                        onTap: () {
+                          if (!postUserCategories.contains(e)) {
+                            postUserCategories.add(e);
+                          }
+                          setState(() {});
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          margin: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text(
+                            e,
+                            style: GoogleFonts.openSans(color: Colors.white),
+                          ),
+                        ),
+                      ))
+                  .toList(),
             ],
           ),
           const SizedBox(
@@ -535,8 +529,8 @@ class _UserTypeState extends State<UserType> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                  onPressed: (){
-                    Navigator.of(context).pop({'updated' : false});
+                  onPressed: () {
+                    Navigator.of(context).pop({'updated': false});
                   },
                   child: Text(
                     'Cancel',
@@ -545,46 +539,43 @@ class _UserTypeState extends State<UserType> {
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
-                  )
-              ),
+                  )),
               TextButton(
-                  onPressed: () async {
-                    setState(() {
-                      isDeleting = true;
-                    });
-                    try {
-                      await widget.deletePost(widget.post);
-                      Navigator.of(context).pop({'updated' : true});
+                onPressed: () async {
+                  setState(() {
+                    isDeleting = true;
+                  });
+                  try {
+                    await widget.deletePost(widget.post);
+                    Navigator.of(context).pop({'updated': true});
 
-                      setState((){
-                        isDeleting = false;
-                      });
-                    } catch (e){
-                      print(e);
-                      setState((){
-                        isDeleting = false;
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(e.toString()),
-                      ));
-                    }
-                  },
-                  child: isDeleting
-                      ? Container(
-                    height: 25,
-                    width: 25,
-                    child: const CircularProgressIndicator(
-                      color: Colors.red,
-                    ),
-                  )
-                      :
-                      Text(
-                          'Delete',
-                        style: GoogleFonts.openSans(
+                    setState(() {
+                      isDeleting = false;
+                    });
+                  } catch (e) {
+                    print(e);
+                    setState(() {
+                      isDeleting = false;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(e.toString()),
+                    ));
+                  }
+                },
+                child: isDeleting
+                    ? Container(
+                        height: 25,
+                        width: 25,
+                        child: const CircularProgressIndicator(
                           color: Colors.red,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
                         ),
+                      )
+                    : Text(
+                        'Delete',
+                        style: GoogleFonts.openSans(
+                            color: Colors.red,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
                       ),
               ),
               TextButton(
@@ -592,37 +583,35 @@ class _UserTypeState extends State<UserType> {
                     setState(() {
                       isLoading = true;
                     });
-                    try{
+                    try {
                       await widget.updateData(postUserCategories, widget.post);
-                      Navigator.of(context).pop({'updated' : true});
-                      setState((){
-                        isLoading  = false;
+                      Navigator.of(context).pop({'updated': true});
+                      setState(() {
+                        isLoading = false;
                       });
                     } catch (e) {
                       print(e);
-                      setState((){
-                        isLoading = false ;
+                      setState(() {
+                        isLoading = false;
                       });
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(e.toString()),
+                        content: Text(e.toString()),
                       ));
                     }
                   },
                   child: isLoading
-                  ? Container(
-                    height: 25,
-                    width: 25,
-                    child: const CircularProgressIndicator(),
-                  )
+                      ? Container(
+                          height: 25,
+                          width: 25,
+                          child: const CircularProgressIndicator(),
+                        )
                       : Text(
-                    'Update',
-                    style: GoogleFonts.openSans(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold
-                    ),
-                  )
-              )
+                          'Update',
+                          style: GoogleFonts.openSans(
+                              color: Colors.blue,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ))
             ],
           )
         ],
@@ -630,4 +619,3 @@ class _UserTypeState extends State<UserType> {
     );
   }
 }
-

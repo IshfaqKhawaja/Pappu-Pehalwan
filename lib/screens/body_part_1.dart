@@ -126,6 +126,7 @@ class _BodyPart1State extends State<BodyPart1> {
                                         ? displayPosts[index]['message']
                                             .split('\n')[0]
                                         : '',
+                                        
                                   )
                           ],
                         );

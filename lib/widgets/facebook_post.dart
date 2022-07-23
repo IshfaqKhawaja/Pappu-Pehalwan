@@ -251,7 +251,6 @@ class _UserTypeState extends State<UserType> {
   
   @override
   void dispose(){
-    //TODO: implement dispose
     super.dispose();
     userCategories = [];
     postUserCategories = [];
