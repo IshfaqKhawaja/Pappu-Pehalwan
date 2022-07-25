@@ -290,7 +290,6 @@ class _EnterOTPState extends State<EnterOTP> {
         child: TextFormField(
           textAlignVertical: TextAlignVertical.center,
           keyboardType: TextInputType.number,
-          autofocus: true,
           onChanged: (val) {
             if(val.length==1){
               FocusScope.of(context).nextFocus();
