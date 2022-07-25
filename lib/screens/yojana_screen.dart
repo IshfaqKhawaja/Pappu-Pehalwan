@@ -9,7 +9,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import '../providers/user_details.dart';
-import '../screens/national_plans.dart';
 import '../screens/state_plans.dart';
 import 'package:provider/provider.dart';
 
@@ -42,7 +41,8 @@ class _YojanaScreenState extends State<YojanaScreen>
 
   @override
   Widget build(BuildContext context) {
-    final userDetails = Provider.of<UserDetails>(context, listen: false).getUserDetails;
+    final userDetails =
+        Provider.of<UserDetails>(context, listen: false).getUserDetails;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -50,26 +50,26 @@ class _YojanaScreenState extends State<YojanaScreen>
           children: [
             Text(
               'Government Schemes',
-              style:
-                  GoogleFonts.openSans(fontSize: 15, fontWeight: FontWeight.w600),
+              style: GoogleFonts.openSans(
+                  fontSize: 15, fontWeight: FontWeight.w600),
             ),
-            if(userDetails['isAdmin'])
+            if (userDetails['isAdmin'])
               IconButton(
                   onPressed: () => showModalBottomSheet(
-                    enableDrag: true,
-                      isScrollControlled: false,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20)
-                        )
+                        enableDrag: true,
+                        isScrollControlled: false,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20))),
+                        context: context,
+                        builder: (context) => YoganaBottomSheet(
+                          type: type,
+                        ),
                       ),
-                      context: context,
-                      builder: (context) =>  YoganaBottomSheet(
-                        type: type,
-                      ),
-                  ),
-                  icon: const Icon(Icons.add,color: Colors.white,)
-              )
+                  icon: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ))
           ],
         ),
         bottom: TabBar(
@@ -84,34 +84,35 @@ class _YojanaScreenState extends State<YojanaScreen>
               text: 'राष्ट्रीय सरकारी योजनाएं',
             ),
           ],
-          onTap: (index){
-            setState((){
+          onTap: (index) {
+            setState(() {
               type = index == 1 ? 'national' : 'state';
             });
-
           },
         ),
       ),
       body: TabBarView(
-          controller: tabController,
+        controller: tabController,
         children: const [
           StatesPlans(
             type: 0,
           ),
           StatesPlans(
-            type:1,
+            type: 1,
           ),
-        ],),
+        ],
+      ),
     );
   }
-
 }
-
-
 
 class YoganaBottomSheet extends StatefulWidget {
   final type;
-  const YoganaBottomSheet({Key? key, this.type,}) : super(key: key);
+
+  const YoganaBottomSheet({
+    Key? key,
+    this.type,
+  }) : super(key: key);
 
   @override
   State<YoganaBottomSheet> createState() => _YoganaBottomSheetState();
@@ -122,16 +123,16 @@ class _YoganaBottomSheetState extends State<YoganaBottomSheet> {
   String title = '';
   String description = '';
   bool isLoading = false;
+
   Future _pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null)
-        return;
+      if (image == null) return;
       final imageTemp = File(image.path);
       setState(() {
         this.image = imageTemp;
       });
-    } on PlatformException catch (e){
+    } on PlatformException catch (e) {
       print("Failed to pick image: $e");
     }
   }
@@ -139,158 +140,141 @@ class _YoganaBottomSheetState extends State<YoganaBottomSheet> {
   Future<void> send(image, title, description, type) async {
     String url = '';
     //Adding Image to Firebase Storage
-    if(image != null){
-      var ref = FirebaseStorage.instance.ref().child('yogana-images')
-      .child('${FirebaseAuth.instance.currentUser!.uid}${Timestamp.now()}');
+    if (image != null) {
+      var ref = FirebaseStorage.instance
+          .ref()
+          .child('yogana-images')
+          .child('${FirebaseAuth.instance.currentUser!.uid}${Timestamp.now()}');
       await ref.putFile(image);
-      url = await  ref.getDownloadURL();
-
+      url = await ref.getDownloadURL();
     }
 
-    await FirebaseFirestore.instance.collection('yogana').add({
-      'title':  title,
-      'description' : description,
-      'type' : type,
-      'url' : url
-    });
+    await FirebaseFirestore.instance.collection('yogana').add(
+        {'title': title, 'description': description, 'type': type, 'url': url});
 
     Fluttertoast.showToast(msg: 'Added Successfully');
-
-
-
   }
 
   @override
   Widget build(BuildContext context) {
-      return  Container(
-        // height: image != null ? 600 : 400,
-        margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+    return Container(
+      // height: image != null ? 600 : 400,
+      margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom + 10),
 
-        child: ListView(
-          children: [
-            Container(
-                margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Colors.black.withOpacity(0.7)
-                    ),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: InkWell(
-                    onTap: (){
-                      _pickImage();
-                    },
-                    child: image != null ? Image.file(image!,height: 200,width: 200,fit: BoxFit.cover,) : const Text("Tap to add photo +")
-                )
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
+      child: ListView(
+        children: [
+          Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.black.withOpacity(0.7)),
-                  borderRadius: BorderRadius.circular(20)
-              ),
-              child: TextFormField(
-                validator: (value){
-                  if(value!.isEmpty) {
-                    return "Please give title to yojana";
+                  borderRadius: BorderRadius.circular(10)),
+              child: InkWell(
+                  onTap: () {
+                    _pickImage();
+                  },
+                  child: image != null
+                      ? Image.file(
+                          image!,
+                          height: 200,
+                          width: 200,
+                          fit: BoxFit.cover,
+                        )
+                      : const Text("Tap to add photo +"))),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black.withOpacity(0.7)),
+                borderRadius: BorderRadius.circular(20)),
+            child: TextFormField(
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "Please give title to yojana";
+                }
+              },
+              onChanged: (val) {
+                setState(() {
+                  title = val;
+                });
+              },
+              maxLines: 1,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Title',
+                  hintStyle: GoogleFonts.openSans(
+                      fontSize: 18, fontWeight: FontWeight.w700)),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black.withOpacity(0.7)),
+                borderRadius: BorderRadius.circular(20)),
+            child: TextFormField(
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "Please give description to yojana";
+                }
+                return null;
+              },
+              onChanged: (val) {
+                description = val;
+              },
+              maxLines: 7,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Description',
+                  hintStyle: GoogleFonts.openSans(
+                      fontSize: 18, fontWeight: FontWeight.w700)),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 100, right: 100),
+            child: ElevatedButton(
+              onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                try {
+                  if (image == null) {
+                    await send(null, title, description, widget.type);
+                  } else {
+                    await send(image!, title, description, widget.type);
                   }
-                },
-                onChanged: (val){
-                  setState((){
-                    title = val;
+                  setState(() {
+                    isLoading = false;
                   });
-                },
-                maxLines: 1,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Title',
-                    hintStyle: GoogleFonts.openSans(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700
-                    )
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black.withOpacity(0.7)),
-                  borderRadius: BorderRadius.circular(20)
-              ),
-              child: TextFormField(
-                validator: (value){
-                  if(value!.isEmpty) {
-                    return "Please give description to yojana";
-                  }
-                  return null;
-                },
-                onChanged: (val){
-                  description = val;
-                },
-                maxLines: 7,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Description',
-                    hintStyle: GoogleFonts.openSans(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700
-                    )
-                ),
-              ),
-            ),
-            const SizedBox(
-              height:
-              10,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 100,right: 100),
-              child: ElevatedButton(
-                onPressed: () async {
-                  setState((){
-                    isLoading = true;
+                  Navigator.of(context).pop();
+                } catch (e) {
+                  setState(() {
+                    isLoading = false;
                   });
-                  try {
-                    if (image == null) {
-                      await send(null, title, description, widget.type);
-                    }
-                    else {
-                      await send(image!, title, description, widget.type);
-                    }
-                    setState((){
-                      isLoading = false;
-                    });
-                    Navigator.of(context).pop();
-
-                  }
-                  catch(e){
-                    setState((){
-                      isLoading = false;
-                    });
-                  }
-                },
-                child: isLoading ? Container(
-                    height: 20,
-                    width: 20,
-                    child: const CircularProgressIndicator()) : const Text('Save'),
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor
-                ),
-              ),
+                }
+              },
+              child: isLoading
+                  ? Container(
+                      height: 20,
+                      width: 20,
+                      child: const CircularProgressIndicator())
+                  : const Text('Save'),
+              style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }
-
-
-

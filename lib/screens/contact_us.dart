@@ -31,7 +31,7 @@ class ContactUs extends StatelessWidget {
             children: [
               sizedBox,
               Text(
-                'Leave Your Message',
+                'हमारे लिए संदेश',
                 style: GoogleFonts.openSans(
                   fontSize: 28,
                   fontWeight: FontWeight.w800,
@@ -41,7 +41,8 @@ class ContactUs extends StatelessWidget {
               ),
               sizedBox,
               Text(
-                '''If you have any questions about the services we provide simply contact us through below provided options. We try and respond to all queries and comments within 24 hours.''',
+                '''यदि आपके पास हमारे द्वारा प्रदान की जाने वाली सेवाओं के बारे में कोई प्रश्न हैं तो नीचे दिए गए संपर्क नंबर के माध्यम से हमसे संपर्क करें। हम कोशिश करेंगे और 24 घंटे के अंदर सभी प्रश्नों और टिप्पणियों का जवाब दे सके।''',
+                // '''If you have any questions about the services we provide simply contact us through below provided options. We try and respond to all queries and comments within 24 hours.''',
                 style: GoogleFonts.openSans(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -51,10 +52,8 @@ class ContactUs extends StatelessWidget {
               ),
               sizedBox,
               sizedBox,
-              sizedBox,
-              sizedBox,
               Text(
-                'Connect With Us On',
+                'हमारे साथ जुड़ें',
                 style: GoogleFonts.openSans(
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
@@ -65,7 +64,7 @@ class ContactUs extends StatelessWidget {
               sizedBox,
 
               Text(
-                '''We are here to help you. Feel free to contact us anytime. We are always happy to help you.''',
+                '''हम यहां आपकी सहायता के लिए उपलब्ध हैं। हमसे किसी भी समय सम्पर्क करें।''',
                 style: GoogleFonts.openSans(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -74,16 +73,25 @@ class ContactUs extends StatelessWidget {
                 textAlign: TextAlign.justify,
               ),
               sizedBox,
-              const SizedBox(
-                height: 40,
+              Text(
+                '''आप हमें निम्न नंबर पर संपर्क कर सकते हैं''',
+                style: GoogleFonts.openSans(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                textAlign: TextAlign.justify,
               ),
-
-              Wrap(
-                alignment:  WrapAlignment.start,
-                spacing: 10,
-                runSpacing: 10,
-                children: logos.map((e) => logo(e)).toList(),
-              ),
+              sizedBox,
+              const Center(
+                child: Text("+91 9876543210"),
+              )
+              // Wrap(
+              //   alignment:  WrapAlignment.start,
+              //   spacing: 10,
+              //   runSpacing: 10,
+              //   children: logos.map((e) => logo(e)).toList(),
+              // ),
             ],
           ),
         ),

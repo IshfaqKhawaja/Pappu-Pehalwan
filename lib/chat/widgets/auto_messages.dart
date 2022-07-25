@@ -700,6 +700,7 @@ class AutoMessagesState extends State<AutoMessages> {
                         children: [
                           // const SizedBox(height: 20),
                           replyAgain(
+                            index == 0 ? 'क्या आप ${categorySelected.last} संबंधी शिकायत देना चाहते हैं?' :
                             'क्या आप ${categorySelected.last} संबंधी सुझाव देना चाहते हैं?',
                             isFirst: true,
                           ),
@@ -752,7 +753,7 @@ class AutoMessagesState extends State<AutoMessages> {
                         ),
                       ),
                     if (showReplyAgain)
-                      replyAgain("क्या आप कोई सन्देश लिखना चाहते हैं"),
+                      replyAgain("क्या आप कोई और सन्देश लिखना चाहते हैं"),
                     const SizedBox(
                       height: 20,
                     ),

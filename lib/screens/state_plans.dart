@@ -81,23 +81,14 @@ class _StatesPlansState extends State<StatesPlans> {
                               fontSize: 14
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          Wrap(
+                            alignment: WrapAlignment.start,
                             children: [
                               Text(
                                 docs[index]['description'].toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: plansContentTextStyle,),
-                              // const SizedBox(
-                              //   width: 4,
-                              // ),
-                              // Row(
-                              //   children: const [
-                              //     Icon(Icons.arrow_forward_ios, size: 20,
-                              //       color: Color(0xff146AA7),),
-                              //   ],
-                              // )
                             ],
                           ),
                         ],
