@@ -138,7 +138,7 @@ class _EnterOTPState extends State<EnterOTP> {
               style: style,
             ),
             const SizedBox(
-              height: 40,
+              height: 10,
             ),
             Text(
               'Enter OTP',
@@ -158,7 +158,7 @@ class _EnterOTPState extends State<EnterOTP> {
               ),
             ),
             const SizedBox(
-              height: 30,
+              height: 10,
             ),
             Text(
               '${widget.phoneNumber}',
@@ -169,7 +169,7 @@ class _EnterOTPState extends State<EnterOTP> {
               ),
             ),
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
             Container(
                 padding: const EdgeInsets.symmetric(
