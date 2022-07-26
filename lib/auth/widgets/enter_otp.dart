@@ -138,7 +138,7 @@ class _EnterOTPState extends State<EnterOTP> {
               style: style,
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             Text(
               'Enter OTP',
@@ -147,7 +147,7 @@ class _EnterOTPState extends State<EnterOTP> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             Text(
               'Please enter One Time Password (OTP) sent to your Mobile Number for verification',
@@ -168,9 +168,9 @@ class _EnterOTPState extends State<EnterOTP> {
                 fontSize: 16,
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            // const SizedBox(
+              //height: 20,
+            //),
             Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,

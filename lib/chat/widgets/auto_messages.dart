@@ -61,14 +61,14 @@ class AutoMessagesState extends State<AutoMessages> {
   Map<String, Map<String, List<Map<String, dynamic>>>> questions = {
     '0': {
       // Question 0
-      '0': [
-        {
-          'title': 'मैं पप्पू पहलवान आपकी किस प्रकार से सहायता कर सकता हूँ',
-          'parentId': '0',
-          'isQuestion': true,
-          'id': '0',
-        },
-      ],
+      // '0': [
+      //   {
+      //     'title': 'मैं पप्पू पहलवान आपकी किस प्रकार से सहायता कर सकता हूँ',
+      //     'parentId': '0',
+      //     'isQuestion': true,
+      //     'id': '0',
+      //   },
+      // ],
     },
     '1': {
       '0': [

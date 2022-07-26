@@ -64,7 +64,9 @@ class _StatesPlansState extends State<StatesPlans> {
                   children: [
 
                     if(docs[index]['url'] != '')
-                      Image.network(docs[index]['url']),
+                      Container(
+                        width: 120,
+                          child: Image.network(docs[index]['url'])),
                     const SizedBox(
                       width: 20,
                     ),

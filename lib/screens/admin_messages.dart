@@ -43,6 +43,7 @@ class _AdminMessagesState extends State<AdminMessages> {
     showDialog(
         context: context,
         builder: (ctx) => ShowDialogWidget(
+          // This is defines below this class
               applyFilter: applyFilter,
           userDetails: userDetails,
             ));
@@ -122,6 +123,7 @@ class _AdminMessagesState extends State<AdminMessages> {
               docs = docs.where((element) {
                 try {
                   var t1 = element['createdAt'];
+                  var t2 = element['nagarNigamServices'];
                   return (element['createdAt'] as Timestamp)
                       .toDate()
                       .isAfter(DateTime.parse(date)) &&

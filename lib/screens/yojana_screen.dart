@@ -49,7 +49,7 @@ class _YojanaScreenState extends State<YojanaScreen>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Government Schemes',
+              'सरकारी योजनाएं',
               style: GoogleFonts.openSans(
                   fontSize: 15, fontWeight: FontWeight.w600),
             ),
@@ -105,6 +105,11 @@ class _YojanaScreenState extends State<YojanaScreen>
     );
   }
 }
+
+
+//Yogana Bottom Sheet for admin site
+
+
 
 class YoganaBottomSheet extends StatefulWidget {
   final type;
