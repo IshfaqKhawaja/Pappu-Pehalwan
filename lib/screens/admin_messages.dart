@@ -102,6 +102,8 @@ class _AdminMessagesState extends State<AdminMessages> {
                 userDetails['nagarNigamServices']);
           }
 
+          //Filter functionality
+
           if (filtered) {
             if (date != '' && nagarNigamServices != '' && name != '') {
               docs = docs.where((element) {
