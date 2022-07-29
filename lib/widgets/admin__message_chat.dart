@@ -40,9 +40,7 @@ class AdminMessageChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: unread == 1
-            ? Theme.of(context).primaryColor.withOpacity(0.5)
-            : Colors.white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       padding: const EdgeInsets.all(4),
@@ -51,15 +49,16 @@ class AdminMessageChat extends StatelessWidget {
         children: [
           ListTile(
             onTap: () async {
-              if (isRedirect && status < 1) {
-                await FirebaseFirestore.instance
-                    .collection('suggestions')
-                    .doc(userid)
-                    .collection('messages')
-                    .doc(docId)
-                    .update({'status': 1});
-              }
-              Navigator.of(context).push(MaterialPageRoute(
+              // if (isRedirect && status < 1) {
+              //   await FirebaseFirestore.instance
+              //       .collection('suggestions')
+              //       .doc(userid)
+              //       .collection('messages')
+              //       .doc(docId)
+              //       .update({'status': 1});
+              // }
+              Navigator.of(context)
+                  .push(MaterialPageRoute(
                 builder: (ctx) => isRedirect
                     ? Chat(
                         appBarTitle: appBarTitle,
@@ -82,7 +81,17 @@ class AdminMessageChat extends StatelessWidget {
                         userId: userid,
                         username: username,
                       ),
-              ));
+              ))
+                  .then((value) {
+                if (isRedirect && status < 1) {
+                  FirebaseFirestore.instance
+                      .collection('suggestions')
+                      .doc(userid)
+                      .collection('messages')
+                      .doc(docId)
+                      .update({'status': 1});
+                }
+              });
             },
             leading: CircleAvatar(
               radius: 25,

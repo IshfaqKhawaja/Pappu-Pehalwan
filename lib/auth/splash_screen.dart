@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
       await  Provider.of<UserDetails>(context, listen: false).loadUserDetails();
       Provider.of<LoadDataFromFacebook>(context, listen: false)
           .loadFacebookKey();
-      final userDetails =  Provider.of<UserDetails>(context, listen: false).getUserDetails;
+      var userDetails =  Provider.of<UserDetails>(context, listen: false).getUserDetails;
 
 await Provider.of<LoadDataFromFacebook>(context, listen: false)
           .loadPostsFromFirebase(

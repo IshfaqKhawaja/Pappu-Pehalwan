@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactUs extends StatelessWidget {
   const ContactUs({Key? key}) : super(key: key);
+
   Widget logo(path) {
     return Container(
-      child: Image.asset(path, height: 40,width: 40,fit: BoxFit.cover,),
+      child: Image.asset(
+        path,
+        height: 40,
+        width: 40,
+        fit: BoxFit.cover,
+      ),
     );
   }
 
@@ -83,8 +90,38 @@ class ContactUs extends StatelessWidget {
                 textAlign: TextAlign.justify,
               ),
               sizedBox,
-              const Center(
-                child: Text("+91 9876543210"),
+              Center(
+                child: InkWell(
+                  onTap: () async {
+                    const contactNumber = '9876543210';
+                    final Uri url = Uri.parse('tel:$contactNumber');
+                    if(await canLaunchUrl(url)){
+                      await launchUrl(url);
+                    }
+                  },
+                  child: Container(
+                    height: 45,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.phone),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text("Call us",
+                        style: GoogleFonts.openSans(
+                          fontSize:20,
+                          color: Colors.white
+                        ),)
+                      ],
+                    )
+                  ),
+                ),
               )
               // Wrap(
               //   alignment:  WrapAlignment.start,

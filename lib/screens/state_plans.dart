@@ -19,6 +19,8 @@ class _StatesPlansState extends State<StatesPlans> {
   String type = 'state';
   Map userDetails = {};
   bool isLoading  = false;
+  var tileIndex=0;
+
   @override
   void initState(){
     super.initState();
@@ -99,12 +101,15 @@ class _StatesPlansState extends State<StatesPlans> {
                     if(userDetails['isAdmin'])
 
                     IconButton(onPressed: () async{
+                      tileIndex=index;
+                      // print(tileIndex);
                       setState((){
                         isLoading = true;
                       });
                       await Future.delayed(const Duration(milliseconds: 1000));
                       try {
                         if (docs[index]['url'] != '') {
+
                           await FirebaseStorage.instance.refFromURL(
                               docs[index]['url']).delete();
                         }
@@ -122,8 +127,7 @@ class _StatesPlansState extends State<StatesPlans> {
                           isLoading = false;
                         });
                       }
-
-                    }, icon: isLoading ?
+                    }, icon: isLoading && tileIndex==index?
                     Container(
                         height: 20,
                         width: 20,

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import '../chat/widgets/show_image_bubble.dart';
@@ -19,6 +20,7 @@ class ImagesSOS extends StatefulWidget {
   final isAdmin;
   final userId;
   final username;
+
   const ImagesSOS({
     Key? key,
     this.scaffoldKey,
@@ -39,6 +41,7 @@ class _ImagesSOSState extends State<ImagesSOS> {
   bool isVideo = false;
   bool isFileSending = false;
   var file;
+
   void isFileSendingTrue(bool value, var file, String type) {
     isImage = false;
     isVideo = false;
@@ -168,86 +171,85 @@ class _ImagesSOSState extends State<ImagesSOS> {
         Provider.of<UserDetails>(context, listen: false).getUserDetails;
     print(userDetails);
     print(userId);
-    if(!userDetails['isAdmin']){
-        pickImage();
+    if (!userDetails['isAdmin']) {
+      pickImage();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.isAdmin ? widget.username : 'Image SOS',
-          style: GoogleFonts.openSans(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
+    return WillPopScope(
+      onWillPop: () async {
+        if (isFileSending) {
+          Fluttertoast.showToast(msg: 'File uploading please wait');
+        }
+        return !isFileSending;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.isAdmin ? widget.username : 'Image',
+            style: GoogleFonts.openSans(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      // extendBodyBehindAppBar: true,
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('images-sos')
-            .doc(userId)
-            .collection('messages')
-            .orderBy('createdAt', descending: true)
-            .snapshots(),
-        builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshots) {
-          if (snapshots.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor),
-            );
-          }
-          final data = snapshots.data!.docs;
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                    itemCount: data.length,
-                    reverse: true,
-                    itemBuilder: (ct, index) {
-                      final tempData = data[index].data()! as Map;
-                      return tempData['type'] == 'image'
-                          ? ShowImageBubble(
-                              datetime: tempData['date'],
-                              isMe: tempData['userId'] == userId,
-                              isNetwork: true,
-                              read: tempData['read'],
-                              url: tempData['attachment'],
-                              showDate: true,
-                            )
-                          : tempData['type'] == 'video'
-                              ? ShowVideoBubble(
-                                  datetime: tempData['date'],
-                                  isMe: tempData['userId'] == userId,
-                                  isNetwork: true,
-                                  read: tempData['read'],
-                                  url: tempData['attachment'],
-                                  showDate: true,
-                                )
-                              : const SizedBox.shrink();
-                    }),
-              ),
-              if (isFileSending)
-                isImage
-                    ? Align(
-                      alignment:  userId == FirebaseAuth.instance.currentUser!.uid ? Alignment.centerRight : Alignment.centerLeft,
-                      child: ShowImageBubble(
-                          url: file,
-                          datetime: DateTime.now().toIso8601String(),
-                          isMe: userId == FirebaseAuth.instance.currentUser!.uid,
-                          read: 0,
-                          isNetwork: false,
-                        ),
-                    )
-                    : isVideo
-                        ?  Align(
-                        alignment:  userId == FirebaseAuth.instance.currentUser!.uid ? Alignment.centerRight : Alignment.centerLeft,
-                        child:ShowVideoBubble(
+        // extendBodyBehindAppBar: true,
+        body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('images-sos')
+              .doc(userId)
+              .collection('messages')
+              .orderBy('createdAt', descending: true)
+              .snapshots(),
+          builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshots) {
+            if (snapshots.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor),
+              );
+            }
+            final data = snapshots.data!.docs;
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: data.length,
+                      reverse: true,
+                      itemBuilder: (ct, index) {
+                        final tempData = data[index].data()! as Map;
+                        return tempData['type'] == 'image'
+                            ? ShowImageBubble(
+                                datetime: tempData['date'],
+                                isMe: tempData['userId'] == userId,
+                                isNetwork: true,
+                                read: tempData['read'],
+                                url: tempData['attachment'],
+                                showDate: true,
+                              )
+                            : tempData['type'] == 'video'
+                                ? ShowVideoBubble(
+                                    datetime: tempData['date'],
+                                    isMe: tempData['userId'] == userId,
+                                    isNetwork: true,
+                                    read: tempData['read'],
+                                    url: tempData['attachment'],
+                                    showDate: true,
+                                  )
+                                : const SizedBox.shrink();
+                      }),
+                ),
+                if (isFileSending)
+                  isImage
+                      ? Align(
+                          alignment:
+                              userId == FirebaseAuth.instance.currentUser!.uid
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                          child: ShowImageBubble(
                             url: file,
                             datetime: DateTime.now().toIso8601String(),
                             isMe: userId ==
@@ -256,47 +258,64 @@ class _ImagesSOSState extends State<ImagesSOS> {
                             isNetwork: false,
                           ),
                         )
-                        : const SizedBox.shrink(),
-      const SizedBox(
-        height: 20,
-      ),
-    Align(
-      alignment: Alignment.centerRight,
-            child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-              heroTag: null,
-            backgroundColor: Color(0xff56514D),
-              onPressed: pickImage,
-              child: const Icon(
-                Icons.party_mode,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-          
-          const SizedBox(
-            height: 4,
-          ),
-          FloatingActionButton(
-            backgroundColor: Color(0xff56514D),
-            heroTag: null,
-            onPressed: _pickFiles,
-            child: const Icon(
-              Icons.collections,
-              color: Colors.white,
-              size: 30,
-            ),
-          ),
-        ],
-      ),
-      ),
-              const SizedBox(height: 20),
-            ],
-          );
-        },
+                      : isVideo
+                          ? Align(
+                              alignment: userId ==
+                                      FirebaseAuth.instance.currentUser!.uid
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: ShowVideoBubble(
+                                url: file,
+                                datetime: DateTime.now().toIso8601String(),
+                                isMe: userId ==
+                                    FirebaseAuth.instance.currentUser!.uid,
+                                read: 0,
+                                isNetwork: false,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(right: 20.0),
+                  alignment: Alignment.centerRight,
+                  color: Colors.transparent,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      FloatingActionButton(
+                        heroTag: null,
+                        backgroundColor: Color(0xff56514D),
+                        onPressed: pickImage,
+                        child: const Icon(
+                          Icons.party_mode,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                FloatingActionButton(
+                  backgroundColor: Color(0xff56514D),
+                  heroTag: null,
+                  onPressed: _pickFiles,
+                  child: const Icon(
+                    Icons.collections,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

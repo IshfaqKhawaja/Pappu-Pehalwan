@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_details.dart';
@@ -91,12 +92,12 @@ class _ChatState extends State<Chat> {
     }
   }
 
-  void update(userid) async {
-    await FirebaseFirestore.instance
-        .collection('suggestions')
-        .doc(userid)
-        .update({'unread': 0});
-  }
+  // void update(userid) async {
+  //   await FirebaseFirestore.instance
+  //       .collection('suggestions')
+  //       .doc(userid)
+  //       .update({'unread': 0});
+  // }
 
   @override
   void initState() {
@@ -120,144 +121,152 @@ class _ChatState extends State<Chat> {
 
     bool isAdmin = adminDetails['isAdmin'] as bool;
     String profileUrl = '';
-    if (isAdmin) update(userid);
+    // if (isAdmin) update(userid);
     // print('Is from same screen: $sameScreen');
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Text(isAdmin
-                        ? username != ''
-                            ? username
-                            : phoneNumber
-                        : widget.isTitleSet
-                            ? widget.appBarTitle
-                            : 'Pappu Pehalwan'),
-                  ],
-                ),
-                if (isAdmin && widget.isFromChatScreen)
-                  TextButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (ctx) {
-                            return AlertDialog(
-                              actionsAlignment: MainAxisAlignment.center,
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection('suggestions')
-                                        .doc(userid)
-                                        .collection('messages')
-                                        .doc(docId)
-                                        .update({'status': 2});
-                                    Navigator.of(ctx).pop();
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    'Complete',
-                                    style: GoogleFonts.openSans(
-                                        color: Colors.green,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection('suggestions')
-                                        .doc(userid)
-                                        .collection('messages')
-                                        .doc(docId)
-                                        .update({'status': 3});
-                                    Navigator.of(ctx).pop();
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    "Reject",
-                                    style: GoogleFonts.openSans(
-                                        color: Colors.red,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                )
-                              ],
-                            );
-                          });
-                    },
-                    child: Text(
-                      "End Chat",
-                      style: GoogleFonts.openSans(color: Colors.white),
-                    ),
+    return WillPopScope(
+      onWillPop: () async {
+        if(isFileSending){
+          Fluttertoast.showToast(msg: "Please wait while file is sending");
+        }
+        return !isFileSending;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(isAdmin
+                          ? username != ''
+                              ? username
+                              : phoneNumber
+                          : widget.isTitleSet
+                              ? widget.appBarTitle
+                              : 'Pappu Pehalwan'),
+                    ],
                   ),
-    ]
+                  if (isAdmin && widget.isFromChatScreen)
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return AlertDialog(
+                                actionsAlignment: MainAxisAlignment.center,
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      FirebaseFirestore.instance
+                                          .collection('suggestions')
+                                          .doc(userid)
+                                          .collection('messages')
+                                          .doc(docId)
+                                          .update({'status': 2});
+                                      Navigator.of(ctx).pop();
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'Complete',
+                                      style: GoogleFonts.openSans(
+                                          color: Colors.green,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      FirebaseFirestore.instance
+                                          .collection('suggestions')
+                                          .doc(userid)
+                                          .collection('messages')
+                                          .doc(docId)
+                                          .update({'status': 3});
+                                      Navigator.of(ctx).pop();
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "Reject",
+                                      style: GoogleFonts.openSans(
+                                          color: Colors.red,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                      child: Text(
+                        "End Chat",
+                        style: GoogleFonts.openSans(color: Colors.white),
+                      ),
+                    ),
+      ]
+              ),
+            ],
+          ),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            // const ChatScreen(),
+            Expanded(
+              flex: 13,
+              child: AutoMessages(
+                key: key,
+                userId: userid,
+                changeShowInputMessageField: changeShowInputMessageField,
+                index: widget.index,
+                isFromUsersChat: widget.isFromUserChats,
+                details: widget.isFromUserChats ? widget.details : [],
+                questions: widget.isFromUserChats ? widget.questions : null,
+                scaffoldKey: widget.scaffoldKey,
+                appBarTitle: widget.appBarTitle,
+                isFileSending: isFileSending,
+                isImage: isImage,
+                isAudio: isAudio,
+                isVideo: isVideo,
+                file: file,
+                datetime: widget.datetime,
+                isFromChatScreen: widget.isFromChatScreen,
+              ),
             ),
+            // Messages(
+            //   userid: userid,
+            // ),
+
+            showInputMessageField
+                ? NewMessageUser(
+                    userid: userid,
+                    profileUrl: profileUrl,
+                    username: username != '' ? username : phoneNumber,
+                    isFileSendingTrue: isFileSendingTrue,
+                    details: widget.isFromUserChats
+                        ? widget.details
+                        : key.currentState!.previousMessageFields,
+                    changeMessageSent: key.currentState!.changeMessageSent,
+                    sameScreen: sameScreen,
+                    changeSameScreen: changeSameScreen,
+                    docId: docId,
+                    appBarTitle: widget.appBarTitle,
+                    scaffoldKey: widget.scaffoldKey,
+                    questions: widget.isFromUserChats
+                        ? widget.questions
+                        : key.currentState!.questions,
+                    scrollToEnd: key.currentState!.scrollAnimateToEnd,
+                    changeShowInputMessageField: changeShowInputMessageField,
+                    isFromUserChats: widget.isFromUserChats,
+                    changeShowReplyAgain: key.currentState!.changeShowReplyAgain,
+                  )
+                : const SizedBox.shrink(),
           ],
         ),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          // const ChatScreen(),
-          Expanded(
-            flex: 13,
-            child: AutoMessages(
-              key: key,
-              userId: userid,
-              changeShowInputMessageField: changeShowInputMessageField,
-              index: widget.index,
-              isFromUsersChat: widget.isFromUserChats,
-              details: widget.isFromUserChats ? widget.details : [],
-              questions: widget.isFromUserChats ? widget.questions : null,
-              scaffoldKey: widget.scaffoldKey,
-              appBarTitle: widget.appBarTitle,
-              isFileSending: isFileSending,
-              isImage: isImage,
-              isAudio: isAudio,
-              isVideo: isVideo,
-              file: file,
-              datetime: widget.datetime,
-              isFromChatScreen: widget.isFromChatScreen,
-            ),
-          ),
-          // Messages(
-          //   userid: userid,
-          // ),
-
-          showInputMessageField
-              ? NewMessageUser(
-                  userid: userid,
-                  profileUrl: profileUrl,
-                  username: username != '' ? username : phoneNumber,
-                  isFileSendingTrue: isFileSendingTrue,
-                  details: widget.isFromUserChats
-                      ? widget.details
-                      : key.currentState!.previousMessageFields,
-                  changeMessageSent: key.currentState!.changeMessageSent,
-                  sameScreen: sameScreen,
-                  changeSameScreen: changeSameScreen,
-                  docId: docId,
-                  appBarTitle: widget.appBarTitle,
-                  scaffoldKey: widget.scaffoldKey,
-                  questions: widget.isFromUserChats
-                      ? widget.questions
-                      : key.currentState!.questions,
-                  scrollToEnd: key.currentState!.scrollAnimateToEnd,
-                  changeShowInputMessageField: changeShowInputMessageField,
-                  isFromUserChats: widget.isFromUserChats,
-                  changeShowReplyAgain: key.currentState!.changeShowReplyAgain,
-                )
-              : const SizedBox.shrink(),
-        ],
       ),
     );
   }

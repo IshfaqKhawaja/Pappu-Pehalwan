@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:pappupehalwan/providers/load_data_from_facebook.dart';
 import 'package:pappupehalwan/providers/user_details.dart';
 import 'package:provider/provider.dart';
@@ -43,15 +44,16 @@ class _AdminMessagesState extends State<AdminMessages> {
     showDialog(
         context: context,
         builder: (ctx) => ShowDialogWidget(
-          // This is defines below this class
+              // This is defines below this class
               applyFilter: applyFilter,
-          userDetails: userDetails,
+              userDetails: userDetails,
             ));
   }
 
   @override
   Widget build(BuildContext context) {
-    final userDetails = Provider.of<UserDetails>(context, listen: false).getUserDetails;
+    final userDetails =
+        Provider.of<UserDetails>(context, listen: false).getUserDetails;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -67,15 +69,15 @@ class _AdminMessagesState extends State<AdminMessages> {
                 ),
               ),
             ),
-            if(userDetails['isAdmin'] ||
+            if (userDetails['isAdmin'] ||
                 userDetails.containsKey('isSubAdmin') &&
                     userDetails['isSubAdmin'])
-            InkWell(
-              onTap: () {
-                messagesFilter(userDetails);
-              },
-              child: const Icon(Icons.filter_list),
-            )
+              InkWell(
+                onTap: () {
+                  messagesFilter(userDetails);
+                },
+                child: const Icon(Icons.filter_list),
+              )
           ],
         ),
       ),
@@ -92,11 +94,12 @@ class _AdminMessagesState extends State<AdminMessages> {
             );
           }
           var docs = userSnapShot.data!.docs;
-          if(userDetails.containsKey('isSubAdmin') &&
+          if (userDetails.containsKey('isSubAdmin') &&
               userDetails['isSubAdmin'] &&
-              userDetails.containsKey('nagarNigamServices')){
-           docs.retainWhere((element) =>
-           element['nagarNigamServices'] == userDetails['nagarNigamServices']);
+              userDetails.containsKey('nagarNigamServices')) {
+            docs.retainWhere((element) =>
+                element['nagarNigamServices'] ==
+                userDetails['nagarNigamServices']);
           }
 
           if (filtered) {
@@ -125,44 +128,44 @@ class _AdminMessagesState extends State<AdminMessages> {
                   var t1 = element['createdAt'];
                   var t2 = element['nagarNigamServices'];
                   return (element['createdAt'] as Timestamp)
-                      .toDate()
-                      .isAfter(DateTime.parse(date)) &&
+                          .toDate()
+                          .isAfter(DateTime.parse(date)) &&
                       element['nagarNigamServices'] == nagarNigamServices;
                 } catch (e) {
                   return false;
                 }
               }).toList();
-            } else if (date != '' && name != ''){
+            } else if (date != '' && name != '') {
               docs = docs.where((element) {
                 try {
                   var t1 = element['createdAt'];
                   var t3 = element['username'];
                   return (element['createdAt'] as Timestamp)
-                      .toDate()
-                      .isAfter(DateTime.parse(date)) &&
-                element['username']
-                      .toString()
-                      .toLowerCase()
-                      .contains(name.toLowerCase());
+                          .toDate()
+                          .isAfter(DateTime.parse(date)) &&
+                      element['username']
+                          .toString()
+                          .toLowerCase()
+                          .contains(name.toLowerCase());
                 } catch (e) {
                   return false;
                 }
               }).toList();
-            }
-            else if (nagarNigamServices != '' && name != '') {
+            } else if (nagarNigamServices != '' && name != '') {
               docs = docs.where((element) {
                 try {
                   var t2 = element['nagarNigamServices'];
                   var t3 = element['username'];
-                  return element['nagarNigamServices'] == nagarNigamServices && element['username']
-                      .toString()
-                    .toLowerCase()
-                    .contains(name.toLowerCase());
+                  return element['nagarNigamServices'] == nagarNigamServices &&
+                      element['username']
+                          .toString()
+                          .toLowerCase()
+                          .contains(name.toLowerCase());
                 } catch (e) {
                   return false;
                 }
               }).toList();
-            } else if (date != ''){
+            } else if (date != '') {
               docs = docs.where((element) {
                 try {
                   var t1 = element['createdAt'];
@@ -173,9 +176,9 @@ class _AdminMessagesState extends State<AdminMessages> {
                   return false;
                 }
               }).toList();
-            }else if (nagarNigamServices != ''){
+            } else if (nagarNigamServices != '') {
               docs = docs.where((element) {
-                try{
+                try {
                   var t2 = element['nagarNigamServices'];
                   return element['nagarNigamServices'] == nagarNigamServices;
                 } catch (e) {
@@ -226,7 +229,8 @@ class ShowDialogWidget extends StatefulWidget {
   final applyFilter;
   final userDetails;
 
-  const ShowDialogWidget({Key? key, this.applyFilter, this.userDetails}) : super(key: key);
+  const ShowDialogWidget({Key? key, this.applyFilter, this.userDetails})
+      : super(key: key);
 
   @override
   State<ShowDialogWidget> createState() => _ShowDialogWidgetState();
@@ -238,6 +242,7 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
   String selectedCategory = 'शिकायत';
   String date = '';
   String name = '';
+  TextEditingController dateinput = TextEditingController();
 
   DropdownMenuItem<String> buildMenuItem(String nagarNigamServicesList) {
     return DropdownMenuItem(
@@ -250,12 +255,16 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    List<String> temp = Provider.of<LoadDataFromFacebook>(context,listen: false).getNagarNigamServices;
-    if(temp.isNotEmpty){
+    List<String> temp =
+        Provider.of<LoadDataFromFacebook>(context, listen: false)
+            .getNagarNigamServices;
+    if (temp.isNotEmpty) {
       nagarNigamServicesList = temp;
     }
+
+    dateinput.text = "";
   }
 
   @override
@@ -278,30 +287,22 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(
-                    left: 10
-                  ),
+                  padding: const EdgeInsets.only(left: 10),
                   height: 40,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 0.5
-                    ),
-                    borderRadius: BorderRadius.circular(10)
-                  ),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black, width: 0.5),
+                      borderRadius: BorderRadius.circular(10)),
                   child: TextField(
                     decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Name',
-                      hintStyle: GoogleFonts.openSans(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xffA69696)
-                      )
-                    ),
+                        border: InputBorder.none,
+                        hintText: 'Name',
+                        hintStyle: GoogleFonts.openSans(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: const Color(0xffA69696))),
                     onChanged: (value) {
-                      setState((){
+                      setState(() {
                         name = value;
                       });
                     },
@@ -318,19 +319,19 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.black, width: 0.5)),
-                  child: Row(
+                  child:Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text("Pickup Date",style: GoogleFonts.openSans(
-                        fontWeight: FontWeight.w700,fontSize: 12
+                          fontWeight: FontWeight.w700,fontSize: 12
                       ),),
                       IconButton(
                         onPressed: () {
                           showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2020),
-                                  lastDate: DateTime(2025))
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2025))
                               .then((date) {
                             setState(() {
                               this.date = date.toString();
@@ -344,51 +345,79 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
                       ),
                     ],
                   ),
+                  // TextField(
+                  //   controller: dateinput,
+                  //   decoration: const InputDecoration(
+                  //     border: InputBorder.none,
+                  //     icon: Icon(Icons.calendar_today),
+                  //     hintText: 'Pickup Date'
+                  //   ),
+                  //   readOnly: true,
+                  //   onTap: () async {
+                  //     DateTime? pickedDate = await showDatePicker(
+                  //         context: context,
+                  //         initialDate: DateTime.now(),
+                  //         firstDate: DateTime(2020),
+                  //         lastDate: DateTime(2025)
+                  //     );
+                  //     if(pickedDate != null){
+                  //       // print(pickedDate);
+                  //       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                  //       // print(formattedDate);
+                  //
+                  //       setState((){
+                  //         dateinput.text = formattedDate;
+                  //       });
+                  //     } else {
+                  //       print("Date is not selected");
+                  //     }
+                  //   }
+                  // )
                 ),
                 const SizedBox(
                   height: 17,
                 ),
-                if(widget.userDetails['isAdmin'])
-                Container(
-                  height: 41,
-                  width: width * 0.88,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 0.5),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                    alignment: Alignment.bottomRight,
-                    menuMaxHeight: 300,
-                    hint: Text(
-                      "नगर निगम सुविधाएं",
-                      style: GoogleFonts.openSans(
-                          color: const Color(0xffA69696),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    value: value,
-                    isExpanded: true,
-                    iconSize: 18,
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down,
-                      color: Color(0xff8C8282),
-                    ),
-                    items: nagarNigamServicesList.map(buildMenuItem).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        this.value = value!;
-                      });
-                    },
-                  )),
-                ),
+                if (widget.userDetails['isAdmin'])
+                  Container(
+                    height: 41,
+                    width: width * 0.88,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 0.5),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                      alignment: Alignment.bottomRight,
+                      menuMaxHeight: 300,
+                      hint: Text(
+                        "नगर निगम सुविधाएं",
+                        style: GoogleFonts.openSans(
+                            color: const Color(0xffA69696),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      value: value,
+                      isExpanded: true,
+                      iconSize: 18,
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Color(0xff8C8282),
+                      ),
+                      items: nagarNigamServicesList.map(buildMenuItem).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          this.value = value!;
+                        });
+                      },
+                    )),
+                  ),
                 const SizedBox(
                   height: 25,
                 ),
                 InkWell(
                   onTap: () {
-                    widget.applyFilter(selectedCategory, date, value,name);
+                    widget.applyFilter(selectedCategory, date, value, name);
                     Navigator.pop(context);
                   },
                   child: Container(
@@ -401,8 +430,9 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
                       child: Text(
                         "Submit",
                         style: GoogleFonts.openSans(
-                            fontWeight: FontWeight.w500, fontSize: 12,
-                        color: Colors.black),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: Colors.black),
                       ),
                     ),
                   ),

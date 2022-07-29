@@ -33,16 +33,29 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   int index = -1;
+  var userId = '';
   final toggleButtonItems = ['सुझाव', 'शिकायत'];
+  var docs = [];
+  var temp;
+  bool loadingChat = false;
+
+  @override
+  void initState(){
+    super.initState();
+    userId = widget.isAdmin ? widget.userId : FirebaseAuth.instance.currentUser!.uid;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userId = widget.isAdmin ? this.widget.userId :  FirebaseAuth.instance.currentUser!.uid;
+    // final userId = widget.isAdmin ? this.widget.userId :  FirebaseAuth.instance.currentUser!.uid;
     final userDetails =
         Provider.of<UserDetails>(context, listen: false).getUserDetails;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-         widget.isAdmin ? widget.username :widget.isSuggestion ? 'सुझाव' : widget.isComplaint ? 'शिकायत' : 'सुझाव/शिकायत',
+         widget.isAdmin
+             ? widget.username
+             :widget.isSuggestion ? 'सुझाव' : widget.isComplaint ? 'शिकायत' : 'सुझाव/शिकायत',
           style: GoogleFonts.roboto(
             fontSize: 18,
             fontWeight: FontWeight.w700,

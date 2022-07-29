@@ -17,7 +17,7 @@ class _AudioSOSAdminState extends State<AudioSOSAdmin> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Audio SOSs',
+          'Audio',
           style: GoogleFonts.openSans(
             color: Colors.white,
             fontSize: 16,

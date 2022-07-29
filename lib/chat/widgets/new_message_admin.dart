@@ -56,6 +56,7 @@ class _NewMessageAdminState extends State<NewMessageAdmin> {
             'date': DateTime.now().toIso8601String(),
             'userId': id,
             'read': 0,
+            'unread' : 1,
             'type': file.path.endsWith('.jpg') ||
                     file.path.endsWith('.jpeg') ||
                     file.path.endsWith('.png')

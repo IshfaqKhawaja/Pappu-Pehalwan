@@ -12,7 +12,7 @@ class ImageSOSAdmin extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Image SOSs',
+          'Image',
           style: GoogleFonts.openSans(
             color: Colors.white,
             fontSize: 16,

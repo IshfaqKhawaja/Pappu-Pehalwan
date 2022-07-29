@@ -164,117 +164,128 @@ class _AudioSOSState extends State<AudioSOS> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.isAdmin ? widget.username : 'Audio SOS',
-          style: GoogleFonts.openSans(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
+    return WillPopScope(
+      onWillPop: () async {
+        if(isFileSending){
+          Fluttertoast.showToast(msg: 'File Uploading please wait');
+        }
+        return !isFileSending;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.isAdmin ? widget.username : 'Audio',
+            style: GoogleFonts.openSans(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      // extendBodyBehindAppBar: true,
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('audio-sos')
-            .doc(userId)
-            .collection('messages')
-            .orderBy('createdAt', descending: true)
-            .snapshots(),
-        builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshots) {
-          if (snapshots.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor),
+        // extendBodyBehindAppBar: true,
+        body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('audio-sos')
+              .doc(userId)
+              .collection('messages')
+              .orderBy('createdAt', descending: true)
+              .snapshots(),
+          builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshots) {
+            if (snapshots.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor),
+              );
+            }
+            final data = snapshots.data!.docs;
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: data.length,
+                      reverse: true,
+                      itemBuilder: (ct, index) {
+                        final tempData = data[index].data()! as Map;
+                        return tempData['type'] == 'audio'
+                            ? AudioBubble(
+                                url: tempData['attachment'],
+                                datetime: tempData['date'],
+                                isMe: tempData['userId'] == userId,
+                                read: tempData['read'],
+                                isNetwork: true,
+                                showDate: true,
+                              )
+                            : const SizedBox.shrink();
+                      }),
+                ),
+                if (isFileSending)
+                  isAudio
+                      ? AudioBubble(
+                          url: file,
+                          datetime: DateTime.now().toIso8601String(),
+                          isMe: userId == FirebaseAuth.instance.currentUser!.uid,
+                          read: 0,
+                          isNetwork: false,
+                          showDate: true,
+                        )
+                      : const SizedBox.shrink(),
+            const SizedBox(height: 20,),
+            Container(
+              margin: const EdgeInsets.only(right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if(recording)
+                    SpinKitWave(
+                      itemCount: 5,
+                      size: 40,
+                      itemBuilder: (ctx, index) {
+                        return Container(
+                          height: 10,
+                          width: 0,
+                          margin: const EdgeInsets.only(left: 6),
+                          decoration: BoxDecoration(
+                            color: spinKitColors[index % spinKitColors.length],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        );
+                      },
+                    ),
+                  if (recording)
+                    const SizedBox(
+                      width: 20,
+                    ),
+                  IconButton(
+                    onPressed: () async {
+                      if (recording) {
+                        stopRecording();
+                        setState(() {
+                          recording = false;
+                        });
+                      } else {
+                        setState(() {
+                          recording = true;
+                        });
+                        await initRecorder();
+                        startRecording();
+                      }
+                    },
+                    icon: Icon(
+                      recording ? Icons.stop : Icons.mic,
+                      color: recording ?  Colors.red : Theme.of(context).primaryColor,
+                      size: 30,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+                const SizedBox(height: 50),
+              ],
             );
-          }
-          final data = snapshots.data!.docs;
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                    itemCount: data.length,
-                    reverse: true,
-                    itemBuilder: (ct, index) {
-                      final tempData = data[index].data()! as Map;
-                      return tempData['type'] == 'audio'
-                          ? AudioBubble(
-                              url: tempData['attachment'],
-                              datetime: tempData['date'],
-                              isMe: tempData['userId'] == userId,
-                              read: tempData['read'],
-                              isNetwork: true,
-                              showDate: true,
-                            )
-                          : const SizedBox.shrink();
-                    }),
-              ),
-              if (isFileSending)
-                isAudio
-                    ? AudioBubble(
-                        url: file,
-                        datetime: DateTime.now().toIso8601String(),
-                        isMe: userId == FirebaseAuth.instance.currentUser!.uid,
-                        read: 0,
-                        isNetwork: false,
-                        showDate: true,
-                      )
-                    : const SizedBox.shrink(),
-          const SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [  
-              if(recording)        
-                SpinKitWave(
-                  itemCount: 5, 
-                  size: 40,               
-                  itemBuilder: (ctx, index) {
-                    return Container(
-                      height: 10,
-                      width: 0,
-                      margin: const EdgeInsets.only(left: 6),
-                      decoration: BoxDecoration(
-                        color: spinKitColors[index % spinKitColors.length],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    );
-                  },
-                ),
-              if (recording)
-                const SizedBox(
-                  width: 20,
-                ),
-              IconButton(
-                onPressed: () async {
-                  if (recording) {
-                    stopRecording();
-                    setState(() {
-                      recording = false;
-                    });
-                  } else {
-                    setState(() {
-                      recording = true;
-                    });
-                    await initRecorder();
-                    startRecording();
-                  }
-                },
-                icon: Icon(
-                  recording ? Icons.stop : Icons.mic,
-                  color: recording ?  Colors.red : Theme.of(context).primaryColor,
-                  size: 30,
-                ),
-              ),
-            ],
-          ),
-              const SizedBox(height: 50),
-            ],
-          );
-        },
+          },
+        ),
       ),
     );
   }

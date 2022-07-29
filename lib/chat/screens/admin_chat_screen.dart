@@ -21,6 +21,8 @@ class AdminChatScreen extends StatefulWidget {
 class _AdminChatScreenState extends State<AdminChatScreen> {
   final toggleButtonItems = ['सुझाव', 'शिकायत'];
   int index = -1;
+  var docs = [];
+  bool loadingChat = false;
 
   @override
   Widget build(BuildContext context) {

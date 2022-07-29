@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
 class YoganaContainer extends StatelessWidget {
-  final  title;
+  final title;
   final description;
   final url;
-  const YoganaContainer({Key? key, this.description, this.title, this.url,}) : super(key: key);
+
+  const YoganaContainer({
+    Key? key,
+    this.description,
+    this.title,
+    this.url,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +29,13 @@ class YoganaContainer extends StatelessWidget {
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           ),
           Expanded(
-              child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Container(
-                      padding: const EdgeInsets.all(10),
-          child: Text(description),
-    ),
-    ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                child: Text(description),
+              ),
+            ),
           ),
         ],
       ),

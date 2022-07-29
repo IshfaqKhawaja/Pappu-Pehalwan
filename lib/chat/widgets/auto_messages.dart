@@ -145,10 +145,24 @@ class AutoMessagesState extends State<AutoMessages> {
     setState(() {});
   }
 
+  void deleteQuestionAndOptions(index) {
+    List matches = messages[this.index]!.where((element) => element['parentId'] == index).toList();
+    if(matches.isEmpty){
+      return;
+    }else {
+      for(var a in matches) {
+        deleteQuestionAndOptions(a['id']);
+        messages[this.index]!.remove(a);
+        questions['${this.index}']!.remove(a['questionId']);
+      }
+    }
+  }
+
   void removeQuestion(index) {
-    questions['${this.index}']!.remove(index);
-    messages[this.index]!
-        .removeWhere((element) => element['questionId'] == index);
+    // Delete all messages and questions associated with thus index
+    deleteQuestionAndOptions(
+        questions['${this.index}']![index]![0]['parentId']
+    );
     addMessagesToFirebase(messages, questions);
     previousMessageFields = [];
     messageFields = [];

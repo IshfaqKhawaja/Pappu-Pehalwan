@@ -20,7 +20,8 @@ class EnterOTP extends StatefulWidget {
 
 class _EnterOTPState extends State<EnterOTP> {
   bool isLoading = false;
-  List<String> otpFields = ['','','','','',''];
+
+  // List<String> otpFields = ['','','','','',''];
   String otp = '';
   final controller = ScrollController();
 
@@ -59,7 +60,8 @@ class _EnterOTPState extends State<EnterOTP> {
           if (user.docs.isNotEmpty) {
             await widget.loadData();
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const Body()), (route) => false);
+                MaterialPageRoute(builder: (_) => const Body()),
+                (route) => false);
           } else {
             Navigator.of(context).pop();
             showModalBottomSheet(
@@ -147,7 +149,7 @@ class _EnterOTPState extends State<EnterOTP> {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             Text(
               'Please enter One Time Password (OTP) sent to your Mobile Number for verification',
@@ -158,7 +160,7 @@ class _EnterOTPState extends State<EnterOTP> {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             Text(
               '${widget.phoneNumber}',
@@ -168,15 +170,14 @@ class _EnterOTPState extends State<EnterOTP> {
                 fontSize: 16,
               ),
             ),
-            // const SizedBox(
-              //height: 20,
-            //),
+            const SizedBox(
+              height: 10,
+            ),
             Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                 ),
-                child:
-                Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -184,25 +185,51 @@ class _EnterOTPState extends State<EnterOTP> {
                       style: style,
                     ),
                     const SizedBox(
-                      height: 7,
+                      height: 15,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _otpTextField(0,true,false),
-                        _otpTextField(1,false,false),
-                        _otpTextField(2,false,false),
-                        _otpTextField(3,false,false),
-                        _otpTextField(4,false,false),
-                        _otpTextField(5,false,true),
-                      ],
-                    )
+                    Container(
+                      width: width,
+                      height: 60,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: TextFormField(
+                        style: style,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          fillColor: const Color(0xffC4C4C4),
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                            color: Colors.black.withOpacity(0.3),
+                          )),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xff56514D),
+                            ),
+                          ),
+                        ),
+                        onChanged: (val) {
+                          setState(() {
+                            otp = val;
+                          });
+                        },
+                      ),
+                    ),
+
+                    // _otpTextField(),
+                    // _otpTextField(1,false,false),
+                    // _otpTextField(2,false,false),
+                    // _otpTextField(3,false,false),
+                    // _otpTextField(4,false,false),
+                    // _otpTextField(5,false,true),
                   ],
-                )
-                ),
-            const SizedBox(
-              height: 13,
-            ),
+                )),
+            // const SizedBox(
+            //   height: 30,
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -248,7 +275,7 @@ class _EnterOTPState extends State<EnterOTP> {
                           duration: const Duration(seconds: 3),
                         ),
                       );
-                      otp = otpFields.join('');
+                      // otp = otpFields.join('');
                       // print(otp);
                       sendCodeToFirebase(otp: otp, context: context);
                     },
@@ -280,48 +307,40 @@ class _EnterOTPState extends State<EnterOTP> {
     );
   }
 
-  //OTP TextField
-  _otpTextField(int index,bool first, bool last) {
-    return Container(
-      height: 45,
-      width: 43,
-      child: AspectRatio(
-        aspectRatio: 0.7,
-        child: TextFormField(
-          textAlignVertical: TextAlignVertical.center,
-          keyboardType: TextInputType.number,
-          onChanged: (val) {
-            if(val.length==1){
-              FocusScope.of(context).nextFocus();
-              otpFields[index] = val;
-            }
-            if(val.isEmpty){
-              FocusScope.of(context).previousFocus();
-            }
-          },
-          showCursor: false,
-          readOnly: false,
-          textInputAction: TextInputAction.next,
-          style: GoogleFonts.lato(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: Colors.black,
-          ),
-          maxLength: 1,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.only(left: 14.5),
-            fillColor: const Color(0xffC4C4C4),
-            filled: true,
-            counter: const Offstage(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 2,color: Colors.black.withOpacity(0.3)),
-                borderRadius: BorderRadius.circular(10)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(width: 2, color: Color(0xff56514D)),
-                borderRadius: BorderRadius.circular(10)),
-          ),
-        ),
-      ),
-    );
-  }
+//OTP TextField
+
+// _otpTextField() {
+//   return Container(
+//     height: 100,
+//     width: MediaQuery.of(context).size.width * 0.85,
+//     child: TextFormField(
+//       textAlignVertical: TextAlignVertical.center,
+//       keyboardType: TextInputType.number,
+//       onChanged: (val) {
+//           otp = val;
+//       },
+//       showCursor: false,
+//       readOnly: false,
+//       textInputAction: TextInputAction.next,
+//       style: GoogleFonts.lato(
+//         fontSize: 20,
+//         fontWeight: FontWeight.w800,
+//         color: Colors.black,
+//       ),
+//       maxLength: 6,
+//       decoration: InputDecoration(
+//         contentPadding: const EdgeInsets.only(left: 14.5),
+//         fillColor: const Color(0xffC4C4C4),
+//         filled: true,
+//         counter: const Offstage(),
+//         enabledBorder: OutlineInputBorder(
+//             borderSide: BorderSide(width: 2,color: Colors.black.withOpacity(0.3)),
+//             borderRadius: BorderRadius.circular(10)),
+//         focusedBorder: OutlineInputBorder(
+//             borderSide: const BorderSide(width: 2, color: Color(0xff56514D)),
+//             borderRadius: BorderRadius.circular(10)),
+//       ),
+//     ),
+//   );
+// }
 }
