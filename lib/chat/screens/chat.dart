@@ -140,17 +140,13 @@ class _ChatState extends State<Chat> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Text(isAdmin
-                          ? username != ''
-                              ? username
-                              : phoneNumber
-                          : widget.isTitleSet
-                              ? widget.appBarTitle
-                              : 'Pappu Pehalwan'),
-                    ],
-                  ),
+                  Text(isAdmin
+                      ? username != ''
+                          ? username
+                          : phoneNumber
+                      : widget.isTitleSet
+                          ? widget.appBarTitle
+                          : 'Pappu Pehalwan'),
                   if (isAdmin && widget.isFromChatScreen)
                     TextButton(
                       onPressed: () {
@@ -235,6 +231,7 @@ class _ChatState extends State<Chat> {
                 file: file,
                 datetime: widget.datetime,
                 isFromChatScreen: widget.isFromChatScreen,
+                docId: docId,
               ),
             ),
             // Messages(

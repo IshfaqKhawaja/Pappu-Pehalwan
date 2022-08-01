@@ -10,6 +10,7 @@ class ShowImageBubble extends StatelessWidget {
   final read;
   final isNetwork;
   final showDate;
+
   ShowImageBubble({
     this.url,
     this.datetime,
@@ -63,10 +64,9 @@ class ShowImageBubble extends StatelessWidget {
                           return Container(
                             height: 80,
                             // width: 0,
-                            child: const 
-                            Center(
+                            child: const Center(
                               child: CircularProgressIndicator(),
-                              ),
+                            ),
                           );
                         },
                       )
@@ -105,14 +105,29 @@ class ShowImageBubble extends StatelessWidget {
                               color:
                                   read == 0 ? Colors.grey : Colors.deepPurple,
                             ),
-                          Text(
-                            DateFormat().add_jm().format(
-                                  DateTime.parse(datetime),
+                          Row(
+                            children: [
+                              Text(
+                                DateFormat().add_E().format(
+                                      DateTime.parse(datetime),
+                                    ),
+                                style: TextStyle(
+                                    color: isMe ? Colors.black : Colors.white,
+                                    fontSize: 12),
+                              ),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Text(
+                                DateFormat().add_jm().format(
+                                      DateTime.parse(datetime),
+                                    ),
+                                style: TextStyle(
+                                  color: isMe ? Colors.black : Colors.white,
+                                  fontSize: 12,
                                 ),
-                            style: TextStyle(
-                              color: isMe ? Colors.black : Colors.white,
-                              fontSize: 12,
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

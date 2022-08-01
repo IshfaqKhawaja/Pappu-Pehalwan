@@ -4,7 +4,6 @@ import 'package:pappupehalwan/screens/yojana_screen.dart';
 import '../chat/screens/chat.dart';
 import '../providers/user_details.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class BodyPart2JS extends StatelessWidget {
   final scaffoldKey;

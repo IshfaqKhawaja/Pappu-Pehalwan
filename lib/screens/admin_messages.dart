@@ -112,9 +112,8 @@ class _AdminMessagesState extends State<AdminMessages> {
                   var t2 = element['nagarNigamServices'];
                   var t3 = element['username'];
 
-                  return (element['createdAt'] as Timestamp)
-                          .toDate()
-                          .isAfter(DateTime.parse(date)) &&
+                  return DateUtils.isSameDay((element['createdAt'] as Timestamp)
+                          .toDate(),DateTime.parse(date)) &&
                       element['nagarNigamServices'] == nagarNigamServices &&
                       element['username']
                           .toString()
@@ -129,9 +128,8 @@ class _AdminMessagesState extends State<AdminMessages> {
                 try {
                   var t1 = element['createdAt'];
                   var t2 = element['nagarNigamServices'];
-                  return (element['createdAt'] as Timestamp)
-                          .toDate()
-                          .isAfter(DateTime.parse(date)) &&
+                  return DateUtils.isSameDay((element['createdAt'] as Timestamp)
+                          .toDate(),DateTime.parse(date)) &&
                       element['nagarNigamServices'] == nagarNigamServices;
                 } catch (e) {
                   return false;
@@ -142,9 +140,8 @@ class _AdminMessagesState extends State<AdminMessages> {
                 try {
                   var t1 = element['createdAt'];
                   var t3 = element['username'];
-                  return (element['createdAt'] as Timestamp)
-                          .toDate()
-                          .isAfter(DateTime.parse(date)) &&
+                  return DateUtils.isSameDay((element['createdAt'] as Timestamp)
+                          .toDate(),DateTime.parse(date)) &&
                       element['username']
                           .toString()
                           .toLowerCase()
@@ -171,9 +168,8 @@ class _AdminMessagesState extends State<AdminMessages> {
               docs = docs.where((element) {
                 try {
                   var t1 = element['createdAt'];
-                  return (element['createdAt'] as Timestamp)
-                      .toDate()
-                      .isAfter(DateTime.parse(date));
+                  return DateUtils.isSameDay((element['createdAt'] as Timestamp)
+                      .toDate(),DateTime.parse(date));
                 } catch (e) {
                   return false;
                 }
@@ -244,7 +240,6 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
   String selectedCategory = 'शिकायत';
   String date = '';
   String name = '';
-  TextEditingController dateinput = TextEditingController();
 
   DropdownMenuItem<String> buildMenuItem(String nagarNigamServicesList) {
     return DropdownMenuItem(
@@ -265,8 +260,6 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
     if (temp.isNotEmpty) {
       nagarNigamServicesList = temp;
     }
-
-    dateinput.text = "";
   }
 
   @override
@@ -316,7 +309,7 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
                 Container(
                   padding: const EdgeInsets.only(left: 10),
                   alignment: Alignment.centerLeft,
-                  width: 150,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -324,7 +317,7 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
                   child:Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Pickup Date",style: GoogleFonts.openSans(
+                      Text("Pickup Date : ${date !='' ? DateFormat('dd-MM-yyyy').format(DateTime.parse(date)): ''}",style: GoogleFonts.openSans(
                           fontWeight: FontWeight.w700,fontSize: 12
                       ),),
                       IconButton(
@@ -347,76 +340,48 @@ class _ShowDialogWidgetState extends State<ShowDialogWidget> {
                       ),
                     ],
                   ),
-                  // TextField(
-                  //   controller: dateinput,
-                  //   decoration: const InputDecoration(
-                  //     border: InputBorder.none,
-                  //     icon: Icon(Icons.calendar_today),
-                  //     hintText: 'Pickup Date'
-                  //   ),
-                  //   readOnly: true,
-                  //   onTap: () async {
-                  //     DateTime? pickedDate = await showDatePicker(
-                  //         context: context,
-                  //         initialDate: DateTime.now(),
-                  //         firstDate: DateTime(2020),
-                  //         lastDate: DateTime(2025)
-                  //     );
-                  //     if(pickedDate != null){
-                  //       // print(pickedDate);
-                  //       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
-                  //       // print(formattedDate);
-                  //
-                  //       setState((){
-                  //         dateinput.text = formattedDate;
-                  //       });
-                  //     } else {
-                  //       print("Date is not selected");
-                  //     }
-                  //   }
-                  // )
                 ),
                 const SizedBox(
                   height: 17,
                 ),
-                if (widget.userDetails['isAdmin'])
-                  Container(
-                    height: 41,
-                    width: width * 0.88,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 0.5),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                      alignment: Alignment.bottomRight,
-                      menuMaxHeight: 300,
-                      hint: Text(
-                        "नगर निगम सुविधाएं",
-                        style: GoogleFonts.openSans(
-                            color: const Color(0xffA69696),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      value: value,
-                      isExpanded: true,
-                      iconSize: 18,
-                      icon: const Icon(
-                        Icons.keyboard_arrow_down,
-                        color: Color(0xff8C8282),
-                      ),
-                      items: nagarNigamServicesList.map(buildMenuItem).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          this.value = value!;
-                        });
-                      },
-                    )),
-                  ),
-                const SizedBox(
-                  height: 25,
-                ),
+                // if (widget.userDetails['isAdmin'])
+                //   Container(
+                //     height: 41,
+                //     width: width * 0.88,
+                //     padding: const EdgeInsets.all(10),
+                //     decoration: BoxDecoration(
+                //         border: Border.all(color: Colors.black, width: 0.5),
+                //         color: Colors.white,
+                //         borderRadius: BorderRadius.circular(10)),
+                //     child: DropdownButtonHideUnderline(
+                //         child: DropdownButton<String>(
+                //       alignment: Alignment.bottomRight,
+                //       menuMaxHeight: 300,
+                //       hint: Text(
+                //         "नगर निगम सुविधाएं",
+                //         style: GoogleFonts.openSans(
+                //             color: const Color(0xffA69696),
+                //             fontSize: 12,
+                //             fontWeight: FontWeight.w700),
+                //       ),
+                //       value: value,
+                //       isExpanded: true,
+                //       iconSize: 18,
+                //       icon: const Icon(
+                //         Icons.keyboard_arrow_down,
+                //         color: Color(0xff8C8282),
+                //       ),
+                //       items: nagarNigamServicesList.map(buildMenuItem).toList(),
+                //       onChanged: (value) {
+                //         setState(() {
+                //           this.value = value!;
+                //         });
+                //       },
+                //     )),
+                //   ),
+                // const SizedBox(
+                //   height: 25,
+                // ),
                 InkWell(
                   onTap: () {
                     widget.applyFilter(selectedCategory, date, value, name);

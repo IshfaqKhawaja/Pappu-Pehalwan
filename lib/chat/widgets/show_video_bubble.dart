@@ -9,8 +9,15 @@ class ShowVideoBubble extends StatelessWidget {
   final read;
   final isNetwork;
   final showDate;
-  ShowVideoBubble(
-      {this.url, this.datetime, this.isMe, this.read, this.isNetwork = true, this.showDate = false,});
+
+  ShowVideoBubble({
+    this.url,
+    this.datetime,
+    this.isMe,
+    this.read,
+    this.isNetwork = true,
+    this.showDate = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,35 +75,49 @@ class ShowVideoBubble extends StatelessWidget {
                         ),
                 ),
               ),
-            if(showDate)
-              Column(
-                children: [
-                  const  SizedBox(
+              if (showDate)
+                Column(
+                  children: [
+                    const SizedBox(
                       height: 6,
                     ),
                     Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (isMe)
-                      Icon(
-                        Icons.done_all,
-                        size: 22,
-                        color: read == 0 ? Colors.grey : Colors.deepPurple,
-                      ),
-                    Text(
-                      DateFormat().add_jm().format(
-                            DateTime.parse(datetime),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (isMe)
+                          Icon(
+                            Icons.done_all,
+                            size: 22,
+                            color: read == 0 ? Colors.grey : Colors.deepPurple,
                           ),
-                          style:TextStyle(
-                          color: isMe ? Colors.black : Colors.white,
-                          fontSize: 12,
+                        Row(
+                          children: [
+                            Text(
+                              DateFormat().add_E().format(
+                                    DateTime.parse(datetime),
+                                  ),
+                              style: TextStyle(
+                                  color: isMe ? Colors.black : Colors.white,
+                                  fontSize: 12),
                             ),
+                            const SizedBox(
+                              width: 6,
+                            ),
+                            Text(
+                              DateFormat().add_jm().format(
+                                    DateTime.parse(datetime),
+                                  ),
+                              style: TextStyle(
+                                color: isMe ? Colors.black : Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                ],
-              ),
-                
             ],
           ),
         )

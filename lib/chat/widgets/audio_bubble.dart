@@ -10,6 +10,7 @@ class AudioBubble extends StatefulWidget {
   final read;
   final isNetwork;
   final showDate;
+
   const AudioBubble({
     Key? key,
     this.url,
@@ -28,6 +29,7 @@ class _AudioBubbleState extends State<AudioBubble> {
   FlutterSoundPlayer myPlayer = FlutterSoundPlayer();
   Duration? d;
   bool isPlaying = false;
+
   void initPlayer() async {
     await myPlayer.openPlayer();
   }
@@ -46,7 +48,6 @@ class _AudioBubbleState extends State<AudioBubble> {
         });
       },
     );
-    
   }
 
   void stopPlayer() async {
@@ -113,8 +114,6 @@ class _AudioBubbleState extends State<AudioBubble> {
                           ? SpinKitWave(
                               color: widget.isMe ? Colors.black : Colors.white,
                               size: 16,
-                              
-
                             )
                           : IconButton(
                               onPressed: isPlaying ? stopPlayer : startPlayer,
@@ -124,13 +123,25 @@ class _AudioBubbleState extends State<AudioBubble> {
                                     widget.isMe ? Colors.black : Colors.white,
                                 size: 30,
                               ),
-                            ),                  
+                            ),
                 ],
               ),
               if (widget.showDate)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    Text(
+                      DateFormat().add_E().format(
+                            DateTime.parse(widget.datetime),
+                          ),
+                      style: TextStyle(
+                        color: widget.isMe ? Colors.black : Colors.white,
+                        fontSize: 12,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
                     Text(
                       DateFormat().add_jm().format(
                             DateTime.parse(widget.datetime),
@@ -147,6 +158,5 @@ class _AudioBubbleState extends State<AudioBubble> {
         )
       ],
     );
-    ;
   }
 }

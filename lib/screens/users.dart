@@ -200,28 +200,28 @@ class _UsersState extends State<Users> {
                       ? ToggleSwitch(
                     minWidth: 60.0,
                     initialLabelIndex: user['isAdmin']
-                        ? 0
-                        : user.containsKey('isSubAdmin') &&
-                        user['isSubAdmin']
-                        ? 1
-                        : 2,
+                        ? 0 : 1,
+                        // : user.containsKey('isSubAdmin') &&
+                        // user['isSubAdmin']
+                        // ? 1
+                        // : 2,
                     cornerRadius: 10.0,
                     activeFgColor: Colors.white,
                     inactiveBgColor: Colors.grey,
                     inactiveFgColor: Colors.white,
-                    totalSwitches: 3,
-                    labels: const ['Admin', 'SubAdmin', 'User'],
+                    totalSwitches: 2,
+                    labels: const ['Admin','User'],
                     customTextStyles: const [
                       TextStyle(
                         fontSize: 8,
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
                       ),
-                      TextStyle(
-                        fontSize: 8,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      // TextStyle(
+                      //   fontSize: 8,
+                      //   color: Colors.white,
+                      //   fontWeight: FontWeight.w700,
+                      // ),
                       TextStyle(
                         fontSize: 8,
                         color: Colors.white,
@@ -229,35 +229,35 @@ class _UsersState extends State<Users> {
                       ),
                     ],
                     onToggle: (index) async {
-                      if (index == 1) {
-                        await showDialog(
-                            context: context,
-                            builder: (ctx) =>
-                            const SubAdminTypeAhead()).then((value) {
-                          if (value != null) {
-                            FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(user['userId'])
-                                .update({
-                              'isAdmin': false,
-                              'isSubAdmin': true,
-                              'nagarNigamServices': value,
-                            });
-                          }
-                        });
-                      } else {
+                      // if (index == 1) {
+                      //   await showDialog(
+                      //       context: context,
+                      //       builder: (ctx) =>
+                      //       const SubAdminTypeAhead()).then((value) {
+                      //     if (value != null) {
+                      //       FirebaseFirestore.instance
+                      //           .collection('users')
+                      //           .doc(user['userId'])
+                      //           .update({
+                      //         'isAdmin': false,
+                      //         'isSubAdmin': true,
+                      //         'nagarNigamServices': value,
+                      //       });
+                      //     }
+                      //   });
+                      // } else {
                         FirebaseFirestore.instance
                             .collection('users')
                             .doc(user['userId'])
                             .update({
                           'isAdmin': index == 0 ? true : false,
-                          'isSubAdmin': false,
+                          // 'isSubAdmin': false,
                         });
-                      }
-                    },
+                      },
+                    // },
                     activeBgColors: const [
                       [Colors.blue],
-                      [Colors.orange],
+                      // [Colors.orange],
                       [Colors.pink]
                     ],
                   )

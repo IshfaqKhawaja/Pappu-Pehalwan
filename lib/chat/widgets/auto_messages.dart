@@ -28,6 +28,8 @@ class AutoMessages extends StatefulWidget {
   final file;
   final datetime;
   final isFromChatScreen;
+  final docId;
+
   const AutoMessages({
     Key? key,
     this.userId,
@@ -45,6 +47,7 @@ class AutoMessages extends StatefulWidget {
     this.file,
     this.datetime,
     this.isFromChatScreen,
+    this.docId,
   }) : super(key: key);
 
   @override
@@ -101,6 +104,33 @@ class AutoMessagesState extends State<AutoMessages> {
   bool saveChats = false;
   int index = 0;
   bool showReplyAgain = false;
+  var details;
+  bool runWhile = true;
+
+  void refreshChatScreen() async {
+    while (runWhile) {
+      if (mounted) {
+        await Future.delayed(const Duration(milliseconds: 10000));
+        var res = await FirebaseFirestore.instance
+            .collection('suggestions')
+            .doc(widget.userId)
+            .collection('messages')
+            .doc(widget.docId)
+            .get();
+        if (mounted) {
+          setState(() {
+            details = res.data()!['details'];
+          });
+        } else {
+          print('Breaking While');
+          break;
+        }
+        print('Updated');
+      } else {
+        break;
+      }
+    }
+  }
 
   void changeShowReplyAgain(bool value) {
     setState(() {
@@ -146,11 +176,13 @@ class AutoMessagesState extends State<AutoMessages> {
   }
 
   void deleteQuestionAndOptions(index) {
-    List matches = messages[this.index]!.where((element) => element['parentId'] == index).toList();
-    if(matches.isEmpty){
+    List matches = messages[this.index]!
+        .where((element) => element['parentId'] == index)
+        .toList();
+    if (matches.isEmpty) {
       return;
-    }else {
-      for(var a in matches) {
+    } else {
+      for (var a in matches) {
         deleteQuestionAndOptions(a['id']);
         messages[this.index]!.remove(a);
         questions['${this.index}']!.remove(a['questionId']);
@@ -161,8 +193,7 @@ class AutoMessagesState extends State<AutoMessages> {
   void removeQuestion(index) {
     // Delete all messages and questions associated with thus index
     deleteQuestionAndOptions(
-        questions['${this.index}']![index]![0]['parentId']
-    );
+        questions['${this.index}']![index]![0]['parentId']);
     addMessagesToFirebase(messages, questions);
     previousMessageFields = [];
     messageFields = [];
@@ -252,8 +283,7 @@ class AutoMessagesState extends State<AutoMessages> {
   }
 
   void scrollAnimateToEnd() {
-    try {
-    } catch (e) {
+    try {} catch (e) {
       print('error on scroll $e');
     }
     // });
@@ -399,7 +429,6 @@ class AutoMessagesState extends State<AutoMessages> {
                                   fontWeight: FontWeight.w600,
                                   color: Colors.red),
                             ),
-
                           ],
                         )),
                   ],
@@ -416,6 +445,7 @@ class AutoMessagesState extends State<AutoMessages> {
   void initState() {
     super.initState();
     index = widget.index;
+    details = widget.details;
     parentId = '$index';
     userDetails =
         Provider.of<UserDetails>(context, listen: false).getUserDetails;
@@ -426,6 +456,7 @@ class AutoMessagesState extends State<AutoMessages> {
   void dispose() {
     super.dispose();
     controller.dispose();
+    runWhile = false;
   }
 
   void createDelay(bool value) async {
@@ -440,11 +471,6 @@ class AutoMessagesState extends State<AutoMessages> {
     height = MediaQuery.of(context).size.height;
     bool isPostAddedToMessageFields = false;
 
-    // print(index);
-    // print(userDetails);
-
-    // print(questions['$index']);
-    // print(messages[index]);
     if (!widget.isFromUsersChat) {
       messageFields = [];
       for (var i in messages[index]) {
@@ -455,7 +481,7 @@ class AutoMessagesState extends State<AutoMessages> {
         }
       }
     } else {
-      previousMessageFields = widget.details;
+      previousMessageFields = details;
       (widget.questions['0'] as Map<String, dynamic>).forEach((key, value) {
         for (var i in value) {
           questions['0']![key] = [i];
@@ -472,11 +498,6 @@ class AutoMessagesState extends State<AutoMessages> {
       messageFields = [];
       widget.changeShowInputMessageField(true);
     }
-    // print(questions['$index']);
-    // print(messageFields);
-    // print(userDetails['phoneNumber']);
-    // scrollAnimateToEnd();
-    // print(questions['$index']);
 
     return !widget.isFromUsersChat && loading
         ? Center(
@@ -714,8 +735,9 @@ class AutoMessagesState extends State<AutoMessages> {
                         children: [
                           // const SizedBox(height: 20),
                           replyAgain(
-                            index == 0 ? 'क्या आप ${categorySelected.last} संबंधी शिकायत देना चाहते हैं?' :
-                            'क्या आप ${categorySelected.last} संबंधी सुझाव देना चाहते हैं?',
+                            index == 0
+                                ? 'क्या आप ${categorySelected.last} संबंधी शिकायत देना चाहते हैं?'
+                                : 'क्या आप ${categorySelected.last} संबंधी सुझाव देना चाहते हैं?',
                             isFirst: true,
                           ),
                         ],
