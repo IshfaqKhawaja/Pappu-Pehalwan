@@ -172,7 +172,7 @@ class _UsersState extends State<Users> {
                           style: GoogleFonts.openSans(
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
-                            fontSize: 10,
+                            fontSize: 12,
                           ),
                         ),
                       if(user.containsKey('email') && user['email'] != '')
@@ -184,16 +184,16 @@ class _UsersState extends State<Users> {
                             fontSize: 10,
                           ),
                         ),
-                      if(user.containsKey('nagarNigamServices') &&
-                          user['nagarNigamServices'] != '')
-                        Text(
-                          '${user['nagarNigamServices'] ?? ''}',
-                          style: GoogleFonts.openSans(
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                              fontSize: 10
-                          ),
-                        )
+                      // if(user.containsKey('nagarNigamServices') &&
+                      //     user['nagarNigamServices'] != '')
+                      //   Text(
+                      //     '${user['nagarNigamServices'] ?? ''}',
+                      //     style: GoogleFonts.openSans(
+                      //         fontWeight: FontWeight.w400,
+                      //         color: Colors.black,
+                      //         fontSize: 10
+                      //     ),
+                      //   )
                     ],
                   ),
                   trailing: userDetails['isAdmin'] == true
@@ -213,7 +213,7 @@ class _UsersState extends State<Users> {
                     labels: const ['Admin','User'],
                     customTextStyles: const [
                       TextStyle(
-                        fontSize: 8,
+                        fontSize: 12,
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
                       ),
@@ -223,7 +223,7 @@ class _UsersState extends State<Users> {
                       //   fontWeight: FontWeight.w700,
                       // ),
                       TextStyle(
-                        fontSize: 8,
+                        fontSize: 12,
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
                       ),
